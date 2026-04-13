@@ -23,21 +23,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const list = document.getElementById('cqt-list');
   const loader = document.getElementById('cqt-loader');
-  const seg = document.querySelector('.cqt-segment');
-  const segBtns = Array.from(document.querySelectorAll('.cqt-seg-btn'));
   const activitySummary = document.getElementById('cqt-activity-summary');
   const activityList = document.getElementById('cqt-activity-list');
 
   function t(key, fallback) {
     return chrome.i18n.getMessage(key) || fallback;
   }
-
-  const labels = {
-    free: t('plan_free', 'Free'),
-    plus: t('plan_plus', 'Plus'),
-    business: t('plan_business', 'Business'),
-    pro: t('plan_pro', 'Pro')
-  };
 
   const appLabels = {
     chat: t('app_chat', '채팅'),
@@ -68,17 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
     'custom-instructions': t('feature_custom_instructions', '커스텀 지시')
   };
 
-  segBtns.forEach(btn => {
-    btn.textContent = labels[btn.dataset.plan];
-  });
-
   loader.textContent = t('loading', 'Loading…');
   document.getElementById('cqt-usage-title').textContent = t('usage_title', '모델 사용량');
   document.getElementById('cqt-usage-subtitle').textContent = t('usage_subtitle', '공식 GPT-5.3 / GPT-5.4 기준');
   document.getElementById('cqt-activity-title').textContent = t('activity_title', '최근 활동');
   document.getElementById('cqt-activity-subtitle').textContent = t('activity_subtitle', '프롬프트 본문 제외 메타데이터만 기록');
-
-  let currentPlan = 'plus';
 
   function formatPeriod(hours) {
     const prefix = t('period_prefix', '매');
@@ -119,14 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const diffDays = Math.floor(diffHours / 24);
     return `${diffDays}${t('time_day_suffix', '일 전')}`;
-  }
-
-  function setActiveButton(plan) {
-    segBtns.forEach(btn => {
-      const active = btn.dataset.plan === plan;
-      btn.classList.toggle('is-active', active);
-      btn.setAttribute('aria-selected', active ? 'true' : 'false');
-    });
   }
 
   function renderUsageRows(data) {
@@ -318,8 +295,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      currentPlan = resp.plan || 'plus';
-      setActiveButton(currentPlan);
       renderUsageRows(resp.data || []);
       renderActivity(resp.activity || {});
     });
@@ -362,24 +337,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  chrome.runtime.sendMessage({ action: 'getActivePlan' }, resp => {
-    currentPlan = (resp && resp.plan) || 'plus';
-    setActiveButton(currentPlan);
-    refresh();
-    renderSyncBar();
-  });
-
-  seg.addEventListener('click', event => {
-    const btn = event.target.closest('.cqt-seg-btn');
-    if (!btn) return;
-
-    const plan = btn.dataset.plan;
-    chrome.runtime.sendMessage({ action: 'setActivePlan', plan }, () => {
-      currentPlan = plan;
-      setActiveButton(currentPlan);
-      refresh();
-    });
-  });
+  refresh();
+  renderSyncBar();
 
   } // end initPanel
 });

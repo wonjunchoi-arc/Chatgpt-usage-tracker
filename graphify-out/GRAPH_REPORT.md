@@ -1,11 +1,11 @@
 # Graph Report - .  (2026-04-13)
 
 ## Corpus Check
-- 38 files · ~19,488 words
+- 38 files · ~19,388 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 188 nodes · 247 edges · 47 communities detected
+- 188 nodes · 242 edges · 47 communities detected
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 10 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
@@ -61,14 +61,14 @@
 ## God Nodes (most connected - your core abstractions)
 1. `ChatGPT Web Payload Analysis Guide` - 13 edges
 2. `inferActivity()` - 11 edges
-3. `buildDashboardData()` - 8 edges
-4. `ensureValidSession()` - 7 edges
-5. `Project Philosophy - ChatGPT Usage Tracker` - 7 edges
-6. `normalizePlan()` - 6 edges
-7. `fetchQuotaAll()` - 6 edges
-8. `cleanupOldTimestamps()` - 6 edges
-9. `sbStorageSet()` - 6 edges
-10. `refreshSession()` - 6 edges
+3. `ensureValidSession()` - 7 edges
+4. `Project Philosophy - ChatGPT Usage Tracker` - 7 edges
+5. `fetchQuotaAll()` - 6 edges
+6. `buildDashboardData()` - 6 edges
+7. `cleanupOldTimestamps()` - 6 edges
+8. `sbStorageSet()` - 6 edges
+9. `refreshSession()` - 6 edges
+10. `storageGet()` - 5 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `Privacy-First Design Principle` --conceptually_related_to--> `Activity Event Storage Strategy (app + features)`  [INFERRED]
@@ -92,7 +92,7 @@
 ## Communities
 
 ### Community 0 - "Community 0"
-Cohesion: 0.13
+Cohesion: 0.12
 Nodes (33): appendActivityEvent(), applyFeatureSignal(), asArray(), buildActivityDashboard(), buildDashboardData(), cleanupOldTimestamps(), collectAttachments(), collectConnectorIds() (+25 more)
 
 ### Community 1 - "Community 1"
@@ -367,6 +367,6 @@ _Questions this graph is uniquely positioned to answer:_
 - **What connects `ChatGPT Usage Limit Tracker (Root README)`, `Dashboard Next.js Project README`, `Dashboard AGENTS.md - Next.js Agent Rules` to the rest of the system?**
   _20 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.13 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.12 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.11 - nodes in this community are weakly interconnected._

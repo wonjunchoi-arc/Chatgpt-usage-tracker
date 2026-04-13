@@ -73,46 +73,7 @@
       ]
     }
   ],
-  "free": [
-    {
-      "id": "gpt-5.3-instant",
-      "quota": 10,
-      "hours": 5
-    }
-  ],
-  "plus": [
-    {
-      "id": "gpt-5.3-instant",
-      "quota": 160,
-      "hours": 3
-    },
-    {
-      "id": "gpt-5.4-thinking",
-      "quota": 3000,
-      "hours": 168
-    }
-  ],
   "business": [
-    {
-      "id": "gpt-5.3-instant",
-      "quota": -1,
-      "hours": 3,
-      "max": 160
-    },
-    {
-      "id": "gpt-5.4-thinking",
-      "quota": -1,
-      "hours": 168,
-      "max": 3000
-    },
-    {
-      "id": "gpt-5.4-pro",
-      "quota": -1,
-      "hours": 720,
-      "max": 15
-    }
-  ],
-  "pro": [
     {
       "id": "gpt-5.3-instant",
       "quota": -1,

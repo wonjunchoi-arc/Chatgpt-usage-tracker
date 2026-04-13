@@ -8,10 +8,7 @@ const MAX_ACTIVITY_EVENTS = 60;
 
 const EMPTY_QUOTA = {
   models: [],
-  free: [],
-  plus: [],
   business: [],
-  pro: []
 };
 
 const LEGACY_PLAN_ALIASES = {
@@ -78,7 +75,8 @@ function storageSet(value) {
 }
 
 function normalizePlan(plan) {
-  return LEGACY_PLAN_ALIASES[plan] || plan || 'plus';
+  const normalized = LEGACY_PLAN_ALIASES[plan] || plan;
+  return normalized === 'business' ? 'business' : 'business';
 }
 
 async function readStoredCache() {
@@ -86,7 +84,7 @@ async function readStoredCache() {
   return {
     cachedQuotaAll: items.cachedQuotaAll || null,
     lastFetchTimestamp: items.lastFetchTimestamp || 0,
-    activePlan: normalizePlan(items.activePlan || 'plus')
+    activePlan: 'business'
   };
 }
 
@@ -110,23 +108,20 @@ function normalizeQuotaShape(raw) {
   if (!raw) return EMPTY_QUOTA;
 
   if (Array.isArray(raw)) {
-    return { ...EMPTY_QUOTA, models: raw, plus: raw };
+    return { ...EMPTY_QUOTA, models: raw, business: raw };
   }
 
   const business = raw.business || raw.team || [];
 
   if (raw.free || raw.plus || raw.business || raw.team || raw.pro) {
     return {
-      models: raw.models && raw.models.length ? raw.models : (raw.plus || []),
-      free: raw.free || [],
-      plus: raw.plus || raw.models || [],
+      models: raw.models && raw.models.length ? raw.models : business,
       business,
-      pro: raw.pro || []
     };
   }
 
   if (raw.models) {
-    return { ...EMPTY_QUOTA, models: raw.models, plus: raw.models };
+    return { ...EMPTY_QUOTA, models: raw.models, business: raw.models };
   }
 
   return EMPTY_QUOTA;
@@ -185,10 +180,7 @@ async function getModelCatalog() {
   const all = await fetchQuotaAll();
   return dedupeModels([
     ...(all.models || []),
-    ...(all.free || []),
-    ...(all.plus || []),
     ...(all.business || []),
-    ...(all.pro || [])
   ]);
 }
 
@@ -497,15 +489,8 @@ function mergePlanRowWithCatalog(row, catalogMap) {
 }
 
 async function getQuotaForPlan(planOverride = null) {
-  const plan = normalizePlan(planOverride || await getActivePlan());
   const all = await fetchQuotaAll();
-  const map = {
-    free: all.free,
-    plus: all.plus || all.models,
-    business: all.business,
-    pro: all.pro
-  };
-  return map[plan] || all.plus || all.models || [];
+  return all.business || all.models || [];
 }
 
 function countRecentTimestamps(result, model, now) {
@@ -561,8 +546,7 @@ function buildActivityDashboard(events) {
 }
 
 async function buildDashboardData(planOverride = null) {
-  const plan = normalizePlan(planOverride || await getActivePlan());
-  const quotaRows = await getQuotaForPlan(plan);
+  const quotaRows = await getQuotaForPlan(planOverride);
   const catalogMap = await getModelCatalogMap();
   const usageModels = quotaRows.map(row => mergePlanRowWithCatalog(row, catalogMap));
   const storageKeys = ['activityEvents'];
@@ -587,7 +571,7 @@ async function buildDashboardData(planOverride = null) {
 
   return {
     data: usageData,
-    plan,
+    plan: 'business',
     activity: buildActivityDashboard(result.activityEvents || [])
   };
 }
@@ -596,10 +580,7 @@ async function cleanupOldTimestamps() {
   const all = await fetchQuotaAll();
   const allModels = dedupeModels([
     ...(all.models || []),
-    ...(all.free || []),
-    ...(all.plus || []),
     ...(all.business || []),
-    ...(all.pro || [])
   ]);
 
   if (!allModels.length) return;
@@ -744,12 +725,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
 
     if (request.action === 'getActivePlan') {
-      sendResponse({ plan: await getActivePlan() });
+      sendResponse({ plan: 'business' });
       return;
     }
 
     if (request.action === 'setActivePlan') {
-      await setActivePlan(request.plan);
       sendResponse({ ok: true });
       return;
     }
