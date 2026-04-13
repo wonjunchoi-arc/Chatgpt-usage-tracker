@@ -31,6 +31,7 @@ CREATE TABLE activity_events (
   user_id                   uuid NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   ts                        bigint NOT NULL,
   server_ts                 timestamptz NOT NULL DEFAULT now(),
+  month_key                 text NOT NULL,
   model_id                  text NOT NULL,
   display_name              text,
   app                       text NOT NULL,
@@ -62,22 +63,57 @@ ALTER TABLE activity_events ENABLE ROW LEVEL SECURITY;
 CREATE UNIQUE INDEX idx_activity_events_dedup ON activity_events (user_id, ts, model_id);
 CREATE INDEX idx_activity_events_user_ts ON activity_events (user_id, ts DESC);
 CREATE INDEX idx_activity_events_server_ts ON activity_events (server_ts DESC);
+CREATE INDEX idx_activity_events_month_key ON activity_events (month_key);
 CREATE INDEX idx_activity_events_model ON activity_events (model_id);
 CREATE INDEX idx_activity_events_app ON activity_events (app);
 
--- 4. 모델 사용 시각 기록 테이블
-CREATE TABLE model_timestamps (
-  id        bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-  user_id   uuid NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-  model_id  text NOT NULL,
-  ts        bigint NOT NULL,
-  server_ts timestamptz NOT NULL DEFAULT now()
+-- 4. 월별 모델 사용량 집계
+CREATE TABLE monthly_usage_summary (
+  id          bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  month_key   text NOT NULL,
+  user_id     uuid NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  model_id    text NOT NULL,
+  usage_count int NOT NULL DEFAULT 0,
+  updated_at  timestamptz NOT NULL DEFAULT now(),
+  UNIQUE (month_key, user_id, model_id)
 );
 
-ALTER TABLE model_timestamps ENABLE ROW LEVEL SECURITY;
+ALTER TABLE monthly_usage_summary ENABLE ROW LEVEL SECURITY;
 
-CREATE UNIQUE INDEX idx_model_timestamps_dedup ON model_timestamps (user_id, model_id, ts);
-CREATE INDEX idx_model_timestamps_user_model_ts ON model_timestamps (user_id, model_id, ts DESC);
+CREATE INDEX idx_monthly_usage_summary_month_user ON monthly_usage_summary (month_key, user_id);
+CREATE INDEX idx_monthly_usage_summary_model ON monthly_usage_summary (model_id);
+
+-- 5. 월별 앱 사용량 집계
+CREATE TABLE monthly_app_summary (
+  id          bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  month_key   text NOT NULL,
+  user_id     uuid NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  app         text NOT NULL,
+  usage_count int NOT NULL DEFAULT 0,
+  updated_at  timestamptz NOT NULL DEFAULT now(),
+  UNIQUE (month_key, user_id, app)
+);
+
+ALTER TABLE monthly_app_summary ENABLE ROW LEVEL SECURITY;
+
+CREATE INDEX idx_monthly_app_summary_month_user ON monthly_app_summary (month_key, user_id);
+CREATE INDEX idx_monthly_app_summary_app ON monthly_app_summary (app);
+
+-- 6. 월별 기능 사용량 집계
+CREATE TABLE monthly_feature_summary (
+  id          bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  month_key   text NOT NULL,
+  user_id     uuid NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  feature     text NOT NULL,
+  usage_count int NOT NULL DEFAULT 0,
+  updated_at  timestamptz NOT NULL DEFAULT now(),
+  UNIQUE (month_key, user_id, feature)
+);
+
+ALTER TABLE monthly_feature_summary ENABLE ROW LEVEL SECURITY;
+
+CREATE INDEX idx_monthly_feature_summary_month_user ON monthly_feature_summary (month_key, user_id);
+CREATE INDEX idx_monthly_feature_summary_feature ON monthly_feature_summary (feature);
 
 -- ============================================================
 -- 기본 팀 데이터
@@ -131,10 +167,24 @@ CREATE POLICY "Authenticated users manage activity_events" ON activity_events
   FOR ALL USING (auth.uid() IS NOT NULL)
   WITH CHECK (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Authenticated users see all timestamps" ON model_timestamps
+CREATE POLICY "Authenticated users see monthly usage summary" ON monthly_usage_summary
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Authenticated users manage model_timestamps" ON model_timestamps
+CREATE POLICY "Authenticated users manage monthly usage summary" ON monthly_usage_summary
+  FOR ALL USING (auth.uid() IS NOT NULL)
+  WITH CHECK (auth.uid() IS NOT NULL);
+
+CREATE POLICY "Authenticated users see monthly app summary" ON monthly_app_summary
+  FOR SELECT USING (auth.uid() IS NOT NULL);
+
+CREATE POLICY "Authenticated users manage monthly app summary" ON monthly_app_summary
+  FOR ALL USING (auth.uid() IS NOT NULL)
+  WITH CHECK (auth.uid() IS NOT NULL);
+
+CREATE POLICY "Authenticated users see monthly feature summary" ON monthly_feature_summary
+  FOR SELECT USING (auth.uid() IS NOT NULL);
+
+CREATE POLICY "Authenticated users manage monthly feature summary" ON monthly_feature_summary
   FOR ALL USING (auth.uid() IS NOT NULL)
   WITH CHECK (auth.uid() IS NOT NULL);
 

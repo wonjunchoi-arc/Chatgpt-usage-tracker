@@ -259,12 +259,10 @@ async function flushSyncQueue() {
   if (!syncQueue.length) return;
 
   const events = [];
-  const timestamps = [];
   const failed = [];
 
   for (const item of syncQueue) {
     if (item.type === 'event') events.push(item);
-    else if (item.type === 'timestamp') timestamps.push(item);
   }
 
   // Send events in batches
@@ -273,6 +271,7 @@ async function flushSyncQueue() {
     const rows = batch.map(item => ({
       user_id: session.user.id,
       ts: item.data.ts,
+      month_key: item.data.monthKey,
       model_id: item.data.modelId,
       display_name: item.data.displayName || null,
       app: item.data.app,
@@ -303,26 +302,6 @@ async function flushSyncQueue() {
       await restPost('/activity_events', rows, session.access_token);
     } catch (err) {
       console.warn('Sync events batch failed:', err);
-      for (const item of batch) {
-        item.retryCount = (item.retryCount || 0) + 1;
-        if (item.retryCount < MAX_RETRY_COUNT) failed.push(item);
-      }
-    }
-  }
-
-  // Send timestamps in batches
-  for (let i = 0; i < timestamps.length; i += SYNC_BATCH_SIZE) {
-    const batch = timestamps.slice(i, i + SYNC_BATCH_SIZE);
-    const rows = batch.map(item => ({
-      user_id: session.user.id,
-      model_id: item.data.modelId,
-      ts: item.data.ts
-    }));
-
-    try {
-      await restPost('/model_timestamps', rows, session.access_token);
-    } catch (err) {
-      console.warn('Sync timestamps batch failed:', err);
       for (const item of batch) {
         item.retryCount = (item.retryCount || 0) + 1;
         if (item.retryCount < MAX_RETRY_COUNT) failed.push(item);
