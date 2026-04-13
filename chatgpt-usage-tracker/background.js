@@ -1,4 +1,4 @@
-importScripts('supabase.js');
+importScripts('config.js', 'supabase.js');
 
 const DEBUG = true;
 const CACHE_DURATION_MS = 60 * 60 * 1000;
@@ -729,6 +729,16 @@ chrome.webRequest.onBeforeRequest.addListener(
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   (async () => {
     if (request.action === 'getDashboardData' || request.action === 'getUsageData') {
+      const status = await getSyncStatus();
+      if (!status.loggedIn) {
+        sendResponse({
+          requiresAuth: true,
+          data: [],
+          activity: { recent: [], stats: {}, featureCounts: {} }
+        });
+        return;
+      }
+
       sendResponse(await buildDashboardData());
       return;
     }

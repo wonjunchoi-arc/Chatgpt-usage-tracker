@@ -1,29 +1,30 @@
 # Graph Report - .  (2026-04-13)
 
 ## Corpus Check
-- Corpus is ~15,141 words - fits in a single context window. You may not need a graph.
+- 38 files · ~19,488 words
+- Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 185 nodes · 259 edges · 42 communities detected
-- Extraction: 92% EXTRACTED · 8% INFERRED · 0% AMBIGUOUS · INFERRED: 20 edges (avg confidence: 0.85)
-- Token cost: 1,200 input · 650 output
+- 188 nodes · 247 edges · 47 communities detected
+- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 10 edges (avg confidence: 0.86)
+- Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
-- [[_COMMUNITY_Activity Tracking Engine|Activity Tracking Engine]]
-- [[_COMMUNITY_Supabase Data Layer|Supabase Data Layer]]
-- [[_COMMUNITY_ChatGPT Payload Classification|ChatGPT Payload Classification]]
-- [[_COMMUNITY_Dashboard Query Layer|Dashboard Query Layer]]
-- [[_COMMUNITY_Extension & Dashboard Integration|Extension & Dashboard Integration]]
-- [[_COMMUNITY_Extension Options UI|Extension Options UI]]
-- [[_COMMUNITY_Dashboard Static Assets|Dashboard Static Assets]]
-- [[_COMMUNITY_Admin Team Management|Admin Team Management]]
-- [[_COMMUNITY_Extension Visual Identity|Extension Visual Identity]]
-- [[_COMMUNITY_Dashboard Type Definitions|Dashboard Type Definitions]]
-- [[_COMMUNITY_Development Tooling|Development Tooling]]
-- [[_COMMUNITY_Entry Point|Entry Point]]
-- [[_COMMUNITY_Extension Popup UI|Extension Popup UI]]
-- [[_COMMUNITY_Auth Middleware|Auth Middleware]]
-- [[_COMMUNITY_Usage Summary Component|Usage Summary Component]]
+- [[_COMMUNITY_Community 0|Community 0]]
+- [[_COMMUNITY_Community 1|Community 1]]
+- [[_COMMUNITY_Community 2|Community 2]]
+- [[_COMMUNITY_Community 3|Community 3]]
+- [[_COMMUNITY_Community 4|Community 4]]
+- [[_COMMUNITY_Community 5|Community 5]]
+- [[_COMMUNITY_Community 6|Community 6]]
+- [[_COMMUNITY_Community 7|Community 7]]
+- [[_COMMUNITY_Community 8|Community 8]]
+- [[_COMMUNITY_Community 9|Community 9]]
+- [[_COMMUNITY_Community 10|Community 10]]
+- [[_COMMUNITY_Community 11|Community 11]]
+- [[_COMMUNITY_Community 12|Community 12]]
+- [[_COMMUNITY_Community 13|Community 13]]
+- [[_COMMUNITY_Community 14|Community 14]]
 - [[_COMMUNITY_Community 15|Community 15]]
 - [[_COMMUNITY_Community 16|Community 16]]
 - [[_COMMUNITY_Community 17|Community 17]]
@@ -51,6 +52,11 @@
 - [[_COMMUNITY_Community 39|Community 39]]
 - [[_COMMUNITY_Community 40|Community 40]]
 - [[_COMMUNITY_Community 41|Community 41]]
+- [[_COMMUNITY_Community 42|Community 42]]
+- [[_COMMUNITY_Community 43|Community 43]]
+- [[_COMMUNITY_Community 44|Community 44]]
+- [[_COMMUNITY_Community 45|Community 45]]
+- [[_COMMUNITY_Community 46|Community 46]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `ChatGPT Web Payload Analysis Guide` - 13 edges
@@ -65,16 +71,16 @@
 10. `refreshSession()` - 6 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Next.js Dashboard Application` --calls--> `Supabase Backend (DB + Client)`  [INFERRED]
-  dashboard/README.md → docs/PHILOSOPHY.md
+- `Privacy-First Design Principle` --conceptually_related_to--> `Activity Event Storage Strategy (app + features)`  [INFERRED]
+  docs/PHILOSOPHY.md → docs/chatgpt_web_payload_analysis.md
+- `Structural Signal Priority Principle` --rationale_for--> `Feature Classification Priority Order`  [INFERRED]
+  docs/PHILOSOPHY.md → docs/chatgpt_web_payload_analysis.md
+- `Structural Signal Priority Principle` --conceptually_related_to--> `ChatGPT Web Payload Analysis Guide`  [INFERRED]
+  docs/PHILOSOPHY.md → docs/chatgpt_web_payload_analysis.md
 - `AX Transformation Measurement Goal` --conceptually_related_to--> `ChatGPT Web Payload Analysis Guide`  [INFERRED]
   docs/PHILOSOPHY.md → docs/chatgpt_web_payload_analysis.md
-- `Network Intercept Data Flow (background.js → Supabase → Dashboard)` --references--> `Next.js Dashboard Application`  [EXTRACTED]
-  docs/PHILOSOPHY.md → dashboard/README.md
-- `Admin Dashboard Component (Next.js)` --references--> `Next.js Dashboard Application`  [EXTRACTED]
-  docs/PHILOSOPHY.md → dashboard/README.md
-- `Dashboard AGENTS.md - Next.js Agent Rules` --references--> `Next.js Dashboard Application`  [EXTRACTED]
-  dashboard/AGENTS.md → dashboard/README.md
+- `Extension Icon 16x16` --conceptually_related_to--> `Hourglass / Timer Visual Motif`  [INFERRED]
+  chatgpt-usage-limit-tracker/icons/icon16.png → chatgpt-usage-limit-tracker/icons/icon128.png
 
 ## Hyperedges (group relationships)
 - **ChatGPT Network Intercept Data Pipeline** — background_js, supabase_backend, nextjs_dashboard_app [EXTRACTED 1.00]
@@ -85,63 +91,63 @@
 
 ## Communities
 
-### Community 0 - "Activity Tracking Engine"
+### Community 0 - "Community 0"
 Cohesion: 0.13
 Nodes (33): appendActivityEvent(), applyFeatureSignal(), asArray(), buildActivityDashboard(), buildDashboardData(), cleanupOldTimestamps(), collectAttachments(), collectConnectorIds() (+25 more)
 
-### Community 1 - "Supabase Data Layer"
+### Community 1 - "Community 1"
+Cohesion: 0.11
+Nodes (26): ChatGPT Web Payload Analysis Guide, Canvas Feature Classification Rule, Feature Classification Priority Order, Connector App Classification Rule, Conversation Request Payload (Core Signal), attachments Payload Field, conversation_mode Payload Field, ecosystemMention Symbol (custom_symbol_offsets) (+18 more)
+
+### Community 2 - "Community 2"
 Cohesion: 0.23
 Nodes (21): appendToSyncQueue(), clearSession(), ensureValidSession(), fetchTeams(), flushSyncQueue(), getSession(), getSyncStatus(), getUserProfile() (+13 more)
 
-### Community 2 - "ChatGPT Payload Classification"
+### Community 3 - "Community 3"
 Cohesion: 0.16
-Nodes (18): ChatGPT Web Payload Analysis Guide, Canvas Feature Classification Rule, Feature Classification Priority Order, Connector App Classification Rule, Conversation Request Payload (Core Signal), attachments Payload Field, conversation_mode Payload Field, ecosystemMention Symbol (custom_symbol_offsets) (+10 more)
+Nodes (8): attachUsageCounts(), getAllProfilesWithTeams(), getAllTeams(), getAllTeamsWithAdminStats(), getAllTeamsWithStats(), getTeamEvents(), getTeamMembers(), getTeamMembersWithUsage()
 
-### Community 3 - "Dashboard Query Layer"
-Cohesion: 0.2
-Nodes (7): attachUsageCounts(), getAllTeams(), getAllTeamsWithAdminStats(), getAllTeamsWithStats(), getTeamEvents(), getTeamMembers(), getTeamMembersWithUsage()
-
-### Community 4 - "Extension & Dashboard Integration"
+### Community 4 - "Community 4"
 Cohesion: 0.22
-Nodes (14): background.js (Network Interceptor), Dashboard AGENTS.md - Next.js Agent Rules, Dashboard CLAUDE.md, Dashboard Next.js Project README, Next.js Dashboard Application, Activity Event Storage Strategy (app + features), AX Transformation Measurement Goal, Chrome Extension Component (chatgpt-usage-limit-tracker/) (+6 more)
+Nodes (1): handleDelete()
 
-### Community 5 - "Extension Options UI"
+### Community 5 - "Community 5"
 Cohesion: 0.39
 Nodes (5): formatTime(), renderAuthState(), renderSyncState(), renderTeamState(), showError()
 
-### Community 6 - "Dashboard Static Assets"
-Cohesion: 0.4
-Nodes (6): Dashboard Next.js Application, File / Document SVG Icon, Globe SVG Icon, Next.js Wordmark SVG, Vercel Triangle Logo SVG, Window SVG Icon
+### Community 6 - "Community 6"
+Cohesion: 0.5
+Nodes (4): Hourglass / Timer Visual Motif, Extension Icon 128x128, Extension Icon 16x16, Extension Icon 48x48
 
-### Community 7 - "Admin Team Management"
-Cohesion: 0.4
-Nodes (0): 
-
-### Community 8 - "Extension Visual Identity"
-Cohesion: 0.7
-Nodes (5): ChatGPT Usage Limit Tracker Chrome Extension, Hourglass / Timer Visual Motif, Extension Icon 128x128, Extension Icon 16x16, Extension Icon 48x48
-
-### Community 9 - "Dashboard Type Definitions"
+### Community 7 - "Community 7"
 Cohesion: 0.67
 Nodes (0): 
 
-### Community 10 - "Development Tooling"
+### Community 8 - "Community 8"
 Cohesion: 1.0
 Nodes (3): tmux 'claude' Named Session Pattern, tmux Usage Guide, tmux Session Management (new/attach/kill)
 
-### Community 11 - "Entry Point"
+### Community 9 - "Community 9"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 12 - "Extension Popup UI"
+### Community 10 - "Community 10"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 13 - "Auth Middleware"
+### Community 11 - "Community 11"
 Cohesion: 1.0
 Nodes (0): 
 
-### Community 14 - "Usage Summary Component"
+### Community 12 - "Community 12"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 13 - "Community 13"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 14 - "Community 14"
 Cohesion: 1.0
 Nodes (0): 
 
@@ -199,11 +205,11 @@ Nodes (0):
 
 ### Community 28 - "Community 28"
 Cohesion: 1.0
-Nodes (0): 
+Nodes (2): Dashboard AGENTS.md - Next.js Agent Rules, Dashboard CLAUDE.md
 
 ### Community 29 - "Community 29"
 Cohesion: 1.0
-Nodes (0): 
+Nodes (2): Next.js Wordmark SVG, Vercel Triangle Logo SVG
 
 ### Community 30 - "Community 30"
 Cohesion: 1.0
@@ -251,86 +257,116 @@ Nodes (0):
 
 ### Community 41 - "Community 41"
 Cohesion: 1.0
+Nodes (0): 
+
+### Community 42 - "Community 42"
+Cohesion: 1.0
 Nodes (1): ChatGPT Usage Limit Tracker (Root README)
 
+### Community 43 - "Community 43"
+Cohesion: 1.0
+Nodes (1): Dashboard Next.js Project README
+
+### Community 44 - "Community 44"
+Cohesion: 1.0
+Nodes (1): Window SVG Icon
+
+### Community 45 - "Community 45"
+Cohesion: 1.0
+Nodes (1): Globe SVG Icon
+
+### Community 46 - "Community 46"
+Cohesion: 1.0
+Nodes (1): File / Document SVG Icon
+
 ## Knowledge Gaps
-- **11 isolated node(s):** `ChatGPT Usage Limit Tracker (Root README)`, `Dashboard Next.js Project README`, `Dashboard CLAUDE.md`, `Conversation Request Payload (Core Signal)`, `Plain Chat Classification Rule` (+6 more)
+- **20 isolated node(s):** `ChatGPT Usage Limit Tracker (Root README)`, `Dashboard Next.js Project README`, `Dashboard AGENTS.md - Next.js Agent Rules`, `Dashboard CLAUDE.md`, `Network Intercept Data Flow (background.js → Supabase → Dashboard)` (+15 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **Thin community `Entry Point`** (2 nodes): `main()`, `main.py`
+- **Thin community `Community 9`** (2 nodes): `next.config.ts`, `readSharedEnv()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Extension Popup UI`** (2 nodes): `popup.js`, `initPanel()`
+- **Thin community `Community 10`** (2 nodes): `middleware.ts`, `middleware()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Auth Middleware`** (2 nodes): `middleware.ts`, `middleware()`
+- **Thin community `Community 11`** (2 nodes): `UsageSummaryCards.tsx`, `UsageSummaryCards()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Usage Summary Component`** (2 nodes): `UsageSummaryCards.tsx`, `UsageSummaryCards()`
+- **Thin community `Community 12`** (2 nodes): `TeamsCompareChart.tsx`, `getActivityLabel()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 15`** (2 nodes): `TeamsCompareChart.tsx`, `getActivityLabel()`
+- **Thin community `Community 13`** (2 nodes): `ActivityCountCards()`, `ActivityCountCards.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 16`** (2 nodes): `ActivityCountCards()`, `ActivityCountCards.tsx`
+- **Thin community `Community 14`** (2 nodes): `ActivityTimeline()`, `ActivityTimeline.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 17`** (2 nodes): `ActivityTimeline()`, `ActivityTimeline.tsx`
+- **Thin community `Community 15`** (2 nodes): `TimeRangeFilter.tsx`, `TimeRangeFilter()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 18`** (2 nodes): `TimeRangeFilter.tsx`, `TimeRangeFilter()`
+- **Thin community `Community 16`** (2 nodes): `TeamSelector.tsx`, `TeamSelector()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 19`** (2 nodes): `TeamSelector.tsx`, `TeamSelector()`
+- **Thin community `Community 17`** (2 nodes): `Sidebar.tsx`, `handleSignOut()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 20`** (2 nodes): `Sidebar.tsx`, `handleSignOut()`
+- **Thin community `Community 18`** (2 nodes): `layout.tsx`, `RootLayout()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 21`** (2 nodes): `layout.tsx`, `RootLayout()`
+- **Thin community `Community 19`** (2 nodes): `page.tsx`, `Home()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 22`** (2 nodes): `page.tsx`, `Home()`
+- **Thin community `Community 20`** (2 nodes): `page.tsx`, `handleSubmit()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 23`** (2 nodes): `page.tsx`, `handleSubmit()`
+- **Thin community `Community 21`** (2 nodes): `layout.tsx`, `DashboardLayout()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 24`** (2 nodes): `layout.tsx`, `DashboardLayout()`
+- **Thin community `Community 22`** (2 nodes): `page.tsx`, `DashboardPage()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 25`** (2 nodes): `page.tsx`, `DashboardPage()`
+- **Thin community `Community 23`** (2 nodes): `page.tsx`, `TeamPage()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 26`** (2 nodes): `page.tsx`, `TeamPage()`
+- **Thin community `Community 24`** (2 nodes): `page.tsx`, `ComparePage()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 27`** (2 nodes): `page.tsx`, `ComparePage()`
+- **Thin community `Community 25`** (2 nodes): `server.ts`, `createClient()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 28`** (2 nodes): `server.ts`, `createClient()`
+- **Thin community `Community 26`** (2 nodes): `createClient()`, `client.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 29`** (2 nodes): `createClient()`, `client.ts`
+- **Thin community `Community 27`** (2 nodes): `popup.js`, `initPanel()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 30`** (1 nodes): `next.config.ts`
+- **Thin community `Community 28`** (2 nodes): `Dashboard AGENTS.md - Next.js Agent Rules`, `Dashboard CLAUDE.md`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 31`** (1 nodes): `next-env.d.ts`
+- **Thin community `Community 29`** (2 nodes): `Next.js Wordmark SVG`, `Vercel Triangle Logo SVG`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 32`** (1 nodes): `ActivityBreakdownChart.tsx`
+- **Thin community `Community 30`** (1 nodes): `next-env.d.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 33`** (1 nodes): `LowUsageMembersCard.tsx`
+- **Thin community `Community 31`** (1 nodes): `ActivityBreakdownChart.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 34`** (1 nodes): `AppTypeChart.tsx`
+- **Thin community `Community 32`** (1 nodes): `LowUsageMembersCard.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 35`** (1 nodes): `UserTable.tsx`
+- **Thin community `Community 33`** (1 nodes): `AppTypeChart.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 36`** (1 nodes): `FeatureUsageChart.tsx`
+- **Thin community `Community 34`** (1 nodes): `UserTable.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 37`** (1 nodes): `ModelDistributionChart.tsx`
+- **Thin community `Community 35`** (1 nodes): `FeatureUsageChart.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 38`** (1 nodes): `ActivitySummaryBarChart.tsx`
+- **Thin community `Community 36`** (1 nodes): `ModelDistributionChart.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 37`** (1 nodes): `ActivitySummaryBarChart.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 38`** (1 nodes): `page.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 39`** (1 nodes): `page.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 40`** (1 nodes): `page.tsx`
+- **Thin community `Community 40`** (1 nodes): `config.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 41`** (1 nodes): `ChatGPT Usage Limit Tracker (Root README)`
+- **Thin community `Community 41`** (1 nodes): `config.example.js`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 42`** (1 nodes): `ChatGPT Usage Limit Tracker (Root README)`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 43`** (1 nodes): `Dashboard Next.js Project README`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 44`** (1 nodes): `Window SVG Icon`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 45`** (1 nodes): `Globe SVG Icon`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 46`** (1 nodes): `File / Document SVG Icon`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `ChatGPT Web Payload Analysis Guide` connect `ChatGPT Payload Classification` to `Extension & Dashboard Integration`?**
-  _High betweenness centrality (0.017) - this node is a cross-community bridge._
-- **Why does `Project Philosophy - ChatGPT Usage Tracker` connect `Extension & Dashboard Integration` to `ChatGPT Payload Classification`?**
-  _High betweenness centrality (0.012) - this node is a cross-community bridge._
-- **Why does `Structural Signal Priority Principle` connect `ChatGPT Payload Classification` to `Extension & Dashboard Integration`?**
-  _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `ChatGPT Web Payload Analysis Guide` (e.g. with `Structural Signal Priority Principle` and `AX Transformation Measurement Goal`) actually correct?**
   _`ChatGPT Web Payload Analysis Guide` has 2 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `ChatGPT Usage Limit Tracker (Root README)`, `Dashboard Next.js Project README`, `Dashboard CLAUDE.md` to the rest of the system?**
-  _11 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Activity Tracking Engine` be split into smaller, more focused modules?**
+- **What connects `ChatGPT Usage Limit Tracker (Root README)`, `Dashboard Next.js Project README`, `Dashboard AGENTS.md - Next.js Agent Rules` to the rest of the system?**
+  _20 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.13 - nodes in this community are weakly interconnected._
+- **Should `Community 1` be split into smaller, more focused modules?**
+  _Cohesion score 0.11 - nodes in this community are weakly interconnected._

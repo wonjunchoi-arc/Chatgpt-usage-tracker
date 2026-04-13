@@ -2,8 +2,9 @@
 // Supabase REST helpers (no SDK dependency)
 // ============================================================
 
-const SUPABASE_URL = 'https://your-project.supabase.co';
-const SUPABASE_ANON_KEY = 'your-anon-key';
+const runtimeConfig = globalThis.__SUPABASE_CONFIG__ || {};
+const SUPABASE_URL = runtimeConfig.supabaseUrl || 'https://your-project.supabase.co';
+const SUPABASE_ANON_KEY = runtimeConfig.supabaseAnonKey || 'your-anon-key';
 
 const AUTH_URL = `${SUPABASE_URL}/auth/v1`;
 const REST_URL = `${SUPABASE_URL}/rest/v1`;

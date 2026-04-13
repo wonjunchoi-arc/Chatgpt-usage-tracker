@@ -3,16 +3,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const gate = document.getElementById('cqt-gate');
   const panel = document.getElementById('cqt-panel');
   const gateBtn = document.getElementById('cqt-gate-btn');
+  let panelInitialized = false;
 
   gateBtn.addEventListener('click', () => chrome.runtime.openOptionsPage());
 
-  panel.hidden = false;
-
   chrome.runtime.sendMessage({ action: 'getSyncStatus' }, status => {
-    gate.hidden = !!(status && status.loggedIn && !chrome.runtime.lastError);
-  });
+    const isLoggedIn = !!(status && status.loggedIn && !chrome.runtime.lastError);
 
-  initPanel();
+    gate.hidden = isLoggedIn;
+    panel.hidden = !isLoggedIn;
+
+    if (isLoggedIn && !panelInitialized) {
+      panelInitialized = true;
+      initPanel();
+    }
+  });
 
   function initPanel() {
 
@@ -308,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
     activityList.textContent = '';
 
     chrome.runtime.sendMessage({ action: 'getDashboardData' }, resp => {
-      if (chrome.runtime.lastError || !resp) {
+      if (chrome.runtime.lastError || !resp || resp.requiresAuth) {
         renderError();
         return;
       }
