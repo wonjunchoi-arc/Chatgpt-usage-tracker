@@ -1,28 +1,37 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import type { TimeRange } from '@/lib/types';
+import { getCurrentMonthKey, type MonthKey } from '@/lib/types';
 
-const ranges: { value: TimeRange; label: string }[] = [
-  { value: '24h', label: '24시간' },
-  { value: '7d', label: '7일' },
-  { value: '30d', label: '30일' },
-];
+function getMonthOptions(): { value: MonthKey; label: string }[] {
+  const options: { value: MonthKey; label: string }[] = [];
+  const now = new Date();
+
+  for (let index = 0; index < 3; index += 1) {
+    const date = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - index, 1));
+    const value = getCurrentMonthKey(date);
+    const [year, month] = value.split('-');
+    options.push({ value, label: `${year}.${month}` });
+  }
+
+  return options;
+}
 
 export default function TimeRangeFilter() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const current = (searchParams.get('range') || '7d') as TimeRange;
+  const current = (searchParams.get('month') || getCurrentMonthKey()) as MonthKey;
+  const months = getMonthOptions();
 
-  function handleClick(range: TimeRange) {
+  function handleClick(month: MonthKey) {
     const params = new URLSearchParams(searchParams.toString());
-    params.set('range', range);
+    params.set('month', month);
     router.push(`?${params.toString()}`);
   }
 
   return (
     <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
-      {ranges.map(({ value, label }) => (
+      {months.map(({ value, label }) => (
         <button
           key={value}
           onClick={() => handleClick(value)}

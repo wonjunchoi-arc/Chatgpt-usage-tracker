@@ -10,7 +10,7 @@ import { ACTIVITY_KEYS } from '@/lib/types';
 
 interface Props {
   teams: TeamWithStats[];
-  range: string;
+  month: string;
 }
 
 const COLORS = ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
@@ -19,7 +19,7 @@ function getActivityLabel(activity: string | null) {
   return ACTIVITY_KEYS.find(item => item.key === activity)?.label ?? '-';
 }
 
-export default function TeamsCompareChart({ teams, range }: Props) {
+export default function TeamsCompareChart({ teams, month }: Props) {
   const chartData = teams
     .filter(t => t.eventCount > 0)
     .map((t, i) => ({
@@ -102,7 +102,7 @@ export default function TeamsCompareChart({ teams, range }: Props) {
               {teams.map((team) => (
                 <Fragment key={team.id}>
                   <Link
-                    href={`/dashboard/team?teamId=${team.id}&range=${range}`}
+                    href={`/dashboard/team?teamId=${team.id}&month=${month}`}
                     className="text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400 truncate"
                   >
                     {team.name}
@@ -202,7 +202,7 @@ export default function TeamsCompareChart({ teams, range }: Props) {
                       style={{ background: COLORS[i % COLORS.length] }}
                     />
                     <Link
-                      href={`/dashboard/team?teamId=${team.id}&range=${range}`}
+                      href={`/dashboard/team?teamId=${team.id}&month=${month}`}
                       className="text-emerald-600 dark:text-emerald-400 hover:underline font-medium"
                     >
                       {team.name}

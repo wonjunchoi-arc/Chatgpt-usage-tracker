@@ -22,6 +22,7 @@ export interface ActivityEvent {
   user_id: string;
   ts: number;
   server_ts: string;
+  month_key: string;
   model_id: string;
   display_name: string | null;
   app: string;
@@ -73,18 +74,17 @@ export interface ProfileWithUsage extends Profile {
   eventCount: number;
 }
 
-export type TimeRange = '24h' | '7d' | '30d';
+export type MonthKey = `${number}-${string}`;
 
-export function getTimeRangeStart(range: TimeRange): Date {
-  const now = new Date();
-  switch (range) {
-    case '24h':
-      return new Date(now.getTime() - 24 * 60 * 60 * 1000);
-    case '7d':
-      return new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-    case '30d':
-      return new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-  }
+export function getCurrentMonthKey(date = new Date()): MonthKey {
+  const formatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Seoul',
+    year: 'numeric',
+    month: '2-digit'
+  });
+  const parts = formatter.formatToParts(date);
+  const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+  return `${values.year}-${values.month}` as MonthKey;
 }
 
 export function getProfileDisplayName(profile: Pick<Profile, 'display_name' | 'email'>): string {

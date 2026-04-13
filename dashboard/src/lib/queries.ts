@@ -1,6 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import type { Profile, Team, ActivityEvent, TeamStats, ProfileWithUsage, ProfileWithTeam, TimeRange } from './types';
-import { getTimeRangeStart, ACTIVITY_KEYS } from './types';
+import type { Profile, Team, ActivityEvent, TeamStats, ProfileWithUsage, ProfileWithTeam, MonthKey } from './types';
+import { ACTIVITY_KEYS } from './types';
 
 export async function getProfile(supabase: SupabaseClient, userId: string): Promise<Profile | null> {
   const { data } = await supabase
@@ -49,10 +49,8 @@ export async function getAllProfilesWithTeams(supabase: SupabaseClient): Promise
 export async function getTeamEvents(
   supabase: SupabaseClient,
   teamId: string,
-  range: TimeRange
+  monthKey: MonthKey
 ): Promise<ActivityEvent[]> {
-  const since = getTimeRangeStart(range).toISOString();
-
   const { data: members } = await supabase
     .from('profiles')
     .select('id')
@@ -66,7 +64,7 @@ export async function getTeamEvents(
     .from('activity_events')
     .select('*')
     .in('user_id', memberIds)
-    .gte('server_ts', since)
+    .eq('month_key', monthKey)
     .order('server_ts', { ascending: false })
     .limit(5000);
 
@@ -76,15 +74,13 @@ export async function getTeamEvents(
 export async function getUserEvents(
   supabase: SupabaseClient,
   userId: string,
-  range: TimeRange
+  monthKey: MonthKey
 ): Promise<ActivityEvent[]> {
-  const since = getTimeRangeStart(range).toISOString();
-
   const { data } = await supabase
     .from('activity_events')
     .select('*')
     .eq('user_id', userId)
-    .gte('server_ts', since)
+    .eq('month_key', monthKey)
     .order('server_ts', { ascending: false })
     .limit(5000);
 
@@ -166,10 +162,10 @@ export function aggregateStats(events: ActivityEvent[]): TeamStats {
 export async function getTeamMembersWithUsage(
   supabase: SupabaseClient,
   teamId: string,
-  range: TimeRange
+  monthKey: MonthKey
 ): Promise<ProfileWithUsage[]> {
   const members = await getTeamMembers(supabase, teamId);
-  const events = await getTeamEvents(supabase, teamId, range);
+  const events = await getTeamEvents(supabase, teamId, monthKey);
   return attachUsageCounts(members, events);
 }
 
@@ -187,17 +183,15 @@ export interface TeamWithStats extends Team {
 
 export async function getAllTeamsWithStats(
   supabase: SupabaseClient,
-  range: TimeRange
+  monthKey: MonthKey
 ): Promise<TeamWithStats[]> {
-  const since = getTimeRangeStart(range).toISOString();
-
   const [teams, allProfiles, allEvents] = await Promise.all([
     getAllTeams(supabase),
     supabase.from('profiles').select('id, team_id'),
     supabase
       .from('activity_events')
       .select('user_id, model_id, app, features')
-      .gte('server_ts', since),
+      .eq('month_key', monthKey),
   ]);
 
   const profiles = allProfiles.data || [];

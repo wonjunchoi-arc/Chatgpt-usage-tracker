@@ -1,11 +1,11 @@
 # Graph Report - .  (2026-04-13)
 
 ## Corpus Check
-- 38 files · ~19,388 words
+- 38 files · ~19,150 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 188 nodes · 242 edges · 47 communities detected
+- 191 nodes · 247 edges · 47 communities detected
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 10 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
@@ -63,12 +63,12 @@
 2. `inferActivity()` - 11 edges
 3. `ensureValidSession()` - 7 edges
 4. `Project Philosophy - ChatGPT Usage Tracker` - 7 edges
-5. `fetchQuotaAll()` - 6 edges
-6. `buildDashboardData()` - 6 edges
-7. `cleanupOldTimestamps()` - 6 edges
+5. `storageGet()` - 6 edges
+6. `storageSet()` - 6 edges
+7. `buildDashboardData()` - 6 edges
 8. `sbStorageSet()` - 6 edges
 9. `refreshSession()` - 6 edges
-10. `storageGet()` - 5 edges
+10. `fetchQuotaAll()` - 5 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `Privacy-First Design Principle` --conceptually_related_to--> `Activity Event Storage Strategy (app + features)`  [INFERRED]
@@ -93,7 +93,7 @@
 
 ### Community 0 - "Community 0"
 Cohesion: 0.12
-Nodes (33): appendActivityEvent(), applyFeatureSignal(), asArray(), buildActivityDashboard(), buildDashboardData(), cleanupOldTimestamps(), collectAttachments(), collectConnectorIds() (+25 more)
+Nodes (35): appendActivityEvent(), applyFeatureSignal(), asArray(), buildActivityDashboard(), buildDashboardData(), cleanupOldTimestamps(), collectAttachments(), collectConnectorIds() (+27 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.11
@@ -120,16 +120,16 @@ Cohesion: 0.5
 Nodes (4): Hourglass / Timer Visual Motif, Extension Icon 128x128, Extension Icon 16x16, Extension Icon 48x48
 
 ### Community 7 - "Community 7"
+Cohesion: 1.0
+Nodes (2): getMonthOptions(), TimeRangeFilter()
+
+### Community 8 - "Community 8"
 Cohesion: 0.67
 Nodes (0): 
 
-### Community 8 - "Community 8"
-Cohesion: 1.0
-Nodes (3): tmux 'claude' Named Session Pattern, tmux Usage Guide, tmux Session Management (new/attach/kill)
-
 ### Community 9 - "Community 9"
 Cohesion: 1.0
-Nodes (0): 
+Nodes (3): tmux 'claude' Named Session Pattern, tmux Usage Guide, tmux Session Management (new/attach/kill)
 
 ### Community 10 - "Community 10"
 Cohesion: 1.0
@@ -282,19 +282,17 @@ Nodes (1): File / Document SVG Icon
 ## Knowledge Gaps
 - **20 isolated node(s):** `ChatGPT Usage Limit Tracker (Root README)`, `Dashboard Next.js Project README`, `Dashboard AGENTS.md - Next.js Agent Rules`, `Dashboard CLAUDE.md`, `Network Intercept Data Flow (background.js → Supabase → Dashboard)` (+15 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **Thin community `Community 9`** (2 nodes): `next.config.ts`, `readSharedEnv()`
+- **Thin community `Community 10`** (2 nodes): `next.config.ts`, `readSharedEnv()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 10`** (2 nodes): `middleware.ts`, `middleware()`
+- **Thin community `Community 11`** (2 nodes): `middleware.ts`, `middleware()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 11`** (2 nodes): `UsageSummaryCards.tsx`, `UsageSummaryCards()`
+- **Thin community `Community 12`** (2 nodes): `UsageSummaryCards.tsx`, `UsageSummaryCards()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 12`** (2 nodes): `TeamsCompareChart.tsx`, `getActivityLabel()`
+- **Thin community `Community 13`** (2 nodes): `TeamsCompareChart.tsx`, `getActivityLabel()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 13`** (2 nodes): `ActivityCountCards()`, `ActivityCountCards.tsx`
+- **Thin community `Community 14`** (2 nodes): `ActivityCountCards()`, `ActivityCountCards.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 14`** (2 nodes): `ActivityTimeline()`, `ActivityTimeline.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 15`** (2 nodes): `TimeRangeFilter.tsx`, `TimeRangeFilter()`
+- **Thin community `Community 15`** (2 nodes): `ActivityTimeline()`, `ActivityTimeline.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 16`** (2 nodes): `TeamSelector.tsx`, `TeamSelector()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.

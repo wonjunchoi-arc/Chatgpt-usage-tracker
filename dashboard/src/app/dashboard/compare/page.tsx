@@ -2,23 +2,23 @@ import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { createClient } from '@/lib/supabase/server';
 import { getAllTeamsWithStats } from '@/lib/queries';
-import type { TimeRange } from '@/lib/types';
+import { getCurrentMonthKey, type MonthKey } from '@/lib/types';
 import TimeRangeFilter from '@/components/dashboard/TimeRangeFilter';
 import TeamsCompareChart from '@/components/dashboard/TeamsCompareChart';
 
 interface Props {
-  searchParams: Promise<{ range?: string }>;
+  searchParams: Promise<{ month?: string }>;
 }
 
 export default async function ComparePage({ searchParams }: Props) {
   const params = await searchParams;
-  const range = (['24h', '7d', '30d'].includes(params.range || '') ? params.range : '7d') as TimeRange;
+  const month = (params.month || getCurrentMonthKey()) as MonthKey;
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login');
 
-  const teams = await getAllTeamsWithStats(supabase, range);
+  const teams = await getAllTeamsWithStats(supabase, month);
 
   const totalEvents = teams.reduce((sum, t) => sum + t.eventCount, 0);
   const totalMembers = teams.reduce((sum, t) => sum + t.memberCount, 0);
@@ -30,7 +30,7 @@ export default async function ComparePage({ searchParams }: Props) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold text-gray-900 dark:text-white">전체 팀 비교</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">팀별 ChatGPT 사용량 한눈에 보기</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{month} 기준 팀별 ChatGPT 사용량</p>
         </div>
         <Suspense>
           <TimeRangeFilter />
@@ -58,7 +58,7 @@ export default async function ComparePage({ searchParams }: Props) {
         </div>
       </div>
 
-      <TeamsCompareChart teams={teams} range={range} />
+      <TeamsCompareChart teams={teams} month={month} />
     </div>
   );
 }

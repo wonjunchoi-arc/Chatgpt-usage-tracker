@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { createClient } from '@/lib/supabase/server';
 import { getAllTeams, getTeamEvents, getTeamMembers, attachUsageCounts, aggregateStats } from '@/lib/queries';
-import { getProfileDisplayName, type TimeRange } from '@/lib/types';
+import { getCurrentMonthKey, getProfileDisplayName, type MonthKey } from '@/lib/types';
 import TimeRangeFilter from '@/components/dashboard/TimeRangeFilter';
 import ModelDistributionChart from '@/components/dashboard/ModelDistributionChart';
 import ActivityBreakdownChart from '@/components/dashboard/ActivityBreakdownChart';
@@ -12,12 +12,12 @@ import ActivitySummaryBarChart from '@/components/dashboard/ActivitySummaryBarCh
 import LowUsageMembersCard from '@/components/dashboard/LowUsageMembersCard';
 
 interface Props {
-  searchParams: Promise<{ range?: string; teamId?: string }>;
+  searchParams: Promise<{ month?: string; teamId?: string }>;
 }
 
 export default async function TeamPage({ searchParams }: Props) {
   const params = await searchParams;
-  const range = (['24h', '7d', '30d'].includes(params.range || '') ? params.range : '7d') as TimeRange;
+  const month = (params.month || getCurrentMonthKey()) as MonthKey;
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -36,7 +36,7 @@ export default async function TeamPage({ searchParams }: Props) {
   const selectedTeam = teams.find(t => t.id === params.teamId) ?? teams[0];
 
   const [events, members] = await Promise.all([
-    getTeamEvents(supabase, selectedTeam.id, range),
+    getTeamEvents(supabase, selectedTeam.id, month),
     getTeamMembers(supabase, selectedTeam.id),
   ]);
   const membersWithUsage = attachUsageCounts(members, events);
@@ -75,7 +75,7 @@ export default async function TeamPage({ searchParams }: Props) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold text-gray-900 dark:text-white">팀 대시보드</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{selectedTeam.name}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{selectedTeam.name} · {month}</p>
         </div>
         <div className="flex items-center gap-3">
           <Suspense>

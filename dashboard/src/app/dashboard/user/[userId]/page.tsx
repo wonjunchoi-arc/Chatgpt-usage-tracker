@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { createClient } from '@/lib/supabase/server';
 import { getProfile, getUserEvents, aggregateStats } from '@/lib/queries';
-import { getProfileDisplayName, type TimeRange } from '@/lib/types';
+import { getCurrentMonthKey, getProfileDisplayName, type MonthKey } from '@/lib/types';
 import TimeRangeFilter from '@/components/dashboard/TimeRangeFilter';
 import ModelDistributionChart from '@/components/dashboard/ModelDistributionChart';
 import ActivityCountCards from '@/components/dashboard/ActivityCountCards';
@@ -10,13 +10,13 @@ import ActivityBreakdownChart from '@/components/dashboard/ActivityBreakdownChar
 
 interface Props {
   params: Promise<{ userId: string }>;
-  searchParams: Promise<{ range?: string }>;
+  searchParams: Promise<{ month?: string }>;
 }
 
 export default async function UserDetailPage({ params, searchParams }: Props) {
   const { userId } = await params;
   const sp = await searchParams;
-  const range = (['24h', '7d', '30d'].includes(sp.range || '') ? sp.range : '7d') as TimeRange;
+  const month = (sp.month || getCurrentMonthKey()) as MonthKey;
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -31,7 +31,7 @@ export default async function UserDetailPage({ params, searchParams }: Props) {
     );
   }
 
-  const events = await getUserEvents(supabase, userId, range);
+  const events = await getUserEvents(supabase, userId, month);
   const stats = aggregateStats(events);
 
   return (
@@ -41,7 +41,7 @@ export default async function UserDetailPage({ params, searchParams }: Props) {
         <div>
           <h1 className="text-xl font-bold text-gray-900 dark:text-white">{getProfileDisplayName(targetProfile)}</h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            {targetProfile.role === 'admin' ? '관리자' : '멤버'} · {targetProfile.email}
+            {targetProfile.role === 'admin' ? '관리자' : '멤버'} · {targetProfile.email} · {month}
           </p>
         </div>
         <Suspense>
