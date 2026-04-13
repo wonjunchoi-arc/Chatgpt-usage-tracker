@@ -30,7 +30,7 @@ export async function getTeamMembers(supabase: SupabaseClient, teamId: string): 
 }
 
 export async function getAllProfilesWithTeams(supabase: SupabaseClient): Promise<ProfileWithTeam[]> {
-  const [{ data: profiles }, { data: teams }] = await Promise.all([
+  const [{ data: profiles }, teams] = await Promise.all([
     supabase
       .from('profiles')
       .select('id, email, display_name, team_id, role, created_at')
@@ -38,7 +38,7 @@ export async function getAllProfilesWithTeams(supabase: SupabaseClient): Promise
     getAllTeams(supabase),
   ]);
 
-  const teamMap = Object.fromEntries((teams || []).map(team => [team.id, team.name]));
+  const teamMap = Object.fromEntries(teams.map(team => [team.id, team.name]));
 
   return (profiles || []).map(profile => ({
     ...profile,
