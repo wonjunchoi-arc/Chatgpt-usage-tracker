@@ -1,11 +1,11 @@
 # Graph Report - .  (2026-04-13)
 
 ## Corpus Check
-- 38 files · ~19,150 words
+- 38 files · ~20,140 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 191 nodes · 247 edges · 47 communities detected
+- 201 nodes · 280 edges · 47 communities detected
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 10 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
@@ -61,14 +61,14 @@
 ## God Nodes (most connected - your core abstractions)
 1. `ChatGPT Web Payload Analysis Guide` - 13 edges
 2. `inferActivity()` - 11 edges
-3. `ensureValidSession()` - 7 edges
-4. `Project Philosophy - ChatGPT Usage Tracker` - 7 edges
-5. `storageGet()` - 6 edges
-6. `storageSet()` - 6 edges
-7. `buildDashboardData()` - 6 edges
-8. `sbStorageSet()` - 6 edges
-9. `refreshSession()` - 6 edges
-10. `fetchQuotaAll()` - 5 edges
+3. `getTeamDashboardSummary()` - 8 edges
+4. `getUserDashboardSummary()` - 7 edges
+5. `ensureValidSession()` - 7 edges
+6. `Project Philosophy - ChatGPT Usage Tracker` - 7 edges
+7. `getTeamMembersWithSummaryUsage()` - 6 edges
+8. `getMemberSummaryOptions()` - 6 edges
+9. `storageGet()` - 6 edges
+10. `storageSet()` - 6 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `Privacy-First Design Principle` --conceptually_related_to--> `Activity Event Storage Strategy (app + features)`  [INFERRED]
@@ -96,16 +96,16 @@ Cohesion: 0.12
 Nodes (35): appendActivityEvent(), applyFeatureSignal(), asArray(), buildActivityDashboard(), buildDashboardData(), cleanupOldTimestamps(), collectAttachments(), collectConnectorIds() (+27 more)
 
 ### Community 1 - "Community 1"
+Cohesion: 0.16
+Nodes (20): aggregateStats(), attachUsageCounts(), buildActivityCounts(), buildDashboardSummary(), createEmptyActivityCounts(), getAllProfilesWithTeams(), getAllTeams(), getAllTeamsWithAdminStats() (+12 more)
+
+### Community 2 - "Community 2"
 Cohesion: 0.11
 Nodes (26): ChatGPT Web Payload Analysis Guide, Canvas Feature Classification Rule, Feature Classification Priority Order, Connector App Classification Rule, Conversation Request Payload (Core Signal), attachments Payload Field, conversation_mode Payload Field, ecosystemMention Symbol (custom_symbol_offsets) (+18 more)
 
-### Community 2 - "Community 2"
+### Community 3 - "Community 3"
 Cohesion: 0.23
 Nodes (21): appendToSyncQueue(), clearSession(), ensureValidSession(), fetchTeams(), flushSyncQueue(), getSession(), getSyncStatus(), getUserProfile() (+13 more)
-
-### Community 3 - "Community 3"
-Cohesion: 0.16
-Nodes (8): attachUsageCounts(), getAllProfilesWithTeams(), getAllTeams(), getAllTeamsWithAdminStats(), getAllTeamsWithStats(), getTeamEvents(), getTeamMembers(), getTeamMembersWithUsage()
 
 ### Community 4 - "Community 4"
 Cohesion: 0.22
@@ -366,5 +366,5 @@ _Questions this graph is uniquely positioned to answer:_
   _20 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.12 - nodes in this community are weakly interconnected._
-- **Should `Community 1` be split into smaller, more focused modules?**
+- **Should `Community 2` be split into smaller, more focused modules?**
   _Cohesion score 0.11 - nodes in this community are weakly interconnected._

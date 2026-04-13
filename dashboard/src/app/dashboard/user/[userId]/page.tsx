@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { createClient } from '@/lib/supabase/server';
-import { getProfile, getUserEvents, aggregateStats } from '@/lib/queries';
+import { getProfile, getUserDashboardSummary, getUserEvents, aggregateStats } from '@/lib/queries';
 import { getCurrentMonthKey, getProfileDisplayName, type MonthKey } from '@/lib/types';
 import TimeRangeFilter from '@/components/dashboard/TimeRangeFilter';
 import ModelDistributionChart from '@/components/dashboard/ModelDistributionChart';
@@ -31,8 +31,11 @@ export default async function UserDetailPage({ params, searchParams }: Props) {
     );
   }
 
-  const events = await getUserEvents(supabase, userId, month);
-  const stats = aggregateStats(events);
+  const [events, summary] = await Promise.all([
+    getUserEvents(supabase, userId, month),
+    getUserDashboardSummary(supabase, userId, month),
+  ]);
+  const dailyStats = aggregateStats(events);
 
   return (
     <div className="space-y-6 max-w-6xl">
@@ -50,12 +53,12 @@ export default async function UserDetailPage({ params, searchParams }: Props) {
       </div>
 
       {/* Activity count cards */}
-      <ActivityCountCards activityCounts={stats.activityCounts} totalEvents={stats.totalEvents} />
+      <ActivityCountCards activityCounts={summary.activityCounts} totalEvents={summary.totalEvents} />
 
       {/* Charts row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <ActivityBreakdownChart data={stats.dailyBreakdown} />
-        <ModelDistributionChart data={stats.modelCounts} />
+        <ActivityBreakdownChart data={dailyStats.dailyBreakdown} />
+        <ModelDistributionChart data={summary.modelCounts} />
       </div>
 
       {/* Recent events table */}

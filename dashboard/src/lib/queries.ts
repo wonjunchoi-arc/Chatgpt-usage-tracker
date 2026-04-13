@@ -2,6 +2,32 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import type { Profile, Team, ActivityEvent, TeamStats, ProfileWithUsage, ProfileWithTeam, MonthKey } from './types';
 import { ACTIVITY_KEYS } from './types';
 
+interface MonthlyUsageSummaryRow {
+  user_id: string;
+  model_id: string;
+  usage_count: number;
+}
+
+interface MonthlyAppSummaryRow {
+  user_id: string;
+  app: string;
+  usage_count: number;
+}
+
+interface MonthlyFeatureSummaryRow {
+  user_id: string;
+  feature: string;
+  usage_count: number;
+}
+
+export interface DashboardSummary {
+  totalEvents: number;
+  modelCounts: Record<string, number>;
+  appCounts: Record<string, number>;
+  featureCounts: Record<string, number>;
+  activityCounts: Record<string, number>;
+}
+
 export async function getProfile(supabase: SupabaseClient, userId: string): Promise<Profile | null> {
   const { data } = await supabase
     .from('profiles')
@@ -87,6 +113,251 @@ export async function getUserEvents(
   return data || [];
 }
 
+function createEmptyActivityCounts() {
+  return Object.fromEntries(ACTIVITY_KEYS.map(({ key }) => [key, 0])) as Record<string, number>;
+}
+
+function buildActivityCounts(
+  appCounts: Record<string, number>,
+  featureCounts: Record<string, number>
+): Record<string, number> {
+  const activityCounts = createEmptyActivityCounts();
+  activityCounts.chat = appCounts.chat || 0;
+
+  for (const { key } of ACTIVITY_KEYS) {
+    if (key === 'chat') continue;
+    activityCounts[key] = featureCounts[key] || 0;
+  }
+
+  return activityCounts;
+}
+
+function buildDashboardSummary(
+  usageRows: MonthlyUsageSummaryRow[],
+  appRows: MonthlyAppSummaryRow[],
+  featureRows: MonthlyFeatureSummaryRow[]
+): DashboardSummary {
+  const modelCounts: Record<string, number> = {};
+  const appCounts: Record<string, number> = {};
+  const featureCounts: Record<string, number> = {};
+
+  for (const row of usageRows) {
+    modelCounts[row.model_id] = (modelCounts[row.model_id] || 0) + row.usage_count;
+  }
+
+  for (const row of appRows) {
+    appCounts[row.app] = (appCounts[row.app] || 0) + row.usage_count;
+  }
+
+  for (const row of featureRows) {
+    featureCounts[row.feature] = (featureCounts[row.feature] || 0) + row.usage_count;
+  }
+
+  return {
+    totalEvents: usageRows.reduce((sum, row) => sum + row.usage_count, 0),
+    modelCounts,
+    appCounts,
+    featureCounts,
+    activityCounts: buildActivityCounts(appCounts, featureCounts),
+  };
+}
+
+async function getMonthlyUsageRows(
+  supabase: SupabaseClient,
+  userIds: string[],
+  monthKey: MonthKey
+): Promise<MonthlyUsageSummaryRow[]> {
+  if (!userIds.length) return [];
+
+  const { data } = await supabase
+    .from('monthly_usage_summary')
+    .select('user_id, model_id, usage_count')
+    .in('user_id', userIds)
+    .eq('month_key', monthKey);
+
+  return data || [];
+}
+
+async function getMonthlyAppRows(
+  supabase: SupabaseClient,
+  userIds: string[],
+  monthKey: MonthKey
+): Promise<MonthlyAppSummaryRow[]> {
+  if (!userIds.length) return [];
+
+  const { data } = await supabase
+    .from('monthly_app_summary')
+    .select('user_id, app, usage_count')
+    .in('user_id', userIds)
+    .eq('month_key', monthKey);
+
+  return data || [];
+}
+
+async function getMonthlyFeatureRows(
+  supabase: SupabaseClient,
+  userIds: string[],
+  monthKey: MonthKey
+): Promise<MonthlyFeatureSummaryRow[]> {
+  if (!userIds.length) return [];
+
+  const { data } = await supabase
+    .from('monthly_feature_summary')
+    .select('user_id, feature, usage_count')
+    .in('user_id', userIds)
+    .eq('month_key', monthKey);
+
+  return data || [];
+}
+
+export async function getUserDashboardSummary(
+  supabase: SupabaseClient,
+  userId: string,
+  monthKey: MonthKey
+): Promise<DashboardSummary> {
+  const [usageRows, appRows, featureRows] = await Promise.all([
+    getMonthlyUsageRows(supabase, [userId], monthKey),
+    getMonthlyAppRows(supabase, [userId], monthKey),
+    getMonthlyFeatureRows(supabase, [userId], monthKey),
+  ]);
+
+  if (!usageRows.length && !appRows.length && !featureRows.length) {
+    const rawStats = aggregateStats(await getUserEvents(supabase, userId, monthKey));
+    return {
+      totalEvents: rawStats.totalEvents,
+      modelCounts: rawStats.modelCounts,
+      appCounts: rawStats.appCounts,
+      featureCounts: rawStats.featureCounts,
+      activityCounts: rawStats.activityCounts,
+    };
+  }
+
+  return buildDashboardSummary(usageRows, appRows, featureRows);
+}
+
+export async function getTeamDashboardSummary(
+  supabase: SupabaseClient,
+  teamId: string,
+  monthKey: MonthKey
+): Promise<DashboardSummary> {
+  const members = await getTeamMembers(supabase, teamId);
+  const memberIds = members.map(member => member.id);
+  const [usageRows, appRows, featureRows] = await Promise.all([
+    getMonthlyUsageRows(supabase, memberIds, monthKey),
+    getMonthlyAppRows(supabase, memberIds, monthKey),
+    getMonthlyFeatureRows(supabase, memberIds, monthKey),
+  ]);
+
+  if (!usageRows.length && !appRows.length && !featureRows.length) {
+    const rawStats = aggregateStats(await getTeamEvents(supabase, teamId, monthKey));
+    return {
+      totalEvents: rawStats.totalEvents,
+      modelCounts: rawStats.modelCounts,
+      appCounts: rawStats.appCounts,
+      featureCounts: rawStats.featureCounts,
+      activityCounts: rawStats.activityCounts,
+    };
+  }
+
+  return buildDashboardSummary(usageRows, appRows, featureRows);
+}
+
+export async function getTeamMembersWithSummaryUsage(
+  supabase: SupabaseClient,
+  teamId: string,
+  monthKey: MonthKey
+): Promise<ProfileWithUsage[]> {
+  const members = await getTeamMembers(supabase, teamId);
+  const usageRows = await getMonthlyUsageRows(
+    supabase,
+    members.map(member => member.id),
+    monthKey
+  );
+
+  if (!usageRows.length) {
+    const rawEvents = await getTeamEvents(supabase, teamId, monthKey);
+    return attachUsageCounts(members, rawEvents);
+  }
+
+  const countMap: Record<string, number> = {};
+  for (const row of usageRows) {
+    countMap[row.user_id] = (countMap[row.user_id] || 0) + row.usage_count;
+  }
+
+  return members.map(member => ({
+    ...member,
+    eventCount: countMap[member.id] || 0,
+  }));
+}
+
+export async function getMemberSummaryOptions(
+  supabase: SupabaseClient,
+  teamId: string,
+  monthKey: MonthKey
+): Promise<Array<{ id: string; label: string; totalEvents: number; activityCounts: Record<string, number> }>> {
+  const members = await getTeamMembers(supabase, teamId);
+  const memberIds = members.map(member => member.id);
+  const [usageRows, appRows, featureRows] = await Promise.all([
+    getMonthlyUsageRows(supabase, memberIds, monthKey),
+    getMonthlyAppRows(supabase, memberIds, monthKey),
+    getMonthlyFeatureRows(supabase, memberIds, monthKey),
+  ]);
+
+  if (!usageRows.length && !appRows.length && !featureRows.length) {
+    const rawEvents = await getTeamEvents(supabase, teamId, monthKey);
+    const eventsByUser: Record<string, ActivityEvent[]> = {};
+
+    for (const event of rawEvents) {
+      if (!eventsByUser[event.user_id]) eventsByUser[event.user_id] = [];
+      eventsByUser[event.user_id].push(event);
+    }
+
+    return members.map(member => {
+      const rawStats = aggregateStats(eventsByUser[member.id] || []);
+      return {
+        id: member.id,
+        label: member.display_name?.trim() || member.email,
+        totalEvents: rawStats.totalEvents,
+        activityCounts: rawStats.activityCounts,
+      };
+    });
+  }
+
+  const usageByUser: Record<string, MonthlyUsageSummaryRow[]> = {};
+  const appByUser: Record<string, MonthlyAppSummaryRow[]> = {};
+  const featureByUser: Record<string, MonthlyFeatureSummaryRow[]> = {};
+
+  for (const row of usageRows) {
+    if (!usageByUser[row.user_id]) usageByUser[row.user_id] = [];
+    usageByUser[row.user_id].push(row);
+  }
+
+  for (const row of appRows) {
+    if (!appByUser[row.user_id]) appByUser[row.user_id] = [];
+    appByUser[row.user_id].push(row);
+  }
+
+  for (const row of featureRows) {
+    if (!featureByUser[row.user_id]) featureByUser[row.user_id] = [];
+    featureByUser[row.user_id].push(row);
+  }
+
+  return members.map(member => {
+    const summary = buildDashboardSummary(
+      usageByUser[member.id] || [],
+      appByUser[member.id] || [],
+      featureByUser[member.id] || [],
+    );
+
+    return {
+      id: member.id,
+      label: member.display_name?.trim() || member.email,
+      totalEvents: summary.totalEvents,
+      activityCounts: summary.activityCounts,
+    };
+  });
+}
+
 export function attachUsageCounts(
   members: Profile[],
   events: Pick<ActivityEvent, 'user_id'>[]
@@ -164,9 +435,7 @@ export async function getTeamMembersWithUsage(
   teamId: string,
   monthKey: MonthKey
 ): Promise<ProfileWithUsage[]> {
-  const members = await getTeamMembers(supabase, teamId);
-  const events = await getTeamEvents(supabase, teamId, monthKey);
-  return attachUsageCounts(members, events);
+  return getTeamMembersWithSummaryUsage(supabase, teamId, monthKey);
 }
 
 export interface TeamWithStats extends Team {
@@ -185,17 +454,104 @@ export async function getAllTeamsWithStats(
   supabase: SupabaseClient,
   monthKey: MonthKey
 ): Promise<TeamWithStats[]> {
-  const [teams, allProfiles, allEvents] = await Promise.all([
+  const [teams, allProfiles, usageSummary, appSummary, featureSummary] = await Promise.all([
     getAllTeams(supabase),
     supabase.from('profiles').select('id, team_id'),
     supabase
-      .from('activity_events')
-      .select('user_id, model_id, app, features')
+      .from('monthly_usage_summary')
+      .select('user_id, model_id, usage_count')
+      .eq('month_key', monthKey),
+    supabase
+      .from('monthly_app_summary')
+      .select('user_id, app, usage_count')
+      .eq('month_key', monthKey),
+    supabase
+      .from('monthly_feature_summary')
+      .select('user_id, feature, usage_count')
       .eq('month_key', monthKey),
   ]);
 
   const profiles = allProfiles.data || [];
-  const events = allEvents.data || [];
+  const usageRows = (usageSummary.data || []) as MonthlyUsageSummaryRow[];
+  const appRows = (appSummary.data || []) as MonthlyAppSummaryRow[];
+  const featureRows = (featureSummary.data || []) as MonthlyFeatureSummaryRow[];
+
+  if (!usageRows.length && !appRows.length && !featureRows.length) {
+    const { data: rawEvents } = await supabase
+      .from('activity_events')
+      .select('user_id, model_id, app, features')
+      .eq('month_key', monthKey);
+
+    const events = rawEvents || [];
+    const userTeamMap: Record<string, string> = {};
+    const memberMap: Record<string, Set<string>> = {};
+    const activeMap: Record<string, Set<string>> = {};
+    const eventCountMap: Record<string, number> = {};
+    const modelMap: Record<string, Record<string, number>> = {};
+    const activityMap: Record<string, Record<string, number>> = {};
+    const featureKeySet = new Set<string>(ACTIVITY_KEYS.filter(a => a.key !== 'chat').map(a => a.key));
+
+    for (const p of profiles) {
+      if (!p.team_id) continue;
+      userTeamMap[p.id] = p.team_id;
+      if (!memberMap[p.team_id]) memberMap[p.team_id] = new Set();
+      memberMap[p.team_id].add(p.id);
+    }
+
+    for (const e of events) {
+      const teamId = userTeamMap[e.user_id];
+      if (!teamId) continue;
+
+      eventCountMap[teamId] = (eventCountMap[teamId] || 0) + 1;
+
+      if (!activeMap[teamId]) activeMap[teamId] = new Set();
+      activeMap[teamId].add(e.user_id);
+
+      if (!modelMap[teamId]) modelMap[teamId] = {};
+      modelMap[teamId][e.model_id] = (modelMap[teamId][e.model_id] || 0) + 1;
+
+      if (!activityMap[teamId]) {
+        activityMap[teamId] = createEmptyActivityCounts();
+      }
+
+      if (e.app === 'chat') {
+        activityMap[teamId].chat = (activityMap[teamId].chat || 0) + 1;
+      }
+
+      for (const feature of e.features || []) {
+        if (featureKeySet.has(feature)) {
+          activityMap[teamId][feature] = (activityMap[teamId][feature] || 0) + 1;
+        }
+      }
+    }
+
+    return (teams || []).map(team => {
+      const modelCounts = modelMap[team.id] || {};
+      const activityCounts = activityMap[team.id] || createEmptyActivityCounts();
+      const topModel = Object.entries(modelCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+      const sortedActivities = ACTIVITY_KEYS
+        .map(({ key }) => [key, activityCounts[key] || 0] as const)
+        .sort((a, b) => b[1] - a[1]);
+      const topActivity = sortedActivities.find(([, count]) => count > 0)?.[0] ?? null;
+      const leastActivity = [...sortedActivities].reverse()[0]?.[0] ?? null;
+      const memberCount = memberMap[team.id]?.size ?? 0;
+      const activeMembers = activeMap[team.id]?.size ?? 0;
+      const eventCount = eventCountMap[team.id] ?? 0;
+
+      return {
+        ...team,
+        memberCount,
+        activeMembers,
+        eventCount,
+        eventsPerMember: memberCount ? Number((eventCount / memberCount).toFixed(1)) : 0,
+        eventsPerActiveMember: activeMembers ? Number((eventCount / activeMembers).toFixed(1)) : 0,
+        topModel,
+        activityCounts,
+        topActivity,
+        leastActivity,
+      };
+    }).sort((a, b) => b.eventCount - a.eventCount);
+  }
 
   // Map: userId -> teamId
   const userTeamMap: Record<string, string> = {};
@@ -209,7 +565,6 @@ export async function getAllTeamsWithStats(
   const eventCountMap: Record<string, number> = {};
   const modelMap: Record<string, Record<string, number>> = {};
   const activityMap: Record<string, Record<string, number>> = {};
-  const featureKeySet = new Set<string>(ACTIVITY_KEYS.filter(a => a.key !== 'chat').map(a => a.key));
 
   for (const p of profiles) {
     if (!p.team_id) continue;
@@ -217,30 +572,38 @@ export async function getAllTeamsWithStats(
     memberMap[p.team_id].add(p.id);
   }
 
-  for (const e of events) {
-    const teamId = userTeamMap[e.user_id];
+  for (const row of usageRows) {
+    const teamId = userTeamMap[row.user_id];
     if (!teamId) continue;
 
-    eventCountMap[teamId] = (eventCountMap[teamId] || 0) + 1;
+    eventCountMap[teamId] = (eventCountMap[teamId] || 0) + row.usage_count;
 
     if (!activeMap[teamId]) activeMap[teamId] = new Set();
-    activeMap[teamId].add(e.user_id);
+    activeMap[teamId].add(row.user_id);
 
     if (!modelMap[teamId]) modelMap[teamId] = {};
-    modelMap[teamId][e.model_id] = (modelMap[teamId][e.model_id] || 0) + 1;
+    modelMap[teamId][row.model_id] = (modelMap[teamId][row.model_id] || 0) + row.usage_count;
+  }
 
+  for (const row of appRows) {
+    const teamId = userTeamMap[row.user_id];
+    if (!teamId) continue;
     if (!activityMap[teamId]) {
-      activityMap[teamId] = Object.fromEntries(ACTIVITY_KEYS.map(({ key }) => [key, 0]));
+      activityMap[teamId] = createEmptyActivityCounts();
     }
-
-    if (e.app === 'chat') {
-      activityMap[teamId].chat = (activityMap[teamId].chat || 0) + 1;
+    if (row.app === 'chat') {
+      activityMap[teamId].chat = (activityMap[teamId].chat || 0) + row.usage_count;
     }
+  }
 
-    for (const feature of e.features || []) {
-      if (featureKeySet.has(feature)) {
-        activityMap[teamId][feature] = (activityMap[teamId][feature] || 0) + 1;
-      }
+  for (const row of featureRows) {
+    const teamId = userTeamMap[row.user_id];
+    if (!teamId) continue;
+    if (!activityMap[teamId]) {
+      activityMap[teamId] = createEmptyActivityCounts();
+    }
+    if (row.feature in activityMap[teamId]) {
+      activityMap[teamId][row.feature] = (activityMap[teamId][row.feature] || 0) + row.usage_count;
     }
   }
 

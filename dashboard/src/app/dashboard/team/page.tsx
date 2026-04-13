@@ -1,8 +1,15 @@
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import { createClient } from '@/lib/supabase/server';
-import { getAllTeams, getTeamEvents, getTeamMembers, attachUsageCounts, aggregateStats } from '@/lib/queries';
-import { getCurrentMonthKey, getProfileDisplayName, type MonthKey } from '@/lib/types';
+import {
+  getAllTeams,
+  getTeamDashboardSummary,
+  getTeamEvents,
+  getTeamMembersWithSummaryUsage,
+  getMemberSummaryOptions,
+  aggregateStats,
+} from '@/lib/queries';
+import { getCurrentMonthKey, type MonthKey } from '@/lib/types';
 import TimeRangeFilter from '@/components/dashboard/TimeRangeFilter';
 import ModelDistributionChart from '@/components/dashboard/ModelDistributionChart';
 import ActivityBreakdownChart from '@/components/dashboard/ActivityBreakdownChart';
@@ -35,38 +42,22 @@ export default async function TeamPage({ searchParams }: Props) {
 
   const selectedTeam = teams.find(t => t.id === params.teamId) ?? teams[0];
 
-  const [events, members] = await Promise.all([
+  const [events, summary, membersWithUsage, memberSummaryOptions] = await Promise.all([
     getTeamEvents(supabase, selectedTeam.id, month),
-    getTeamMembers(supabase, selectedTeam.id),
+    getTeamDashboardSummary(supabase, selectedTeam.id, month),
+    getTeamMembersWithSummaryUsage(supabase, selectedTeam.id, month),
+    getMemberSummaryOptions(supabase, selectedTeam.id, month),
   ]);
-  const membersWithUsage = attachUsageCounts(members, events);
-
-  const stats = aggregateStats(events);
-  const memberEventsMap: Record<string, typeof events> = {};
-
-  for (const event of events) {
-    if (!memberEventsMap[event.user_id]) {
-      memberEventsMap[event.user_id] = [];
-    }
-    memberEventsMap[event.user_id].push(event);
-  }
+  const dailyStats = aggregateStats(events);
 
   const summaryOptions = [
     {
       id: '__team__',
       label: '전체 팀원',
-      totalEvents: stats.totalEvents,
-      activityCounts: stats.activityCounts,
+      totalEvents: summary.totalEvents,
+      activityCounts: summary.activityCounts,
     },
-    ...membersWithUsage.map(member => {
-      const memberStats = aggregateStats(memberEventsMap[member.id] || []);
-      return {
-        id: member.id,
-        label: getProfileDisplayName(member),
-        totalEvents: memberStats.totalEvents,
-        activityCounts: memberStats.activityCounts,
-      };
-    }),
+    ...memberSummaryOptions,
   ];
 
   return (
@@ -92,8 +83,8 @@ export default async function TeamPage({ searchParams }: Props) {
 
       {/* Charts row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <ActivityBreakdownChart data={stats.dailyBreakdown} />
-        <ModelDistributionChart data={stats.modelCounts} />
+        <ActivityBreakdownChart data={dailyStats.dailyBreakdown} />
+        <ModelDistributionChart data={summary.modelCounts} />
       </div>
 
       <LowUsageMembersCard users={membersWithUsage} />
