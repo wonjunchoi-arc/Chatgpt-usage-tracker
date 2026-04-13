@@ -67,7 +67,24 @@ CREATE INDEX idx_activity_events_month_key ON activity_events (month_key);
 CREATE INDEX idx_activity_events_model ON activity_events (model_id);
 CREATE INDEX idx_activity_events_app ON activity_events (app);
 
--- 4. 월별 모델 사용량 집계
+-- 4. 일별 활동 유형 집계
+CREATE TABLE daily_activity_breakdown (
+  id          bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  date        date NOT NULL,
+  month_key   text NOT NULL,
+  user_id     uuid NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+  activity    text NOT NULL,
+  usage_count int NOT NULL DEFAULT 0,
+  updated_at  timestamptz NOT NULL DEFAULT now(),
+  UNIQUE (date, user_id, activity)
+);
+
+ALTER TABLE daily_activity_breakdown ENABLE ROW LEVEL SECURITY;
+
+CREATE INDEX idx_daily_activity_breakdown_user_month ON daily_activity_breakdown (user_id, month_key);
+CREATE INDEX idx_daily_activity_breakdown_date ON daily_activity_breakdown (date);
+
+-- 5. 월별 모델 사용량 집계
 CREATE TABLE monthly_usage_summary (
   id          bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   month_key   text NOT NULL,
@@ -114,6 +131,320 @@ ALTER TABLE monthly_feature_summary ENABLE ROW LEVEL SECURITY;
 
 CREATE INDEX idx_monthly_feature_summary_month_user ON monthly_feature_summary (month_key, user_id);
 CREATE INDEX idx_monthly_feature_summary_feature ON monthly_feature_summary (feature);
+
+-- 7. 월별 팀 모델 사용량 집계
+CREATE TABLE monthly_team_model_summary (
+  id          bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  month_key   text NOT NULL,
+  team_id     uuid NOT NULL REFERENCES teams(id) ON DELETE CASCADE,
+  model_id    text NOT NULL,
+  usage_count int NOT NULL DEFAULT 0,
+  updated_at  timestamptz NOT NULL DEFAULT now(),
+  UNIQUE (month_key, team_id, model_id)
+);
+
+ALTER TABLE monthly_team_model_summary ENABLE ROW LEVEL SECURITY;
+
+CREATE INDEX idx_monthly_team_model_summary_month_team ON monthly_team_model_summary (month_key, team_id);
+CREATE INDEX idx_monthly_team_model_summary_model ON monthly_team_model_summary (model_id);
+
+-- 8. 월별 팀 앱 사용량 집계
+CREATE TABLE monthly_team_app_summary (
+  id          bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  month_key   text NOT NULL,
+  team_id     uuid NOT NULL REFERENCES teams(id) ON DELETE CASCADE,
+  app         text NOT NULL,
+  usage_count int NOT NULL DEFAULT 0,
+  updated_at  timestamptz NOT NULL DEFAULT now(),
+  UNIQUE (month_key, team_id, app)
+);
+
+ALTER TABLE monthly_team_app_summary ENABLE ROW LEVEL SECURITY;
+
+CREATE INDEX idx_monthly_team_app_summary_month_team ON monthly_team_app_summary (month_key, team_id);
+
+-- 9. 월별 팀 기능 사용량 집계
+CREATE TABLE monthly_team_feature_summary (
+  id          bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  month_key   text NOT NULL,
+  team_id     uuid NOT NULL REFERENCES teams(id) ON DELETE CASCADE,
+  feature     text NOT NULL,
+  usage_count int NOT NULL DEFAULT 0,
+  updated_at  timestamptz NOT NULL DEFAULT now(),
+  UNIQUE (month_key, team_id, feature)
+);
+
+ALTER TABLE monthly_team_feature_summary ENABLE ROW LEVEL SECURITY;
+
+CREATE INDEX idx_monthly_team_feature_summary_month_team ON monthly_team_feature_summary (month_key, team_id);
+
+-- 10. 월별 팀 활성 멤버 수 집계
+CREATE TABLE monthly_team_active_members (
+  id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  month_key          text NOT NULL,
+  team_id            uuid NOT NULL REFERENCES teams(id) ON DELETE CASCADE,
+  active_member_count int NOT NULL DEFAULT 0,
+  updated_at         timestamptz NOT NULL DEFAULT now(),
+  UNIQUE (month_key, team_id)
+);
+
+ALTER TABLE monthly_team_active_members ENABLE ROW LEVEL SECURITY;
+
+CREATE INDEX idx_monthly_team_active_members_month_team ON monthly_team_active_members (month_key, team_id);
+
+-- 11. activity_events 적재 시 월별·일별 집계 자동 갱신 (유저 + 팀)
+CREATE OR REPLACE FUNCTION sync_monthly_activity_summaries()
+RETURNS trigger AS $$
+DECLARE
+  v_team_id              uuid;
+  v_is_first_event_month boolean;
+  v_date                 date;
+BEGIN
+  -- 이번 달 이 유저의 첫 이벤트인지 먼저 확인 (upsert 전에 체크해야 정확함)
+  v_is_first_event_month := NOT EXISTS (
+    SELECT 1 FROM monthly_usage_summary
+    WHERE user_id = NEW.user_id AND month_key = NEW.month_key
+  );
+
+  v_date := date(NEW.server_ts);
+
+  -- 유저 레벨 집계
+  INSERT INTO monthly_usage_summary (month_key, user_id, model_id, usage_count, updated_at)
+  VALUES (NEW.month_key, NEW.user_id, NEW.model_id, 1, now())
+  ON CONFLICT (month_key, user_id, model_id)
+  DO UPDATE
+    SET usage_count = monthly_usage_summary.usage_count + 1,
+        updated_at = now();
+
+  INSERT INTO monthly_app_summary (month_key, user_id, app, usage_count, updated_at)
+  VALUES (NEW.month_key, NEW.user_id, NEW.app, 1, now())
+  ON CONFLICT (month_key, user_id, app)
+  DO UPDATE
+    SET usage_count = monthly_app_summary.usage_count + 1,
+        updated_at = now();
+
+  IF coalesce(array_length(NEW.features, 1), 0) > 0 THEN
+    INSERT INTO monthly_feature_summary (month_key, user_id, feature, usage_count, updated_at)
+    SELECT NEW.month_key, NEW.user_id, feature, count(*), now()
+    FROM unnest(NEW.features) AS feature
+    GROUP BY feature
+    ON CONFLICT (month_key, user_id, feature)
+    DO UPDATE
+      SET usage_count = monthly_feature_summary.usage_count + EXCLUDED.usage_count,
+          updated_at = now();
+  END IF;
+
+  -- 일별 활동 유형 집계
+  IF NEW.app = 'chat' THEN
+    INSERT INTO daily_activity_breakdown (date, month_key, user_id, activity, usage_count, updated_at)
+    VALUES (v_date, NEW.month_key, NEW.user_id, 'chat', 1, now())
+    ON CONFLICT (date, user_id, activity)
+    DO UPDATE
+      SET usage_count = daily_activity_breakdown.usage_count + 1,
+          updated_at = now();
+  END IF;
+
+  IF coalesce(array_length(NEW.features, 1), 0) > 0 THEN
+    INSERT INTO daily_activity_breakdown (date, month_key, user_id, activity, usage_count, updated_at)
+    SELECT v_date, NEW.month_key, NEW.user_id, feature, count(*), now()
+    FROM unnest(NEW.features) AS feature
+    WHERE feature = ANY(ARRAY['file-analysis','connector-app','skill-invocation','project-context','image-generation','search','pro-model'])
+    GROUP BY feature
+    ON CONFLICT (date, user_id, activity)
+    DO UPDATE
+      SET usage_count = daily_activity_breakdown.usage_count + EXCLUDED.usage_count,
+          updated_at = now();
+  END IF;
+
+  -- 팀 레벨 집계
+  SELECT team_id INTO v_team_id FROM profiles WHERE id = NEW.user_id;
+
+  IF v_team_id IS NOT NULL THEN
+    INSERT INTO monthly_team_model_summary (month_key, team_id, model_id, usage_count, updated_at)
+    VALUES (NEW.month_key, v_team_id, NEW.model_id, 1, now())
+    ON CONFLICT (month_key, team_id, model_id)
+    DO UPDATE
+      SET usage_count = monthly_team_model_summary.usage_count + 1,
+          updated_at = now();
+
+    INSERT INTO monthly_team_app_summary (month_key, team_id, app, usage_count, updated_at)
+    VALUES (NEW.month_key, v_team_id, NEW.app, 1, now())
+    ON CONFLICT (month_key, team_id, app)
+    DO UPDATE
+      SET usage_count = monthly_team_app_summary.usage_count + 1,
+          updated_at = now();
+
+    IF coalesce(array_length(NEW.features, 1), 0) > 0 THEN
+      INSERT INTO monthly_team_feature_summary (month_key, team_id, feature, usage_count, updated_at)
+      SELECT NEW.month_key, v_team_id, feature, count(*), now()
+      FROM unnest(NEW.features) AS feature
+      GROUP BY feature
+      ON CONFLICT (month_key, team_id, feature)
+      DO UPDATE
+        SET usage_count = monthly_team_feature_summary.usage_count + EXCLUDED.usage_count,
+            updated_at = now();
+    END IF;
+
+    IF v_is_first_event_month THEN
+      INSERT INTO monthly_team_active_members (month_key, team_id, active_member_count, updated_at)
+      VALUES (NEW.month_key, v_team_id, 1, now())
+      ON CONFLICT (month_key, team_id)
+      DO UPDATE
+        SET active_member_count = monthly_team_active_members.active_member_count + 1,
+            updated_at = now();
+    END IF;
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
+
+CREATE TRIGGER trg_sync_monthly_activity_summaries
+  AFTER INSERT ON activity_events
+  FOR EACH ROW EXECUTE FUNCTION sync_monthly_activity_summaries();
+
+-- 12. 기존 activity_events 기준 일별·월별 집계 백필
+INSERT INTO monthly_usage_summary (month_key, user_id, model_id, usage_count, updated_at)
+SELECT
+  month_key,
+  user_id,
+  model_id,
+  count(*) AS usage_count,
+  now()
+FROM activity_events
+GROUP BY month_key, user_id, model_id
+ON CONFLICT (month_key, user_id, model_id)
+DO UPDATE
+  SET usage_count = EXCLUDED.usage_count,
+      updated_at = now();
+
+INSERT INTO monthly_app_summary (month_key, user_id, app, usage_count, updated_at)
+SELECT
+  month_key,
+  user_id,
+  app,
+  count(*) AS usage_count,
+  now()
+FROM activity_events
+GROUP BY month_key, user_id, app
+ON CONFLICT (month_key, user_id, app)
+DO UPDATE
+  SET usage_count = EXCLUDED.usage_count,
+      updated_at = now();
+
+INSERT INTO monthly_feature_summary (month_key, user_id, feature, usage_count, updated_at)
+SELECT
+  ae.month_key,
+  ae.user_id,
+  feature,
+  count(*) AS usage_count,
+  now()
+FROM activity_events ae
+CROSS JOIN LATERAL unnest(ae.features) AS feature
+GROUP BY ae.month_key, ae.user_id, feature
+ON CONFLICT (month_key, user_id, feature)
+DO UPDATE
+  SET usage_count = EXCLUDED.usage_count,
+      updated_at = now();
+
+-- 일별 활동 유형 백필
+INSERT INTO daily_activity_breakdown (date, month_key, user_id, activity, usage_count, updated_at)
+SELECT
+  date(server_ts) AS date,
+  month_key,
+  user_id,
+  'chat' AS activity,
+  count(*) AS usage_count,
+  now()
+FROM activity_events
+WHERE app = 'chat'
+GROUP BY date(server_ts), month_key, user_id
+ON CONFLICT (date, user_id, activity)
+DO UPDATE
+  SET usage_count = EXCLUDED.usage_count,
+      updated_at = now();
+
+INSERT INTO daily_activity_breakdown (date, month_key, user_id, activity, usage_count, updated_at)
+SELECT
+  date(ae.server_ts) AS date,
+  ae.month_key,
+  ae.user_id,
+  feature AS activity,
+  count(*) AS usage_count,
+  now()
+FROM activity_events ae
+CROSS JOIN LATERAL unnest(ae.features) AS feature
+WHERE feature = ANY(ARRAY['file-analysis','connector-app','skill-invocation','project-context','image-generation','search','pro-model'])
+GROUP BY date(ae.server_ts), ae.month_key, ae.user_id, feature
+ON CONFLICT (date, user_id, activity)
+DO UPDATE
+  SET usage_count = EXCLUDED.usage_count,
+      updated_at = now();
+
+-- 팀 레벨 백필
+INSERT INTO monthly_team_model_summary (month_key, team_id, model_id, usage_count, updated_at)
+SELECT
+  ae.month_key,
+  p.team_id,
+  ae.model_id,
+  count(*) AS usage_count,
+  now()
+FROM activity_events ae
+JOIN profiles p ON p.id = ae.user_id
+WHERE p.team_id IS NOT NULL
+GROUP BY ae.month_key, p.team_id, ae.model_id
+ON CONFLICT (month_key, team_id, model_id)
+DO UPDATE
+  SET usage_count = EXCLUDED.usage_count,
+      updated_at = now();
+
+INSERT INTO monthly_team_app_summary (month_key, team_id, app, usage_count, updated_at)
+SELECT
+  ae.month_key,
+  p.team_id,
+  ae.app,
+  count(*) AS usage_count,
+  now()
+FROM activity_events ae
+JOIN profiles p ON p.id = ae.user_id
+WHERE p.team_id IS NOT NULL
+GROUP BY ae.month_key, p.team_id, ae.app
+ON CONFLICT (month_key, team_id, app)
+DO UPDATE
+  SET usage_count = EXCLUDED.usage_count,
+      updated_at = now();
+
+INSERT INTO monthly_team_feature_summary (month_key, team_id, feature, usage_count, updated_at)
+SELECT
+  ae.month_key,
+  p.team_id,
+  feature,
+  count(*) AS usage_count,
+  now()
+FROM activity_events ae
+JOIN profiles p ON p.id = ae.user_id
+CROSS JOIN LATERAL unnest(ae.features) AS feature
+WHERE p.team_id IS NOT NULL
+GROUP BY ae.month_key, p.team_id, feature
+ON CONFLICT (month_key, team_id, feature)
+DO UPDATE
+  SET usage_count = EXCLUDED.usage_count,
+      updated_at = now();
+
+INSERT INTO monthly_team_active_members (month_key, team_id, active_member_count, updated_at)
+SELECT
+  ae.month_key,
+  p.team_id,
+  count(DISTINCT ae.user_id) AS active_member_count,
+  now()
+FROM activity_events ae
+JOIN profiles p ON p.id = ae.user_id
+WHERE p.team_id IS NOT NULL
+GROUP BY ae.month_key, p.team_id
+ON CONFLICT (month_key, team_id)
+DO UPDATE
+  SET active_member_count = EXCLUDED.active_member_count,
+      updated_at = now();
 
 -- ============================================================
 -- 기본 팀 데이터
@@ -167,6 +498,13 @@ CREATE POLICY "Authenticated users manage activity_events" ON activity_events
   FOR ALL USING (auth.uid() IS NOT NULL)
   WITH CHECK (auth.uid() IS NOT NULL);
 
+CREATE POLICY "Authenticated users see daily activity breakdown" ON daily_activity_breakdown
+  FOR SELECT USING (auth.uid() IS NOT NULL);
+
+CREATE POLICY "Authenticated users manage daily activity breakdown" ON daily_activity_breakdown
+  FOR ALL USING (auth.uid() IS NOT NULL)
+  WITH CHECK (auth.uid() IS NOT NULL);
+
 CREATE POLICY "Authenticated users see monthly usage summary" ON monthly_usage_summary
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
@@ -185,6 +523,34 @@ CREATE POLICY "Authenticated users see monthly feature summary" ON monthly_featu
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
 CREATE POLICY "Authenticated users manage monthly feature summary" ON monthly_feature_summary
+  FOR ALL USING (auth.uid() IS NOT NULL)
+  WITH CHECK (auth.uid() IS NOT NULL);
+
+CREATE POLICY "Authenticated users see monthly team model summary" ON monthly_team_model_summary
+  FOR SELECT USING (auth.uid() IS NOT NULL);
+
+CREATE POLICY "Authenticated users manage monthly team model summary" ON monthly_team_model_summary
+  FOR ALL USING (auth.uid() IS NOT NULL)
+  WITH CHECK (auth.uid() IS NOT NULL);
+
+CREATE POLICY "Authenticated users see monthly team app summary" ON monthly_team_app_summary
+  FOR SELECT USING (auth.uid() IS NOT NULL);
+
+CREATE POLICY "Authenticated users manage monthly team app summary" ON monthly_team_app_summary
+  FOR ALL USING (auth.uid() IS NOT NULL)
+  WITH CHECK (auth.uid() IS NOT NULL);
+
+CREATE POLICY "Authenticated users see monthly team feature summary" ON monthly_team_feature_summary
+  FOR SELECT USING (auth.uid() IS NOT NULL);
+
+CREATE POLICY "Authenticated users manage monthly team feature summary" ON monthly_team_feature_summary
+  FOR ALL USING (auth.uid() IS NOT NULL)
+  WITH CHECK (auth.uid() IS NOT NULL);
+
+CREATE POLICY "Authenticated users see monthly team active members" ON monthly_team_active_members
+  FOR SELECT USING (auth.uid() IS NOT NULL);
+
+CREATE POLICY "Authenticated users manage monthly team active members" ON monthly_team_active_members
   FOR ALL USING (auth.uid() IS NOT NULL)
   WITH CHECK (auth.uid() IS NOT NULL);
 

@@ -1,12 +1,12 @@
 # Graph Report - .  (2026-04-13)
 
 ## Corpus Check
-- 38 files · ~20,140 words
+- 38 files · ~19,969 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 201 nodes · 280 edges · 47 communities detected
-- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 10 edges (avg confidence: 0.86)
+- 205 nodes · 289 edges · 47 communities detected
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 10 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
@@ -96,8 +96,8 @@ Cohesion: 0.12
 Nodes (35): appendActivityEvent(), applyFeatureSignal(), asArray(), buildActivityDashboard(), buildDashboardData(), cleanupOldTimestamps(), collectAttachments(), collectConnectorIds() (+27 more)
 
 ### Community 1 - "Community 1"
-Cohesion: 0.16
-Nodes (20): aggregateStats(), attachUsageCounts(), buildActivityCounts(), buildDashboardSummary(), createEmptyActivityCounts(), getAllProfilesWithTeams(), getAllTeams(), getAllTeamsWithAdminStats() (+12 more)
+Cohesion: 0.14
+Nodes (24): aggregateStats(), attachUsageCounts(), buildActivityCounts(), buildDailyBreakdown(), buildDashboardSummary(), createEmptyActivityCounts(), getAllProfilesWithTeams(), getAllTeams() (+16 more)
 
 ### Community 2 - "Community 2"
 Cohesion: 0.11
@@ -366,5 +366,7 @@ _Questions this graph is uniquely positioned to answer:_
   _20 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.12 - nodes in this community are weakly interconnected._
+- **Should `Community 1` be split into smaller, more focused modules?**
+  _Cohesion score 0.14 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
   _Cohesion score 0.11 - nodes in this community are weakly interconnected._

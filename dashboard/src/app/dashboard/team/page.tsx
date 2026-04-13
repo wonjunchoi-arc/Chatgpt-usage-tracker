@@ -4,10 +4,9 @@ import { createClient } from '@/lib/supabase/server';
 import {
   getAllTeams,
   getTeamDashboardSummary,
-  getTeamEvents,
   getTeamMembersWithSummaryUsage,
   getMemberSummaryOptions,
-  aggregateStats,
+  getTeamDailyBreakdown,
 } from '@/lib/queries';
 import { getCurrentMonthKey, type MonthKey } from '@/lib/types';
 import TimeRangeFilter from '@/components/dashboard/TimeRangeFilter';
@@ -42,13 +41,12 @@ export default async function TeamPage({ searchParams }: Props) {
 
   const selectedTeam = teams.find(t => t.id === params.teamId) ?? teams[0];
 
-  const [events, summary, membersWithUsage, memberSummaryOptions] = await Promise.all([
-    getTeamEvents(supabase, selectedTeam.id, month),
+  const [summary, membersWithUsage, memberSummaryOptions, dailyBreakdown] = await Promise.all([
     getTeamDashboardSummary(supabase, selectedTeam.id, month),
     getTeamMembersWithSummaryUsage(supabase, selectedTeam.id, month),
     getMemberSummaryOptions(supabase, selectedTeam.id, month),
+    getTeamDailyBreakdown(supabase, selectedTeam.id, month),
   ]);
-  const dailyStats = aggregateStats(events);
 
   const summaryOptions = [
     {
@@ -83,7 +81,7 @@ export default async function TeamPage({ searchParams }: Props) {
 
       {/* Charts row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <ActivityBreakdownChart data={dailyStats.dailyBreakdown} />
+        <ActivityBreakdownChart data={dailyBreakdown} />
         <ModelDistributionChart data={summary.modelCounts} />
       </div>
 

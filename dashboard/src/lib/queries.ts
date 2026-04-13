@@ -430,6 +430,56 @@ export function aggregateStats(events: ActivityEvent[]): TeamStats {
   };
 }
 
+async function getDailyBreakdownRows(
+  supabase: SupabaseClient,
+  userIds: string[],
+  monthKey: MonthKey
+): Promise<Array<{ date: string; activity: string; usage_count: number }>> {
+  if (!userIds.length) return [];
+  const { data } = await supabase
+    .from('daily_activity_breakdown')
+    .select('date, activity, usage_count')
+    .in('user_id', userIds)
+    .eq('month_key', monthKey)
+    .order('date');
+  return (data || []).map(row => ({
+    ...row,
+    date: typeof row.date === 'string' ? row.date : String(row.date),
+  }));
+}
+
+function buildDailyBreakdown(
+  rows: Array<{ date: string; activity: string; usage_count: number }>
+): Array<Record<string, string | number>> {
+  const dayMap: Record<string, Record<string, number>> = {};
+  for (const row of rows) {
+    if (!dayMap[row.date]) dayMap[row.date] = {};
+    dayMap[row.date][row.activity] = (dayMap[row.date][row.activity] || 0) + row.usage_count;
+  }
+  return Object.entries(dayMap)
+    .map(([date, counts]) => ({ date, ...counts }))
+    .sort((a, b) => (a.date as string).localeCompare(b.date as string));
+}
+
+export async function getTeamDailyBreakdown(
+  supabase: SupabaseClient,
+  teamId: string,
+  monthKey: MonthKey
+): Promise<Array<Record<string, string | number>>> {
+  const members = await getTeamMembers(supabase, teamId);
+  const rows = await getDailyBreakdownRows(supabase, members.map(m => m.id), monthKey);
+  return buildDailyBreakdown(rows);
+}
+
+export async function getUserDailyBreakdown(
+  supabase: SupabaseClient,
+  userId: string,
+  monthKey: MonthKey
+): Promise<Array<Record<string, string | number>>> {
+  const rows = await getDailyBreakdownRows(supabase, [userId], monthKey);
+  return buildDailyBreakdown(rows);
+}
+
 export async function getTeamMembersWithUsage(
   supabase: SupabaseClient,
   teamId: string,
@@ -454,170 +504,79 @@ export async function getAllTeamsWithStats(
   supabase: SupabaseClient,
   monthKey: MonthKey
 ): Promise<TeamWithStats[]> {
-  const [teams, allProfiles, usageSummary, appSummary, featureSummary] = await Promise.all([
-    getAllTeams(supabase),
-    supabase.from('profiles').select('id, team_id'),
-    supabase
-      .from('monthly_usage_summary')
-      .select('user_id, model_id, usage_count')
-      .eq('month_key', monthKey),
-    supabase
-      .from('monthly_app_summary')
-      .select('user_id, app, usage_count')
-      .eq('month_key', monthKey),
-    supabase
-      .from('monthly_feature_summary')
-      .select('user_id, feature, usage_count')
-      .eq('month_key', monthKey),
-  ]);
+  const [teams, allProfiles, teamModelSummary, teamAppSummary, teamFeatureSummary, teamActiveMembers] =
+    await Promise.all([
+      getAllTeams(supabase),
+      supabase.from('profiles').select('id, team_id'),
+      supabase
+        .from('monthly_team_model_summary')
+        .select('team_id, model_id, usage_count')
+        .eq('month_key', monthKey),
+      supabase
+        .from('monthly_team_app_summary')
+        .select('team_id, app, usage_count')
+        .eq('month_key', monthKey),
+      supabase
+        .from('monthly_team_feature_summary')
+        .select('team_id, feature, usage_count')
+        .eq('month_key', monthKey),
+      supabase
+        .from('monthly_team_active_members')
+        .select('team_id, active_member_count')
+        .eq('month_key', monthKey),
+    ]);
 
   const profiles = allProfiles.data || [];
-  const usageRows = (usageSummary.data || []) as MonthlyUsageSummaryRow[];
-  const appRows = (appSummary.data || []) as MonthlyAppSummaryRow[];
-  const featureRows = (featureSummary.data || []) as MonthlyFeatureSummaryRow[];
+  const modelRows = teamModelSummary.data || [];
+  const appRows = teamAppSummary.data || [];
+  const featureRows = teamFeatureSummary.data || [];
+  const activeMemberRows = teamActiveMembers.data || [];
 
-  if (!usageRows.length && !appRows.length && !featureRows.length) {
-    const { data: rawEvents } = await supabase
-      .from('activity_events')
-      .select('user_id, model_id, app, features')
-      .eq('month_key', monthKey);
-
-    const events = rawEvents || [];
-    const userTeamMap: Record<string, string> = {};
-    const memberMap: Record<string, Set<string>> = {};
-    const activeMap: Record<string, Set<string>> = {};
-    const eventCountMap: Record<string, number> = {};
-    const modelMap: Record<string, Record<string, number>> = {};
-    const activityMap: Record<string, Record<string, number>> = {};
-    const featureKeySet = new Set<string>(ACTIVITY_KEYS.filter(a => a.key !== 'chat').map(a => a.key));
-
-    for (const p of profiles) {
-      if (!p.team_id) continue;
-      userTeamMap[p.id] = p.team_id;
-      if (!memberMap[p.team_id]) memberMap[p.team_id] = new Set();
-      memberMap[p.team_id].add(p.id);
-    }
-
-    for (const e of events) {
-      const teamId = userTeamMap[e.user_id];
-      if (!teamId) continue;
-
-      eventCountMap[teamId] = (eventCountMap[teamId] || 0) + 1;
-
-      if (!activeMap[teamId]) activeMap[teamId] = new Set();
-      activeMap[teamId].add(e.user_id);
-
-      if (!modelMap[teamId]) modelMap[teamId] = {};
-      modelMap[teamId][e.model_id] = (modelMap[teamId][e.model_id] || 0) + 1;
-
-      if (!activityMap[teamId]) {
-        activityMap[teamId] = createEmptyActivityCounts();
-      }
-
-      if (e.app === 'chat') {
-        activityMap[teamId].chat = (activityMap[teamId].chat || 0) + 1;
-      }
-
-      for (const feature of e.features || []) {
-        if (featureKeySet.has(feature)) {
-          activityMap[teamId][feature] = (activityMap[teamId][feature] || 0) + 1;
-        }
-      }
-    }
-
-    return (teams || []).map(team => {
-      const modelCounts = modelMap[team.id] || {};
-      const activityCounts = activityMap[team.id] || createEmptyActivityCounts();
-      const topModel = Object.entries(modelCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
-      const sortedActivities = ACTIVITY_KEYS
-        .map(({ key }) => [key, activityCounts[key] || 0] as const)
-        .sort((a, b) => b[1] - a[1]);
-      const topActivity = sortedActivities.find(([, count]) => count > 0)?.[0] ?? null;
-      const leastActivity = [...sortedActivities].reverse()[0]?.[0] ?? null;
-      const memberCount = memberMap[team.id]?.size ?? 0;
-      const activeMembers = activeMap[team.id]?.size ?? 0;
-      const eventCount = eventCountMap[team.id] ?? 0;
-
-      return {
-        ...team,
-        memberCount,
-        activeMembers,
-        eventCount,
-        eventsPerMember: memberCount ? Number((eventCount / memberCount).toFixed(1)) : 0,
-        eventsPerActiveMember: activeMembers ? Number((eventCount / activeMembers).toFixed(1)) : 0,
-        topModel,
-        activityCounts,
-        topActivity,
-        leastActivity,
-      };
-    }).sort((a, b) => b.eventCount - a.eventCount);
-  }
-
-  // Map: userId -> teamId
-  const userTeamMap: Record<string, string> = {};
-  for (const p of profiles) {
-    if (p.team_id) userTeamMap[p.id] = p.team_id;
-  }
-
-  // Aggregate per team
-  const memberMap: Record<string, Set<string>> = {};
-  const activeMap: Record<string, Set<string>> = {};
-  const eventCountMap: Record<string, number> = {};
-  const modelMap: Record<string, Record<string, number>> = {};
-  const activityMap: Record<string, Record<string, number>> = {};
-
+  // memberCount는 항상 profiles에서 계산 (활동 여부 무관)
+  const memberCountMap: Record<string, number> = {};
   for (const p of profiles) {
     if (!p.team_id) continue;
-    if (!memberMap[p.team_id]) memberMap[p.team_id] = new Set();
-    memberMap[p.team_id].add(p.id);
+    memberCountMap[p.team_id] = (memberCountMap[p.team_id] || 0) + 1;
   }
 
-  for (const row of usageRows) {
-    const teamId = userTeamMap[row.user_id];
-    if (!teamId) continue;
-
-    eventCountMap[teamId] = (eventCountMap[teamId] || 0) + row.usage_count;
-
-    if (!activeMap[teamId]) activeMap[teamId] = new Set();
-    activeMap[teamId].add(row.user_id);
-
-    if (!modelMap[teamId]) modelMap[teamId] = {};
-    modelMap[teamId][row.model_id] = (modelMap[teamId][row.model_id] || 0) + row.usage_count;
+  const activeMemberMap: Record<string, number> = {};
+  for (const row of activeMemberRows) {
+    activeMemberMap[row.team_id] = row.active_member_count;
   }
 
+  const eventCountMap: Record<string, number> = {};
+  const modelMap: Record<string, Record<string, number>> = {};
+  for (const row of modelRows) {
+    eventCountMap[row.team_id] = (eventCountMap[row.team_id] || 0) + row.usage_count;
+    if (!modelMap[row.team_id]) modelMap[row.team_id] = {};
+    modelMap[row.team_id][row.model_id] = (modelMap[row.team_id][row.model_id] || 0) + row.usage_count;
+  }
+
+  const activityMap: Record<string, Record<string, number>> = {};
   for (const row of appRows) {
-    const teamId = userTeamMap[row.user_id];
-    if (!teamId) continue;
-    if (!activityMap[teamId]) {
-      activityMap[teamId] = createEmptyActivityCounts();
-    }
-    if (row.app === 'chat') {
-      activityMap[teamId].chat = (activityMap[teamId].chat || 0) + row.usage_count;
-    }
+    if (row.app !== 'chat') continue;
+    if (!activityMap[row.team_id]) activityMap[row.team_id] = createEmptyActivityCounts();
+    activityMap[row.team_id].chat = (activityMap[row.team_id].chat || 0) + row.usage_count;
   }
-
   for (const row of featureRows) {
-    const teamId = userTeamMap[row.user_id];
-    if (!teamId) continue;
-    if (!activityMap[teamId]) {
-      activityMap[teamId] = createEmptyActivityCounts();
-    }
-    if (row.feature in activityMap[teamId]) {
-      activityMap[teamId][row.feature] = (activityMap[teamId][row.feature] || 0) + row.usage_count;
+    if (!activityMap[row.team_id]) activityMap[row.team_id] = createEmptyActivityCounts();
+    const counts = activityMap[row.team_id];
+    if (row.feature in counts) {
+      counts[row.feature] = (counts[row.feature] || 0) + row.usage_count;
     }
   }
 
   return (teams || []).map(team => {
     const modelCounts = modelMap[team.id] || {};
-    const activityCounts = activityMap[team.id] || Object.fromEntries(ACTIVITY_KEYS.map(({ key }) => [key, 0]));
+    const activityCounts = activityMap[team.id] || createEmptyActivityCounts();
     const topModel = Object.entries(modelCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
     const sortedActivities = ACTIVITY_KEYS
       .map(({ key }) => [key, activityCounts[key] || 0] as const)
       .sort((a, b) => b[1] - a[1]);
     const topActivity = sortedActivities.find(([, count]) => count > 0)?.[0] ?? null;
     const leastActivity = [...sortedActivities].reverse()[0]?.[0] ?? null;
-    const memberCount = memberMap[team.id]?.size ?? 0;
-    const activeMembers = activeMap[team.id]?.size ?? 0;
+    const memberCount = memberCountMap[team.id] ?? 0;
+    const activeMembers = activeMemberMap[team.id] ?? 0;
     const eventCount = eventCountMap[team.id] ?? 0;
 
     return {
@@ -641,28 +600,24 @@ export interface TeamAdminStats extends Team {
 }
 
 export async function getAllTeamsWithAdminStats(supabase: SupabaseClient): Promise<TeamAdminStats[]> {
-  const [teams, allProfiles, allEvents] = await Promise.all([
+  const [teams, allProfiles, teamModelSummary] = await Promise.all([
     getAllTeams(supabase),
     supabase.from('profiles').select('id, team_id'),
-    supabase.from('activity_events').select('user_id'),
+    supabase.from('monthly_team_model_summary').select('team_id, usage_count'),
   ]);
 
   const profiles = allProfiles.data || [];
-  const events = allEvents.data || [];
-  const userTeamMap: Record<string, string> = {};
-  const memberCountMap: Record<string, number> = {};
-  const eventCountMap: Record<string, number> = {};
+  const summaryRows = teamModelSummary.data || [];
 
+  const memberCountMap: Record<string, number> = {};
   for (const profile of profiles) {
     if (!profile.team_id) continue;
-    userTeamMap[profile.id] = profile.team_id;
     memberCountMap[profile.team_id] = (memberCountMap[profile.team_id] || 0) + 1;
   }
 
-  for (const event of events) {
-    const teamId = userTeamMap[event.user_id];
-    if (!teamId) continue;
-    eventCountMap[teamId] = (eventCountMap[teamId] || 0) + 1;
+  const eventCountMap: Record<string, number> = {};
+  for (const row of summaryRows) {
+    eventCountMap[row.team_id] = (eventCountMap[row.team_id] || 0) + row.usage_count;
   }
 
   return teams.map(team => ({
