@@ -72,6 +72,7 @@ export interface TeamStats {
 
 export interface ProfileWithUsage extends Profile {
   eventCount: number;
+  activityCounts: Record<string, number>;
 }
 
 export type MonthKey = `${number}-${string}`;

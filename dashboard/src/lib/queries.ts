@@ -268,26 +268,51 @@ export async function getTeamMembersWithSummaryUsage(
   monthKey: MonthKey
 ): Promise<ProfileWithUsage[]> {
   const members = await getTeamMembers(supabase, teamId);
-  const usageRows = await getMonthlyUsageRows(
-    supabase,
-    members.map(member => member.id),
-    monthKey
-  );
+  const memberIds = members.map(member => member.id);
+  const [usageRows, appRows, featureRows] = await Promise.all([
+    getMonthlyUsageRows(supabase, memberIds, monthKey),
+    getMonthlyAppRows(supabase, memberIds, monthKey),
+    getMonthlyFeatureRows(supabase, memberIds, monthKey),
+  ]);
 
-  if (!usageRows.length) {
+  if (!usageRows.length && !appRows.length && !featureRows.length) {
     const rawEvents = await getTeamEvents(supabase, teamId, monthKey);
-    return attachUsageCounts(members, rawEvents);
+    const eventsByUser: Record<string, ActivityEvent[]> = {};
+    for (const event of rawEvents) {
+      if (!eventsByUser[event.user_id]) eventsByUser[event.user_id] = [];
+      eventsByUser[event.user_id].push(event);
+    }
+    return members.map(member => {
+      const rawStats = aggregateStats(eventsByUser[member.id] || []);
+      return { ...member, eventCount: rawStats.totalEvents, activityCounts: rawStats.activityCounts };
+    });
   }
 
-  const countMap: Record<string, number> = {};
+  const usageByUser: Record<string, MonthlyUsageSummaryRow[]> = {};
+  const appByUser: Record<string, MonthlyAppSummaryRow[]> = {};
+  const featureByUser: Record<string, MonthlyFeatureSummaryRow[]> = {};
+
   for (const row of usageRows) {
-    countMap[row.user_id] = (countMap[row.user_id] || 0) + row.usage_count;
+    if (!usageByUser[row.user_id]) usageByUser[row.user_id] = [];
+    usageByUser[row.user_id].push(row);
+  }
+  for (const row of appRows) {
+    if (!appByUser[row.user_id]) appByUser[row.user_id] = [];
+    appByUser[row.user_id].push(row);
+  }
+  for (const row of featureRows) {
+    if (!featureByUser[row.user_id]) featureByUser[row.user_id] = [];
+    featureByUser[row.user_id].push(row);
   }
 
-  return members.map(member => ({
-    ...member,
-    eventCount: countMap[member.id] || 0,
-  }));
+  return members.map(member => {
+    const summary = buildDashboardSummary(
+      usageByUser[member.id] || [],
+      appByUser[member.id] || [],
+      featureByUser[member.id] || [],
+    );
+    return { ...member, eventCount: summary.totalEvents, activityCounts: summary.activityCounts };
+  });
 }
 
 export async function getMemberSummaryOptions(
@@ -371,6 +396,7 @@ export function attachUsageCounts(
   return members.map(member => ({
     ...member,
     eventCount: countMap[member.id] || 0,
+    activityCounts: createEmptyActivityCounts(),
   }));
 }
 

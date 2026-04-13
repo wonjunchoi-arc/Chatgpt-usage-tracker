@@ -5,10 +5,9 @@ import {
   getAllTeams,
   getTeamDashboardSummary,
   getTeamMembersWithSummaryUsage,
-  getMemberSummaryOptions,
   getTeamDailyBreakdown,
 } from '@/lib/queries';
-import { getCurrentMonthKey, type MonthKey } from '@/lib/types';
+import { getCurrentMonthKey, getProfileDisplayName, type MonthKey } from '@/lib/types';
 import TimeRangeFilter from '@/components/dashboard/TimeRangeFilter';
 import ModelDistributionChart from '@/components/dashboard/ModelDistributionChart';
 import ActivityBreakdownChart from '@/components/dashboard/ActivityBreakdownChart';
@@ -41,10 +40,9 @@ export default async function TeamPage({ searchParams }: Props) {
 
   const selectedTeam = teams.find(t => t.id === params.teamId) ?? teams[0];
 
-  const [summary, membersWithUsage, memberSummaryOptions, dailyBreakdown] = await Promise.all([
+  const [summary, membersWithUsage, dailyBreakdown] = await Promise.all([
     getTeamDashboardSummary(supabase, selectedTeam.id, month),
     getTeamMembersWithSummaryUsage(supabase, selectedTeam.id, month),
-    getMemberSummaryOptions(supabase, selectedTeam.id, month),
     getTeamDailyBreakdown(supabase, selectedTeam.id, month),
   ]);
 
@@ -55,7 +53,12 @@ export default async function TeamPage({ searchParams }: Props) {
       totalEvents: summary.totalEvents,
       activityCounts: summary.activityCounts,
     },
-    ...memberSummaryOptions,
+    ...membersWithUsage.map(m => ({
+      id: m.id,
+      label: getProfileDisplayName(m),
+      totalEvents: m.eventCount,
+      activityCounts: m.activityCounts,
+    })),
   ];
 
   return (

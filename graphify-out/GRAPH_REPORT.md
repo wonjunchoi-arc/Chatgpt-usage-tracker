@@ -1,11 +1,11 @@
 # Graph Report - .  (2026-04-13)
 
 ## Corpus Check
-- 38 files · ~19,969 words
+- 38 files · ~20,213 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 205 nodes · 289 edges · 47 communities detected
+- 205 nodes · 290 edges · 47 communities detected
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 10 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
@@ -63,9 +63,9 @@
 2. `inferActivity()` - 11 edges
 3. `getTeamDashboardSummary()` - 8 edges
 4. `getUserDashboardSummary()` - 7 edges
-5. `ensureValidSession()` - 7 edges
-6. `Project Philosophy - ChatGPT Usage Tracker` - 7 edges
-7. `getTeamMembersWithSummaryUsage()` - 6 edges
+5. `getTeamMembersWithSummaryUsage()` - 7 edges
+6. `ensureValidSession()` - 7 edges
+7. `Project Philosophy - ChatGPT Usage Tracker` - 7 edges
 8. `getMemberSummaryOptions()` - 6 edges
 9. `storageGet()` - 6 edges
 10. `storageSet()` - 6 edges
@@ -97,7 +97,7 @@ Nodes (35): appendActivityEvent(), applyFeatureSignal(), asArray(), buildActivit
 
 ### Community 1 - "Community 1"
 Cohesion: 0.14
-Nodes (24): aggregateStats(), attachUsageCounts(), buildActivityCounts(), buildDailyBreakdown(), buildDashboardSummary(), createEmptyActivityCounts(), getAllProfilesWithTeams(), getAllTeams() (+16 more)
+Nodes (23): aggregateStats(), buildActivityCounts(), buildDailyBreakdown(), buildDashboardSummary(), createEmptyActivityCounts(), getAllProfilesWithTeams(), getAllTeams(), getAllTeamsWithAdminStats() (+15 more)
 
 ### Community 2 - "Community 2"
 Cohesion: 0.11
