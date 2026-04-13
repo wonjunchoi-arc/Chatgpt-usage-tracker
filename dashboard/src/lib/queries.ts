@@ -1,5 +1,5 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import type { Profile, Team, ActivityEvent, TeamStats, ProfileWithUsage, TimeRange } from './types';
+import type { Profile, Team, ActivityEvent, TeamStats, ProfileWithUsage, ProfileWithTeam, TimeRange } from './types';
 import { getTimeRangeStart, ACTIVITY_KEYS } from './types';
 
 export async function getProfile(supabase: SupabaseClient, userId: string): Promise<Profile | null> {
@@ -27,6 +27,23 @@ export async function getTeamMembers(supabase: SupabaseClient, teamId: string): 
     .order('display_name', { ascending: true, nullsFirst: false })
     .order('email');
   return data || [];
+}
+
+export async function getAllProfilesWithTeams(supabase: SupabaseClient): Promise<ProfileWithTeam[]> {
+  const [{ data: profiles }, { data: teams }] = await Promise.all([
+    supabase
+      .from('profiles')
+      .select('id, email, display_name, team_id, role, created_at')
+      .order('created_at', { ascending: false }),
+    getAllTeams(supabase),
+  ]);
+
+  const teamMap = Object.fromEntries((teams || []).map(team => [team.id, team.name]));
+
+  return (profiles || []).map(profile => ({
+    ...profile,
+    team_name: profile.team_id ? teamMap[profile.team_id] || null : null,
+  }));
 }
 
 export async function getTeamEvents(
@@ -305,6 +322,28 @@ export async function createTeam(supabase: SupabaseClient, name: string): Promis
     .select()
     .single();
   return data;
+}
+
+export async function updateProfileByAdmin(
+  supabase: SupabaseClient,
+  id: string,
+  updates: Pick<Profile, 'display_name' | 'team_id' | 'role'>
+): Promise<void> {
+  const { error } = await supabase
+    .from('profiles')
+    .update(updates)
+    .eq('id', id);
+
+  if (error) throw error;
+}
+
+export async function deleteProfileByAdmin(supabase: SupabaseClient, id: string): Promise<void> {
+  const { error } = await supabase
+    .from('profiles')
+    .delete()
+    .eq('id', id);
+
+  if (error) throw error;
 }
 
 export async function updateTeam(supabase: SupabaseClient, id: string, name: string): Promise<void> {

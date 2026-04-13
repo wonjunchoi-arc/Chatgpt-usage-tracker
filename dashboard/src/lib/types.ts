@@ -13,6 +13,10 @@ export interface Profile {
   created_at: string;
 }
 
+export interface ProfileWithTeam extends Profile {
+  team_name: string | null;
+}
+
 export interface ActivityEvent {
   id: number;
   user_id: string;

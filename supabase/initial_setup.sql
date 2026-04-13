@@ -113,29 +113,30 @@ ON CONFLICT (name) DO NOTHING;
 CREATE POLICY "Authenticated users see all teams" ON teams
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Admins manage teams" ON teams
-  FOR ALL USING (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
-  );
+CREATE POLICY "Authenticated users manage teams" ON teams
+  FOR ALL USING (auth.uid() IS NOT NULL)
+  WITH CHECK (auth.uid() IS NOT NULL);
 
 CREATE POLICY "Authenticated users see all profiles" ON profiles
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Users update own profile" ON profiles
-  FOR UPDATE USING (id = auth.uid())
-  WITH CHECK (id = auth.uid());
-
-CREATE POLICY "Users insert own events" ON activity_events
-  FOR INSERT WITH CHECK (user_id = auth.uid());
+CREATE POLICY "Authenticated users manage profiles" ON profiles
+  FOR ALL USING (auth.uid() IS NOT NULL)
+  WITH CHECK (auth.uid() IS NOT NULL);
 
 CREATE POLICY "Authenticated users see all events" ON activity_events
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Users insert own timestamps" ON model_timestamps
-  FOR INSERT WITH CHECK (user_id = auth.uid());
+CREATE POLICY "Authenticated users manage activity_events" ON activity_events
+  FOR ALL USING (auth.uid() IS NOT NULL)
+  WITH CHECK (auth.uid() IS NOT NULL);
 
 CREATE POLICY "Authenticated users see all timestamps" ON model_timestamps
   FOR SELECT USING (auth.uid() IS NOT NULL);
+
+CREATE POLICY "Authenticated users manage model_timestamps" ON model_timestamps
+  FOR ALL USING (auth.uid() IS NOT NULL)
+  WITH CHECK (auth.uid() IS NOT NULL);
 
 -- ============================================================
 -- 회원가입 시 프로필 자동 생성

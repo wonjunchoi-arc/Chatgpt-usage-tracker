@@ -18,6 +18,7 @@ const navItems = [
 
 const adminItems = [
   { href: '/dashboard/admin/teams', label: '팀 관리' },
+  { href: '/dashboard/admin/users', label: '사용자 관리' },
 ];
 
 export default function Sidebar({ userLabel, teamName, isAdmin }: SidebarProps) {
