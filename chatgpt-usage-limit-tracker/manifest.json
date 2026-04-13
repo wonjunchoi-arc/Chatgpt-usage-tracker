@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "default_locale": "ko",
   "name": "__MSG_extensionName__",
-  "version": "2.2",
+  "version": "2.3",
   "description": "__MSG_extensionDescription__",
   "permissions": [
     "storage",
@@ -10,7 +10,8 @@
     "alarms"
   ],
   "host_permissions": [
-    "*://chatgpt.com/*"
+    "*://chatgpt.com/*",
+    "*://*.supabase.co/*"
   ],
   "action": {
     "default_popup": "popup.html",
@@ -20,6 +21,7 @@
       "128": "icons/icon128.png"
     }
   },
+  "options_page": "options.html",
   "background": {
     "service_worker": "background.js"
   },

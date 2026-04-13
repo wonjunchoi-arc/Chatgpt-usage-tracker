@@ -6,16 +6,44 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <!-- 로그인 게이트 -->
+    <div id="cqt-gate" hidden>
+      <div class="cqt-gate-icon">🔒</div>
+      <p class="cqt-gate-title">로그인이 필요합니다</p>
+      <p class="cqt-gate-desc">데이터를 팀 서버에 동기화하려면 먼저 로그인하세요.</p>
+      <button id="cqt-gate-btn" class="cqt-gate-btn">설정에서 로그인</button>
+    </div>
+
     <div id="cqt-panel">
       <div class="cqt-segment" role="tablist" aria-label="Plan">
         <button class="cqt-seg-btn" data-plan="free" role="tab"></button>
         <button class="cqt-seg-btn" data-plan="plus" role="tab"></button>
-        <button class="cqt-seg-btn" data-plan="team" role="tab"></button>
+        <button class="cqt-seg-btn" data-plan="business" role="tab"></button>
         <button class="cqt-seg-btn" data-plan="pro" role="tab"></button>
       </div>
 
-      <div id="cqt-list">
-        <div class="cqt-loader" id="cqt-loader">Loading...</div>
+      <section class="cqt-section">
+        <div class="cqt-section-head">
+          <h1 class="cqt-section-title" id="cqt-usage-title">모델 사용량</h1>
+          <p class="cqt-section-subtitle" id="cqt-usage-subtitle">공식 GPT-5.3 / GPT-5.4 기준</p>
+        </div>
+        <div id="cqt-list">
+          <div class="cqt-loader" id="cqt-loader">Loading...</div>
+        </div>
+      </section>
+
+      <section class="cqt-section cqt-section-activity">
+        <div class="cqt-section-head">
+          <h2 class="cqt-section-title" id="cqt-activity-title">최근 활동</h2>
+          <p class="cqt-section-subtitle" id="cqt-activity-subtitle">프롬프트 본문 제외 메타데이터만 기록</p>
+        </div>
+        <div class="cqt-chip-list" id="cqt-activity-summary"></div>
+        <div class="cqt-activity-list" id="cqt-activity-list"></div>
+      </section>
+
+      <div id="cqt-sync-bar" class="cqt-sync-bar" hidden>
+        <span id="cqt-sync-text" class="cqt-sync-text"></span>
+        <a id="cqt-sync-link" class="cqt-sync-link" href="#"></a>
       </div>
     </div>
     <script src="popup.js"></script>

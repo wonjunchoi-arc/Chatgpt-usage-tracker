@@ -1,9 +1,9 @@
 {
   "extensionName": {
-    "message": "ChatGPT 사용 한도 트래커"
+    "message": "ChatGPT 사용량 트래커"
   },
   "extensionDescription": {
-    "message": "모든 ChatGPT 모델의 사용 한도(쿼터)를 표시합니다. GPT-5, GPT-5 Thinking, GPT-5 Pro를 포함하며, 예: X시간마다 최대 X개의 메시지."
+    "message": "공식 ChatGPT GPT-5.3 및 GPT-5.4 모델 기준 사용량과 최근 활동 메타데이터를 표시합니다."
   },
   "period_prefix": {
     "message": "매"
@@ -37,5 +37,152 @@
   },
   "error": {
     "message": "오류가 발생했습니다."
+  },
+  "plan_free": {
+    "message": "Free"
+  },
+  "plan_plus": {
+    "message": "Plus"
+  },
+  "plan_business": {
+    "message": "Business"
+  },
+  "plan_pro": {
+    "message": "Pro"
+  },
+  "usage_title": {
+    "message": "모델 사용량"
+  },
+  "usage_subtitle": {
+    "message": "공식 GPT-5.3 / GPT-5.4 기준"
+  },
+  "activity_title": {
+    "message": "최근 활동"
+  },
+  "activity_subtitle": {
+    "message": "프롬프트 본문 제외 메타데이터만 기록"
+  },
+  "activity_empty": {
+    "message": "아직 기록된 활동이 없습니다."
+  },
+  "summary_events": {
+    "message": "최근 24시간 활동"
+  },
+  "summary_tools": {
+    "message": "도구 사용"
+  },
+  "summary_attachments": {
+    "message": "첨부"
+  },
+  "summary_images": {
+    "message": "이미지"
+  },
+  "summary_connectors": {
+    "message": "앱"
+  },
+  "summary_sources": {
+    "message": "소스"
+  },
+  "summary_all_github": {
+    "message": "전체 GitHub"
+  },
+  "summary_thinking_effort": {
+    "message": "추론"
+  },
+  "app_chat": {
+    "message": "채팅"
+  },
+  "app_workspace": {
+    "message": "작업공간"
+  },
+  "app_connector": {
+    "message": "앱"
+  },
+  "app_skill": {
+    "message": "스킬"
+  },
+  "app_project": {
+    "message": "프로젝트"
+  },
+  "app_canvas": {
+    "message": "캔버스"
+  },
+  "app_images": {
+    "message": "이미지"
+  },
+  "app_voice": {
+    "message": "음성"
+  },
+  "feature_search": {
+    "message": "검색"
+  },
+  "feature_connector_app": {
+    "message": "앱 연결"
+  },
+  "feature_skill_invocation": {
+    "message": "스킬 호출"
+  },
+  "feature_project_context": {
+    "message": "프로젝트"
+  },
+  "feature_source_context": {
+    "message": "소스"
+  },
+  "feature_github_context": {
+    "message": "GitHub"
+  },
+  "feature_pro_model": {
+    "message": "Pro 모델"
+  },
+  "feature_data_analysis": {
+    "message": "데이터 분석"
+  },
+  "feature_file_analysis": {
+    "message": "파일"
+  },
+  "feature_image_analysis": {
+    "message": "이미지 분석"
+  },
+  "feature_image_generation": {
+    "message": "이미지 생성"
+  },
+  "feature_canvas": {
+    "message": "캔버스"
+  },
+  "feature_memory": {
+    "message": "메모리"
+  },
+  "feature_voice": {
+    "message": "음성"
+  },
+  "feature_custom_instructions": {
+    "message": "커스텀 지시"
+  },
+  "time_now": {
+    "message": "방금"
+  },
+  "time_minute_suffix": {
+    "message": "분 전"
+  },
+  "time_hour_suffix": {
+    "message": "시간 전"
+  },
+  "time_day_suffix": {
+    "message": "일 전"
+  },
+  "sync_not_logged_in": {
+    "message": "서버 동기화 미연결"
+  },
+  "sync_sign_in_prompt": {
+    "message": "설정"
+  },
+  "sync_queue": {
+    "message": "대기"
+  },
+  "sync_last": {
+    "message": "최근"
+  },
+  "sync_settings": {
+    "message": "설정"
   }
 }

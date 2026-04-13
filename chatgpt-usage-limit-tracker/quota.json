@@ -1,30 +1,135 @@
 {
   "models": [
-    { "id": "gpt-5-thinking", "quota": 3000, "hours": 168 },
-    { "id": "gpt-5", "quota": 160, "hours": 3 },
-    { "id": "o3", "quota": 100, "hours": 168 },
-    { "id": "o4-mini-high", "quota": 100, "hours": 24 },
-    { "id": "o4-mini", "quota": 300, "hours": 24 },
-    { "id": "4.5", "quota": 50, "hours": 168 },
-    { "id": "4.1", "quota": 80, "hours": 3 },
-    { "id": "4.1-mini", "quota": 80, "hours": 3 },
-    { "id": "4o", "quota": 80, "hours": 3 }
+    {
+      "id": "gpt-5.3-instant",
+      "displayName": "GPT-5.3 Instant",
+      "aliases": [
+        "auto",
+        "gpt-5.3",
+        "gpt-5.3-instant",
+        "gpt-5",
+        "gpt-5-auto",
+        "gpt-5.2",
+        "gpt-5.1",
+        "gpt-4o",
+        "gpt-4.1",
+        "gpt-4.1-mini",
+        "gpt-4.5"
+      ],
+      "family": "gpt-5.3",
+      "capabilities": [
+        "search",
+        "data-analysis",
+        "image-analysis",
+        "file-analysis",
+        "canvas",
+        "image-generation",
+        "memory",
+        "custom-instructions"
+      ]
+    },
+    {
+      "id": "gpt-5.4-thinking",
+      "displayName": "GPT-5.4 Thinking",
+      "aliases": [
+        "gpt-5.4",
+        "gpt-5.4-thinking",
+        "gpt-5-thinking",
+        "gpt-5.2-thinking",
+        "gpt-5.1-thinking",
+        "o3",
+        "o4-mini",
+        "gpt-5-thinking-mini"
+      ],
+      "family": "gpt-5.4",
+      "capabilities": [
+        "search",
+        "data-analysis",
+        "image-analysis",
+        "file-analysis",
+        "canvas",
+        "image-generation",
+        "memory",
+        "custom-instructions"
+      ]
+    },
+    {
+      "id": "gpt-5.4-pro",
+      "displayName": "GPT-5.4 Pro",
+      "aliases": [
+        "gpt-5.4-pro",
+        "gpt-5-pro",
+        "gpt-5.2-pro",
+        "gpt-5.1-pro",
+        "o3-pro"
+      ],
+      "family": "gpt-5.4",
+      "capabilities": [
+        "search",
+        "data-analysis",
+        "image-analysis",
+        "file-analysis",
+        "custom-instructions"
+      ]
+    }
   ],
   "free": [
-    { "id": "auto", "quota": 10, "hours": 5 }
+    {
+      "id": "gpt-5.3-instant",
+      "quota": 10,
+      "hours": 5
+    }
   ],
   "plus": [
-    { "id": "gpt-5", "quota": 160, "hours": 3 },
-    { "id": "gpt-5-thinking", "quota": 3000, "hours": 168 }
+    {
+      "id": "gpt-5.3-instant",
+      "quota": 160,
+      "hours": 3
+    },
+    {
+      "id": "gpt-5.4-thinking",
+      "quota": 3000,
+      "hours": 168
+    }
   ],
-  "team": [
-    { "id": "gpt-5", "quota": -1, "hours": 3, "max": 160 },
-    { "id": "gpt-5-thinking", "quota": 3000, "hours": 168 },
-    { "id": "gpt-5-pro", "quota": 15, "hours": 720 }
+  "business": [
+    {
+      "id": "gpt-5.3-instant",
+      "quota": -1,
+      "hours": 3,
+      "max": 160
+    },
+    {
+      "id": "gpt-5.4-thinking",
+      "quota": -1,
+      "hours": 168,
+      "max": 3000
+    },
+    {
+      "id": "gpt-5.4-pro",
+      "quota": -1,
+      "hours": 720,
+      "max": 15
+    }
   ],
   "pro": [
-    { "id": "gpt-5", "quota": -1, "hours": 3, "max": 160 },
-    { "id": "gpt-5-thinking", "quota": -1, "hours": 168, "max": 3000 },
-    { "id": "gpt-5-pro", "quota": -1, "hours": 720, "max": 15 }
+    {
+      "id": "gpt-5.3-instant",
+      "quota": -1,
+      "hours": 3,
+      "max": 160
+    },
+    {
+      "id": "gpt-5.4-thinking",
+      "quota": -1,
+      "hours": 168,
+      "max": 3000
+    },
+    {
+      "id": "gpt-5.4-pro",
+      "quota": -1,
+      "hours": 720,
+      "max": 15
+    }
   ]
 }
