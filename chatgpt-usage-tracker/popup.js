@@ -60,37 +60,10 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   loader.textContent = t('loading', 'Loading…');
-  document.getElementById('cqt-usage-title').textContent = t('usage_title', '모델 사용량');
-  document.getElementById('cqt-usage-subtitle').textContent = t('usage_subtitle', '공식 GPT-5.3 / GPT-5.4 기준');
+  document.getElementById('cqt-usage-title').textContent = t('usage_title', '이번 달 사용량');
+  document.getElementById('cqt-usage-subtitle').textContent = t('usage_subtitle', 'Asia/Seoul 기준 월간 누적');
   document.getElementById('cqt-activity-title').textContent = t('activity_title', '최근 활동');
   document.getElementById('cqt-activity-subtitle').textContent = t('activity_subtitle', '프롬프트 본문 제외 메타데이터만 기록');
-
-  function formatPeriod(hours) {
-    const prefix = t('period_prefix', '매');
-    const lang = chrome.i18n.getUILanguage();
-    let value;
-    let unit;
-
-    if (hours >= 720) {
-      value = Math.round(hours / 720);
-      unit = t(value > 1 ? 'period_months' : 'period_month', '개월');
-    } else if (hours >= 168) {
-      value = Math.round(hours / 168);
-      unit = t(value > 1 ? 'period_weeks' : 'period_week', '주');
-    } else if (hours >= 24) {
-      value = Math.round(hours / 24);
-      unit = t(value > 1 ? 'period_days' : 'period_day', '일');
-    } else {
-      value = hours;
-      unit = t(value > 1 ? 'period_hours' : 'period_hour', '시간');
-    }
-
-    if (lang && lang.startsWith('en') && value === 1) {
-      return `${prefix} ${unit}`;
-    }
-
-    return `${prefix} ${value} ${unit}`;
-  }
 
   function formatRelativeTime(timestamp) {
     const diffMs = Date.now() - timestamp;
@@ -136,22 +109,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
       nameGroup.appendChild(nameWrap);
 
-      if (model.quota > 0) {
-        const periodSpan = document.createElement('span');
-        periodSpan.className = 'cqt-model-period';
-        periodSpan.textContent = formatPeriod(model.hours);
-        nameGroup.appendChild(periodSpan);
-      }
+      const periodSpan = document.createElement('span');
+      periodSpan.className = 'cqt-model-period';
+      periodSpan.textContent = t('usage_period_monthly', '이번 달 누적');
+      nameGroup.appendChild(periodSpan);
 
       info.appendChild(nameGroup);
 
       const usageSpan = document.createElement('span');
       usageSpan.className = 'cqt-model-usage';
-      if (model.quota > 0) {
-        usageSpan.textContent = `${model.used} / ${model.quota}`;
-      } else {
-        usageSpan.innerHTML = `${model.used} / <span class="cqt-infty">∞</span>`;
-      }
+      usageSpan.textContent = `${t('usage_count_suffix', '사용')} ${model.used}`;
       info.appendChild(usageSpan);
       row.appendChild(info);
 

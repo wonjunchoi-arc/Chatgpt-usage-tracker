@@ -5,6 +5,7 @@ const CACHE_DURATION_MS = 60 * 60 * 1000;
 const ACTIVITY_RETENTION_MS = 14 * 24 * 60 * 60 * 1000;
 const ACTIVITY_SUMMARY_WINDOW_MS = 24 * 60 * 60 * 1000;
 const MAX_ACTIVITY_EVENTS = 60;
+const MONTHLY_USAGE_RETENTION_MONTHS = 2;
 
 const EMPTY_QUOTA = {
   models: [],
@@ -13,12 +14,6 @@ const EMPTY_QUOTA = {
 
 const LEGACY_PLAN_ALIASES = {
   team: 'business'
-};
-
-const LEGACY_TIMESTAMP_KEYS = {
-  'gpt-5.3-instant': ['timestamps_auto', 'timestamps_gpt-5', 'timestamps_gpt-5.2-auto'],
-  'gpt-5.4-thinking': ['timestamps_gpt-5-thinking', 'timestamps_gpt-5.2-thinking'],
-  'gpt-5.4-pro': ['timestamps_gpt-5-pro', 'timestamps_gpt-5.2-pro']
 };
 
 const SKIPPED_CONTENT_KEYS = new Set([
@@ -102,6 +97,50 @@ async function getActivePlan() {
 
 function setActivePlan(plan) {
   return storageSet({ activePlan: normalizePlan(plan) });
+}
+
+function getKstDateParts(timestamp = Date.now()) {
+  const formatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Seoul',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  });
+  const parts = formatter.formatToParts(new Date(timestamp));
+  const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+  return {
+    year: values.year,
+    month: values.month,
+    day: values.day
+  };
+}
+
+function getMonthKey(timestamp = Date.now()) {
+  const { year, month } = getKstDateParts(timestamp);
+  return `${year}-${month}`;
+}
+
+function getRecentMonthKeys(count, timestamp = Date.now()) {
+  const { year, month } = getKstDateParts(timestamp);
+  const base = new Date(Date.UTC(Number(year), Number(month) - 1, 1));
+  const keys = [];
+
+  for (let index = 0; index < count; index += 1) {
+    const date = new Date(base);
+    date.setUTCMonth(base.getUTCMonth() - index);
+    keys.push(`${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}`);
+  }
+
+  return keys;
+}
+
+async function incrementMonthlyUsage(monthKey, modelId) {
+  const { monthlyUsage = {} } = await storageGet(['monthlyUsage']);
+  const next = { ...monthlyUsage };
+  const monthUsage = { ...(next[monthKey] || {}) };
+  monthUsage[modelId] = (monthUsage[modelId] || 0) + 1;
+  next[monthKey] = monthUsage;
+  await storageSet({ monthlyUsage: next });
 }
 
 function normalizeQuotaShape(raw) {
@@ -474,10 +513,6 @@ async function appendActivityEvent(event) {
   await storageSet({ activityEvents: next });
 }
 
-function getTimestampKeysForModel(modelId) {
-  return [`timestamps_${modelId}`, ...(LEGACY_TIMESTAMP_KEYS[modelId] || [])];
-}
-
 function mergePlanRowWithCatalog(row, catalogMap) {
   const catalog = catalogMap.get(row.id) || {};
   return {
@@ -491,25 +526,6 @@ function mergePlanRowWithCatalog(row, catalogMap) {
 async function getQuotaForPlan(planOverride = null) {
   const all = await fetchQuotaAll();
   return all.business || all.models || [];
-}
-
-function countRecentTimestamps(result, model, now) {
-  const keys = getTimestampKeysForModel(model.id);
-  const unique = new Set();
-
-  for (const key of keys) {
-    const timestamps = result[key] || [];
-    for (const ts of timestamps) {
-      unique.add(ts);
-    }
-  }
-
-  const windowStart = now - model.hours * 60 * 60 * 1000;
-  let used = 0;
-  unique.forEach(ts => {
-    if (ts >= windowStart) used += 1;
-  });
-  return used;
 }
 
 function buildActivityDashboard(events) {
@@ -549,63 +565,43 @@ async function buildDashboardData(planOverride = null) {
   const quotaRows = await getQuotaForPlan(planOverride);
   const catalogMap = await getModelCatalogMap();
   const usageModels = quotaRows.map(row => mergePlanRowWithCatalog(row, catalogMap));
-  const storageKeys = ['activityEvents'];
-
-  for (const model of usageModels) {
-    storageKeys.push(...getTimestampKeysForModel(model.id));
-  }
-
-  const result = await storageGet(storageKeys);
-  const now = Date.now();
+  const result = await storageGet(['activityEvents', 'monthlyUsage']);
+  const monthKey = getMonthKey();
+  const monthlyUsage = result.monthlyUsage || {};
+  const currentMonthUsage = monthlyUsage[monthKey] || {};
 
   const usageData = usageModels.map(model => ({
     id: model.id,
     displayName: model.displayName || model.id,
     family: model.family,
     capabilities: model.capabilities || [],
-    used: countRecentTimestamps(result, model, now),
-    quota: model.quota,
-    hours: model.hours,
-    max: typeof model.max === 'number' ? model.max : undefined
+    used: currentMonthUsage[model.id] || 0
   }));
 
   return {
     data: usageData,
     plan: 'business',
+    monthKey,
     activity: buildActivityDashboard(result.activityEvents || [])
   };
 }
 
 async function cleanupOldTimestamps() {
-  const all = await fetchQuotaAll();
-  const allModels = dedupeModels([
-    ...(all.models || []),
-    ...(all.business || []),
-  ]);
-
-  if (!allModels.length) return;
-
-  const storageKeys = [];
-  for (const model of allModels) {
-    storageKeys.push(...getTimestampKeysForModel(model.id));
-  }
-  storageKeys.push('activityEvents');
-
-  const result = await storageGet(storageKeys);
-  const longest = Math.max(...allModels.map(model => model.hours || 24));
-  const cleanupThreshold = Date.now() - longest * 60 * 60 * 1000 * 1.5;
+  const result = await storageGet(['activityEvents', 'monthlyUsage']);
   const activityCutoff = Date.now() - ACTIVITY_RETENTION_MS;
-  const changes = {};
+  const allowedMonths = new Set(getRecentMonthKeys(MONTHLY_USAGE_RETENTION_MONTHS));
+  const nextMonthlyUsage = {};
 
-  for (const key of storageKeys) {
-    if (key === 'activityEvents') continue;
-    if (Array.isArray(result[key])) {
-      changes[key] = result[key].filter(ts => ts >= cleanupThreshold);
+  for (const [monthKey, usage] of Object.entries(result.monthlyUsage || {})) {
+    if (allowedMonths.has(monthKey)) {
+      nextMonthlyUsage[monthKey] = usage;
     }
   }
 
-  changes.activityEvents = (result.activityEvents || []).filter(event => event.ts >= activityCutoff);
-  await storageSet(changes);
+  await storageSet({
+    activityEvents: (result.activityEvents || []).filter(event => event.ts >= activityCutoff),
+    monthlyUsage: nextMonthlyUsage
+  });
 }
 
 chrome.webRequest.onBeforeRequest.addListener(
@@ -629,14 +625,13 @@ chrome.webRequest.onBeforeRequest.addListener(
       const catalogMap = await getModelCatalogMap();
       const model = catalogMap.get(modelId) || { id: modelId, displayName: modelId };
       const timestamp = Date.now();
-      const key = `timestamps_${modelId}`;
-      const result = await storageGet([key]);
-      const timestamps = result[key] || [];
-      await storageSet({ [key]: [...timestamps, timestamp] });
+      const monthKey = getMonthKey(timestamp);
+      await incrementMonthlyUsage(monthKey, modelId);
 
       const activity = inferActivity(body, details.url || '');
       await appendActivityEvent({
         ts: timestamp,
+        monthKey,
         modelId,
         displayName: model.displayName || modelId,
         app: activity.app,
@@ -665,7 +660,9 @@ chrome.webRequest.onBeforeRequest.addListener(
 
       // Queue for Supabase sync
       const eventData = {
-        ts: timestamp, modelId,
+        ts: timestamp,
+        monthKey,
+        modelId,
         displayName: model.displayName || modelId,
         app: activity.app,
         features: activity.features,
@@ -691,9 +688,7 @@ chrome.webRequest.onBeforeRequest.addListener(
         path: details.url || ''
       };
       await appendToSyncQueue({ type: 'event', data: eventData, retryCount: 0 });
-      await appendToSyncQueue({ type: 'timestamp', data: { modelId, ts: timestamp }, retryCount: 0 });
-
-      console.log(`Logged timestamps_${modelId} (slug: ${apiModelSlug})`);
+      console.log(`Logged monthly usage for ${modelId} (slug: ${apiModelSlug})`);
     } catch (error) {
       console.warn('Could not parse request body.', error);
     }
@@ -757,7 +752,7 @@ async function ensureAlarmsAndSession() {
     chrome.alarms.create('dailyCleanup', { periodInMinutes: 1440 });
   }
   if (!names.has('syncFlush')) {
-    chrome.alarms.create('syncFlush', { periodInMinutes: 5 });
+    chrome.alarms.create('syncFlush', { periodInMinutes: 300 });
   }
 
   // 세션 토큰 만료 시 자동 갱신
@@ -766,7 +761,7 @@ async function ensureAlarmsAndSession() {
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.alarms.create('dailyCleanup', { periodInMinutes: 1440 });
-  chrome.alarms.create('syncFlush', { periodInMinutes: 5 });
+  chrome.alarms.create('syncFlush', { periodInMinutes: 300 });
 });
 
 // 브라우저 재시작 시 세션 갱신 + 알람 재생성
