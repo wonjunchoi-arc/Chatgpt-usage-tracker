@@ -5,20 +5,38 @@ Supabase에 수집된 ChatGPT 사용 데이터를 팀별·개인별로 시각화
 ## 주요 기능
 
 - **전체 현황** — 조직 전체 사용량 집계 및 추이
-- **팀별 현황** — 팀 단위 사용량 비교
-- **개인별 현황** — 사용자별 상세 활동 내역
-- **기능별 분석** — 일반 채팅, 파일 분석, 캔버스, 커넥터 등 기능 활용 비율
+- **팀별 현황** — 팀 단위 월별 사용량, 활동 유형 분포, 기간별 추이
+- **팀원 상세 보기** — 팀원 사용량 표에서 "자세히 보기" 버튼으로 채팅·파일첨부·검색 등 활동 유형별 수치 확장 표시
+- **개인별 현황** — 사용자별 상세 활동 내역 및 기간별 추이
+- **팀 비교** — 팀 간 사용량·활동 유형 비교
+- **사용자 관리** — 관리자가 팀원 팀 배정·역할 변경·계정 삭제 (Admin 전용)
 - **팀 관리** — 관리자가 팀 생성·수정·삭제 (Admin 전용)
+
+## 데이터 아키텍처
+
+raw 이벤트(`activity_events`)에 직접 집계하지 않고, Supabase 트리거가 INSERT 시 자동으로 사전 집계 테이블을 갱신합니다. 대시보드는 이 집계 테이블만 읽습니다.
+
+| 테이블 | 역할 |
+|--------|------|
+| `monthly_usage_summary` | 월별 × 유저 × 모델별 사용 횟수 |
+| `monthly_app_summary` | 월별 × 유저 × 앱별 사용 횟수 |
+| `monthly_feature_summary` | 월별 × 유저 × 기능별 사용 횟수 |
+| `monthly_team_model_summary` | 월별 × 팀 × 모델별 사용 횟수 |
+| `monthly_team_app_summary` | 월별 × 팀 × 앱별 사용 횟수 |
+| `monthly_team_feature_summary` | 월별 × 팀 × 기능별 사용 횟수 |
+| `monthly_team_active_members` | 월별 × 팀 × 활성 멤버 수 |
+| `daily_activity_breakdown` | 일별 × 유저 × 활동 유형별 사용 횟수 |
 
 ## 페이지 구조
 
 ```text
 /login                        # 로그인
 /dashboard                    # 전체 현황 요약
-/dashboard/team               # 팀별 사용량 비교
+/dashboard/team               # 팀별 사용량 (월별)
 /dashboard/user/[userId]      # 개인별 상세 내역
-/dashboard/compare            # 팀·기간 비교
-/dashboard/admin              # 관리자 전용
+/dashboard/compare            # 팀 간 비교
+/dashboard/admin              # 관리자 전용 — 팀별 현황
+/dashboard/admin/users        # 사용자 관리 (팀 배정, 역할, 삭제)
 /dashboard/admin/teams        # 팀 관리 (생성·수정·삭제)
 ```
 
@@ -29,7 +47,7 @@ Supabase에 수집된 ChatGPT 사용 데이터를 팀별·개인별로 시각화
 | 프레임워크 | Next.js 15 (App Router) |
 | 언어 | TypeScript |
 | 스타일 | Tailwind CSS |
-| 데이터베이스 | Supabase (PostgreSQL) |
+| 데이터베이스 | Supabase (PostgreSQL + 트리거 기반 자동 집계) |
 | 인증 | Supabase Auth (미들웨어 기반 세션 관리) |
 
 ## 로컬 개발 환경 설정
@@ -78,10 +96,11 @@ dashboard/
 │   │   ├── login/             # 로그인 페이지
 │   │   └── dashboard/
 │   │       ├── page.tsx       # 전체 현황
-│   │       ├── team/          # 팀별 현황
+│   │       ├── team/          # 팀별 현황 (월별)
 │   │       ├── user/[userId]/ # 개인별 현황
-│   │       ├── compare/       # 비교 분석
+│   │       ├── compare/       # 팀 비교
 │   │       └── admin/         # 관리자 페이지
+│   │           ├── users/     # 사용자 관리
 │   │           └── teams/     # 팀 관리
 │   ├── components/            # 공통 UI 컴포넌트
 │   ├── lib/
