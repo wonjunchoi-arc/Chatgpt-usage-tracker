@@ -31,7 +31,7 @@ export interface DashboardSummary {
 export async function getProfile(supabase: SupabaseClient, userId: string): Promise<Profile | null> {
   const { data } = await supabase
     .from('profiles')
-    .select('id, email, display_name, team_id, role, created_at')
+    .select('id, email, display_name, team_id, signup_source, is_bootstrap_admin, role, created_at')
     .eq('id', userId)
     .single();
   return data;
@@ -48,7 +48,7 @@ export async function getAllTeams(supabase: SupabaseClient): Promise<Team[]> {
 export async function getTeamMembers(supabase: SupabaseClient, teamId: string): Promise<Profile[]> {
   const { data } = await supabase
     .from('profiles')
-    .select('id, email, display_name, team_id, role, created_at')
+    .select('id, email, display_name, team_id, signup_source, is_bootstrap_admin, role, created_at')
     .eq('team_id', teamId)
     .order('display_name', { ascending: true, nullsFirst: false })
     .order('email');
@@ -59,7 +59,7 @@ export async function getAllProfilesWithTeams(supabase: SupabaseClient): Promise
   const [{ data: profiles }, teams] = await Promise.all([
     supabase
       .from('profiles')
-      .select('id, email, display_name, team_id, role, created_at')
+      .select('id, email, display_name, team_id, signup_source, is_bootstrap_admin, role, created_at')
       .order('created_at', { ascending: false }),
     getAllTeams(supabase),
   ]);

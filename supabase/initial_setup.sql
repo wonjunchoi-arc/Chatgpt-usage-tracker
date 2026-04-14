@@ -19,6 +19,8 @@ CREATE TABLE profiles (
   email      text NOT NULL,
   display_name text,
   team_id    uuid REFERENCES teams(id) ON DELETE SET NULL,
+  signup_source text NOT NULL DEFAULT 'extension' CHECK (signup_source IN ('dashboard', 'extension', 'unknown')),
+  is_bootstrap_admin boolean NOT NULL DEFAULT false,
   role       text NOT NULL DEFAULT 'member' CHECK (role IN ('member', 'admin')),
   created_at timestamptz NOT NULL DEFAULT now()
 );
@@ -477,101 +479,135 @@ ON CONFLICT (name) DO NOTHING;
 -- RLS 정책
 -- ============================================================
 
+CREATE OR REPLACE FUNCTION is_admin(check_user_id uuid DEFAULT auth.uid())
+RETURNS boolean AS $$
+  SELECT EXISTS (
+    SELECT 1
+    FROM profiles
+    WHERE id = check_user_id
+      AND role = 'admin'
+  );
+$$ LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public;
+
 CREATE POLICY "Authenticated users see all teams" ON teams
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Authenticated users manage teams" ON teams
-  FOR ALL USING (auth.uid() IS NOT NULL)
-  WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "Admins manage teams" ON teams
+  FOR ALL USING (is_admin())
+  WITH CHECK (is_admin());
 
 CREATE POLICY "Authenticated users see all profiles" ON profiles
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Authenticated users manage profiles" ON profiles
-  FOR ALL USING (auth.uid() IS NOT NULL)
-  WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "Admins manage profiles" ON profiles
+  FOR UPDATE USING (is_admin())
+  WITH CHECK (is_admin());
+
+CREATE POLICY "Admins delete profiles" ON profiles
+  FOR DELETE USING (is_admin());
 
 CREATE POLICY "Authenticated users see all events" ON activity_events
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Authenticated users manage activity_events" ON activity_events
-  FOR ALL USING (auth.uid() IS NOT NULL)
-  WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "Authenticated users insert activity_events" ON activity_events
+  FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
+
+CREATE POLICY "Admins manage activity_events" ON activity_events
+  FOR UPDATE USING (is_admin())
+  WITH CHECK (is_admin());
+
+CREATE POLICY "Admins delete activity_events" ON activity_events
+  FOR DELETE USING (is_admin());
 
 CREATE POLICY "Authenticated users see daily activity breakdown" ON daily_activity_breakdown
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Authenticated users manage daily activity breakdown" ON daily_activity_breakdown
-  FOR ALL USING (auth.uid() IS NOT NULL)
-  WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "Admins manage daily activity breakdown" ON daily_activity_breakdown
+  FOR ALL USING (is_admin())
+  WITH CHECK (is_admin());
 
 CREATE POLICY "Authenticated users see monthly usage summary" ON monthly_usage_summary
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Authenticated users manage monthly usage summary" ON monthly_usage_summary
-  FOR ALL USING (auth.uid() IS NOT NULL)
-  WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "Admins manage monthly usage summary" ON monthly_usage_summary
+  FOR ALL USING (is_admin())
+  WITH CHECK (is_admin());
 
 CREATE POLICY "Authenticated users see monthly app summary" ON monthly_app_summary
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Authenticated users manage monthly app summary" ON monthly_app_summary
-  FOR ALL USING (auth.uid() IS NOT NULL)
-  WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "Admins manage monthly app summary" ON monthly_app_summary
+  FOR ALL USING (is_admin())
+  WITH CHECK (is_admin());
 
 CREATE POLICY "Authenticated users see monthly feature summary" ON monthly_feature_summary
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Authenticated users manage monthly feature summary" ON monthly_feature_summary
-  FOR ALL USING (auth.uid() IS NOT NULL)
-  WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "Admins manage monthly feature summary" ON monthly_feature_summary
+  FOR ALL USING (is_admin())
+  WITH CHECK (is_admin());
 
 CREATE POLICY "Authenticated users see monthly team model summary" ON monthly_team_model_summary
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Authenticated users manage monthly team model summary" ON monthly_team_model_summary
-  FOR ALL USING (auth.uid() IS NOT NULL)
-  WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "Admins manage monthly team model summary" ON monthly_team_model_summary
+  FOR ALL USING (is_admin())
+  WITH CHECK (is_admin());
 
 CREATE POLICY "Authenticated users see monthly team app summary" ON monthly_team_app_summary
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Authenticated users manage monthly team app summary" ON monthly_team_app_summary
-  FOR ALL USING (auth.uid() IS NOT NULL)
-  WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "Admins manage monthly team app summary" ON monthly_team_app_summary
+  FOR ALL USING (is_admin())
+  WITH CHECK (is_admin());
 
 CREATE POLICY "Authenticated users see monthly team feature summary" ON monthly_team_feature_summary
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Authenticated users manage monthly team feature summary" ON monthly_team_feature_summary
-  FOR ALL USING (auth.uid() IS NOT NULL)
-  WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "Admins manage monthly team feature summary" ON monthly_team_feature_summary
+  FOR ALL USING (is_admin())
+  WITH CHECK (is_admin());
 
 CREATE POLICY "Authenticated users see monthly team active members" ON monthly_team_active_members
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Authenticated users manage monthly team active members" ON monthly_team_active_members
-  FOR ALL USING (auth.uid() IS NOT NULL)
-  WITH CHECK (auth.uid() IS NOT NULL);
+CREATE POLICY "Admins manage monthly team active members" ON monthly_team_active_members
+  FOR ALL USING (is_admin())
+  WITH CHECK (is_admin());
 
 -- ============================================================
 -- 회원가입 시 프로필 자동 생성
--- 첫 가입자는 admin, 이후 가입자는 member로 저장한다.
--- display_name이 있으면 auth 메타데이터에서 함께 저장한다.
+-- dashboard 경로로 가입한 첫 2명만 bootstrap admin으로 저장한다.
+-- display_name / signup_source는 auth 메타데이터에서 함께 저장한다.
 -- ============================================================
 
 CREATE OR REPLACE FUNCTION handle_new_user()
 RETURNS trigger AS $$
 DECLARE
   assigned_role text := 'member';
+  assigned_bootstrap_admin boolean := false;
   user_display_name text := nullif(trim(coalesce(NEW.raw_user_meta_data->>'display_name', '')), '');
+  user_signup_source text := lower(nullif(trim(coalesce(NEW.raw_user_meta_data->>'signup_source', '')), ''));
 BEGIN
-  IF NOT EXISTS (SELECT 1 FROM profiles) THEN
-    assigned_role := 'admin';
+  IF user_signup_source IS NULL THEN
+    user_signup_source := 'unknown';
   END IF;
 
-  INSERT INTO profiles (id, email, display_name, role)
-  VALUES (NEW.id, NEW.email, user_display_name, assigned_role);
+  -- Serialize bootstrap admin assignment so concurrent signups cannot exceed two admins.
+  PERFORM pg_advisory_xact_lock(hashtextextended('chatgpt_usage_tracker_bootstrap_admins', 0));
+
+  IF user_signup_source = 'dashboard'
+     AND (
+       SELECT count(*)
+       FROM profiles
+       WHERE is_bootstrap_admin = true
+     ) < 2 THEN
+    assigned_role := 'admin';
+    assigned_bootstrap_admin := true;
+  END IF;
+
+  INSERT INTO profiles (id, email, display_name, signup_source, is_bootstrap_admin, role)
+  VALUES (NEW.id, NEW.email, user_display_name, user_signup_source, assigned_bootstrap_admin, assigned_role);
 
   RETURN NEW;
 END;

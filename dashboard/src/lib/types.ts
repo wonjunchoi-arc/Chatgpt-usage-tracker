@@ -9,6 +9,8 @@ export interface Profile {
   email: string;
   display_name: string | null;
   team_id: string | null;
+  signup_source: 'dashboard' | 'extension' | 'unknown';
+  is_bootstrap_admin: boolean;
   role: 'member' | 'admin';
   created_at: string;
 }

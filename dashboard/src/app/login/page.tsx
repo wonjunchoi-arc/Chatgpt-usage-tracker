@@ -29,6 +29,7 @@ export default function LoginPage() {
               options: {
                 data: {
                   display_name: displayName.trim() || null,
+                  signup_source: 'dashboard',
                 },
               },
             });
@@ -38,7 +39,7 @@ export default function LoginPage() {
         return;
       }
 
-      router.push('/dashboard');
+      router.push('/dashboard/team');
       router.refresh();
     } catch {
       setError('오류가 발생했습니다.');

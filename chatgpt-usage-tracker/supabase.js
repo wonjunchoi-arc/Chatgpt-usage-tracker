@@ -75,7 +75,8 @@ async function signUp(email, password, displayName = '') {
       options: {
         emailRedirectTo: `${SUPABASE_URL}/auth/v1/callback`,
         data: {
-          display_name: displayName.trim() || null
+          display_name: displayName.trim() || null,
+          signup_source: 'extension'
         }
       }
     })

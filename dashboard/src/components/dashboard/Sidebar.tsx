@@ -56,24 +56,28 @@ export default function Sidebar({ userLabel, teamName, isAdmin }: SidebarProps) 
           </Link>
         ))}
 
-        <div className="pt-4 pb-2">
-          <p className="px-3 text-xs font-semibold text-gray-400 uppercase">
-            {isAdmin ? '관리자' : '관리'}
-          </p>
-        </div>
-        {adminItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-              pathname === item.href
-                ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400'
-                : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-            }`}
-          >
-            {item.label}
-          </Link>
-        ))}
+        {isAdmin && (
+          <>
+            <div className="pt-4 pb-2">
+              <p className="px-3 text-xs font-semibold text-gray-400 uppercase">
+                관리자
+              </p>
+            </div>
+            {adminItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  pathname === item.href
+                    ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400'
+                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </>
+        )}
       </nav>
 
       <div className="p-4 border-t border-gray-200 dark:border-gray-700">

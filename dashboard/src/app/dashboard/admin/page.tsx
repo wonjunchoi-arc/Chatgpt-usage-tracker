@@ -10,6 +10,7 @@ export default async function AdminPage() {
 
   const profile = await getProfile(supabase, user.id);
   if (!profile) redirect('/login');
+  if (profile.role !== 'admin') redirect('/dashboard/team');
 
   const teamData = await getAllTeamsWithAdminStats(supabase);
 
