@@ -3,15 +3,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const gate = document.getElementById('cqt-gate');
   const panel = document.getElementById('cqt-panel');
   const gateBtn = document.getElementById('cqt-gate-btn');
+  const gateTitle = document.querySelector('.cqt-gate-title');
+  const gateDesc = document.querySelector('.cqt-gate-desc');
   let panelInitialized = false;
 
   gateBtn.addEventListener('click', () => chrome.runtime.openOptionsPage());
 
   chrome.runtime.sendMessage({ action: 'getSyncStatus' }, status => {
-    const isLoggedIn = !!(status && status.loggedIn && !chrome.runtime.lastError);
+    const isConfigured = !!(status && status.configured && !chrome.runtime.lastError);
+    const isLoggedIn = !!(status && status.loggedIn && isConfigured && !chrome.runtime.lastError);
 
     gate.hidden = isLoggedIn;
     panel.hidden = !isLoggedIn;
+
+    if (!isConfigured) {
+      gateTitle.textContent = '회사 연결이 필요합니다';
+      gateDesc.textContent = '먼저 회사별 Supabase 정보를 연결한 뒤 로그인하세요.';
+      gateBtn.textContent = '설정에서 연결';
+    } else {
+      gateTitle.textContent = '로그인이 필요합니다';
+      gateDesc.textContent = '데이터를 팀 서버에 동기화하려면 먼저 로그인하세요.';
+      gateBtn.textContent = '설정에서 로그인';
+    }
 
     if (isLoggedIn && !panelInitialized) {
       panelInitialized = true;
@@ -257,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
     activityList.textContent = '';
 
     chrome.runtime.sendMessage({ action: 'getDashboardData' }, resp => {
-      if (chrome.runtime.lastError || !resp || resp.requiresAuth) {
+      if (chrome.runtime.lastError || !resp || resp.requiresAuth || resp.requiresSetup) {
         renderError();
         return;
       }
@@ -280,7 +293,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       syncBar.hidden = false;
 
-      if (!status.loggedIn) {
+      if (!status.configured) {
+        syncText.textContent = t('sync_not_connected', '회사 연결 필요');
+        syncLink.textContent = t('sync_connect_prompt', '연결');
+        syncLink.onclick = (e) => {
+          e.preventDefault();
+          chrome.runtime.openOptionsPage();
+        };
+      } else if (!status.loggedIn) {
         syncText.textContent = t('sync_not_logged_in', '서버 동기화 미연결');
         syncLink.textContent = t('sync_sign_in_prompt', '설정');
         syncLink.onclick = (e) => {
@@ -289,6 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
       } else {
         const parts = [];
+        if (status.workspaceName) parts.push(status.workspaceName);
         if (status.teamName) parts.push(status.teamName);
         if (status.queueSize > 0) parts.push(`${t('sync_queue', '대기')} ${status.queueSize}`);
         if (status.lastSyncTimestamp) {

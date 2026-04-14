@@ -1,4 +1,4 @@
-importScripts('config.js', 'supabase.js');
+importScripts('supabase.js');
 
 const DEBUG = true;
 const CACHE_DURATION_MS = 60 * 60 * 1000;
@@ -706,8 +706,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   (async () => {
     if (request.action === 'getDashboardData' || request.action === 'getUsageData') {
       const status = await getSyncStatus();
-      if (!status.loggedIn) {
+      if (!status.configured || !status.loggedIn) {
         sendResponse({
+          requiresSetup: !status.configured,
           requiresAuth: true,
           data: [],
           activity: { recent: [], stats: {}, featureCounts: {} }

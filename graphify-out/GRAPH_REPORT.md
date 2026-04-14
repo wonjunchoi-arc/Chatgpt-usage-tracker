@@ -1,11 +1,11 @@
 # Graph Report - .  (2026-04-14)
 
 ## Corpus Check
-- 38 files · ~20,580 words
+- 37 files · ~21,260 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 205 nodes · 290 edges · 47 communities detected
+- 216 nodes · 328 edges · 46 communities detected
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 10 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
@@ -56,19 +56,18 @@
 - [[_COMMUNITY_Community 43|Community 43]]
 - [[_COMMUNITY_Community 44|Community 44]]
 - [[_COMMUNITY_Community 45|Community 45]]
-- [[_COMMUNITY_Community 46|Community 46]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `ChatGPT Web Payload Analysis Guide` - 13 edges
 2. `inferActivity()` - 11 edges
-3. `getTeamDashboardSummary()` - 8 edges
-4. `getUserDashboardSummary()` - 7 edges
-5. `getTeamMembersWithSummaryUsage()` - 7 edges
-6. `ensureValidSession()` - 7 edges
-7. `Project Philosophy - ChatGPT Usage Tracker` - 7 edges
-8. `getMemberSummaryOptions()` - 6 edges
-9. `storageGet()` - 6 edges
-10. `storageSet()` - 6 edges
+3. `getWorkspaceConfig()` - 11 edges
+4. `getTeamDashboardSummary()` - 8 edges
+5. `sbStorageSet()` - 8 edges
+6. `ensureValidSession()` - 8 edges
+7. `getUserDashboardSummary()` - 7 edges
+8. `getTeamMembersWithSummaryUsage()` - 7 edges
+9. `saveWorkspaceConfig()` - 7 edges
+10. `requireWorkspaceConfig()` - 7 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `Privacy-First Design Principle` --conceptually_related_to--> `Activity Event Storage Strategy (app + features)`  [INFERRED]
@@ -100,20 +99,20 @@ Cohesion: 0.14
 Nodes (23): aggregateStats(), buildActivityCounts(), buildDailyBreakdown(), buildDashboardSummary(), createEmptyActivityCounts(), getAllProfilesWithTeams(), getAllTeams(), getAllTeamsWithAdminStats() (+15 more)
 
 ### Community 2 - "Community 2"
+Cohesion: 0.19
+Nodes (29): appendToSyncQueue(), clearSession(), clearWorkspaceConfig(), ensureValidSession(), fetchTeams(), flushSyncQueue(), getSession(), getSyncStatus() (+21 more)
+
+### Community 3 - "Community 3"
 Cohesion: 0.11
 Nodes (26): ChatGPT Web Payload Analysis Guide, Canvas Feature Classification Rule, Feature Classification Priority Order, Connector App Classification Rule, Conversation Request Payload (Core Signal), attachments Payload Field, conversation_mode Payload Field, ecosystemMention Symbol (custom_symbol_offsets) (+18 more)
 
-### Community 3 - "Community 3"
-Cohesion: 0.23
-Nodes (21): appendToSyncQueue(), clearSession(), ensureValidSession(), fetchTeams(), flushSyncQueue(), getSession(), getSyncStatus(), getUserProfile() (+13 more)
-
 ### Community 4 - "Community 4"
-Cohesion: 0.22
-Nodes (1): handleDelete()
+Cohesion: 0.3
+Nodes (9): formatTime(), renderAuthState(), renderSyncState(), renderTeamState(), renderWorkspaceState(), setCollapsedState(), showError(), updateTeamCollapse() (+1 more)
 
 ### Community 5 - "Community 5"
-Cohesion: 0.39
-Nodes (5): formatTime(), renderAuthState(), renderSyncState(), renderTeamState(), showError()
+Cohesion: 0.22
+Nodes (1): handleDelete()
 
 ### Community 6 - "Community 6"
 Cohesion: 0.5
@@ -257,25 +256,21 @@ Nodes (0):
 
 ### Community 41 - "Community 41"
 Cohesion: 1.0
-Nodes (0): 
+Nodes (1): ChatGPT Usage Limit Tracker (Root README)
 
 ### Community 42 - "Community 42"
 Cohesion: 1.0
-Nodes (1): ChatGPT Usage Limit Tracker (Root README)
+Nodes (1): Dashboard Next.js Project README
 
 ### Community 43 - "Community 43"
 Cohesion: 1.0
-Nodes (1): Dashboard Next.js Project README
+Nodes (1): Window SVG Icon
 
 ### Community 44 - "Community 44"
 Cohesion: 1.0
-Nodes (1): Window SVG Icon
-
-### Community 45 - "Community 45"
-Cohesion: 1.0
 Nodes (1): Globe SVG Icon
 
-### Community 46 - "Community 46"
+### Community 45 - "Community 45"
 Cohesion: 1.0
 Nodes (1): File / Document SVG Icon
 
@@ -344,17 +339,15 @@ Nodes (1): File / Document SVG Icon
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 40`** (1 nodes): `config.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 41`** (1 nodes): `config.example.js`
+- **Thin community `Community 41`** (1 nodes): `ChatGPT Usage Limit Tracker (Root README)`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 42`** (1 nodes): `ChatGPT Usage Limit Tracker (Root README)`
+- **Thin community `Community 42`** (1 nodes): `Dashboard Next.js Project README`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 43`** (1 nodes): `Dashboard Next.js Project README`
+- **Thin community `Community 43`** (1 nodes): `Window SVG Icon`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 44`** (1 nodes): `Window SVG Icon`
+- **Thin community `Community 44`** (1 nodes): `Globe SVG Icon`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 45`** (1 nodes): `Globe SVG Icon`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 46`** (1 nodes): `File / Document SVG Icon`
+- **Thin community `Community 45`** (1 nodes): `File / Document SVG Icon`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
@@ -368,5 +361,5 @@ _Questions this graph is uniquely positioned to answer:_
   _Cohesion score 0.12 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.14 - nodes in this community are weakly interconnected._
-- **Should `Community 2` be split into smaller, more focused modules?**
+- **Should `Community 3` be split into smaller, more focused modules?**
   _Cohesion score 0.11 - nodes in this community are weakly interconnected._

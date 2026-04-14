@@ -384,7 +384,7 @@
       "source_file": "dashboard/src/app/dashboard/admin/teams/page.tsx",
       "source_location": "L1",
       "id": "dashboard_src_app_dashboard_admin_teams_page_tsx",
-      "community": 4
+      "community": 5
     },
     {
       "label": "checkAdminAndLoad()",
@@ -392,7 +392,7 @@
       "source_file": "dashboard/src/app/dashboard/admin/teams/page.tsx",
       "source_location": "L32",
       "id": "page_checkadminandload",
-      "community": 4
+      "community": 5
     },
     {
       "label": "handleCreate()",
@@ -400,7 +400,7 @@
       "source_file": "dashboard/src/app/dashboard/admin/teams/page.tsx",
       "source_location": "L48",
       "id": "page_handlecreate",
-      "community": 4
+      "community": 5
     },
     {
       "label": "handleUpdate()",
@@ -408,7 +408,7 @@
       "source_file": "dashboard/src/app/dashboard/admin/teams/page.tsx",
       "source_location": "L67",
       "id": "page_handleupdate",
-      "community": 4
+      "community": 5
     },
     {
       "label": "handleDelete()",
@@ -416,7 +416,7 @@
       "source_file": "dashboard/src/app/dashboard/admin/users/page.tsx",
       "source_location": "L101",
       "id": "page_handledelete",
-      "community": 4
+      "community": 5
     },
     {
       "label": "page.tsx",
@@ -424,7 +424,7 @@
       "source_file": "dashboard/src/app/dashboard/admin/users/page.tsx",
       "source_location": "L1",
       "id": "dashboard_src_app_dashboard_admin_users_page_tsx",
-      "community": 4
+      "community": 5
     },
     {
       "label": "loadCurrentUserAndData()",
@@ -432,7 +432,7 @@
       "source_file": "dashboard/src/app/dashboard/admin/users/page.tsx",
       "source_location": "L50",
       "id": "page_loadcurrentuseranddata",
-      "community": 4
+      "community": 5
     },
     {
       "label": "startEdit()",
@@ -440,7 +440,7 @@
       "source_file": "dashboard/src/app/dashboard/admin/users/page.tsx",
       "source_location": "L71",
       "id": "page_startedit",
-      "community": 4
+      "community": 5
     },
     {
       "label": "handleSave()",
@@ -448,7 +448,7 @@
       "source_file": "dashboard/src/app/dashboard/admin/users/page.tsx",
       "source_location": "L81",
       "id": "page_handlesave",
-      "community": 4
+      "community": 5
     },
     {
       "label": "page.tsx",
@@ -806,7 +806,7 @@
       "label": "initPanel()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/popup.js",
-      "source_location": "L22",
+      "source_location": "L35",
       "id": "popup_initpanel",
       "community": 27
     },
@@ -1118,7 +1118,7 @@
       "label": "ensureAlarmsAndSession()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/background.js",
-      "source_location": "L747",
+      "source_location": "L748",
       "id": "background_ensurealarmsandsession",
       "community": 0
     },
@@ -1131,76 +1131,100 @@
       "community": 40
     },
     {
-      "label": "config.example.js",
-      "file_type": "code",
-      "source_file": "chatgpt-usage-tracker/config.example.js",
-      "source_location": "L1",
-      "id": "chatgpt_usage_tracker_config_example_js",
-      "community": 41
-    },
-    {
       "label": "options.js",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/options.js",
       "source_location": "L1",
       "id": "chatgpt_usage_tracker_options_js",
-      "community": 5
+      "community": 4
     },
     {
       "label": "hideMessages()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/options.js",
-      "source_location": "L46",
+      "source_location": "L65",
       "id": "options_hidemessages",
-      "community": 5
+      "community": 4
     },
     {
       "label": "showError()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/options.js",
-      "source_location": "L52",
+      "source_location": "L73",
       "id": "options_showerror",
-      "community": 5
+      "community": 4
     },
     {
       "label": "showSuccess()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/options.js",
-      "source_location": "L57",
+      "source_location": "L78",
       "id": "options_showsuccess",
-      "community": 5
+      "community": 4
     },
     {
       "label": "formatTime()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/options.js",
-      "source_location": "L63",
+      "source_location": "L86",
       "id": "options_formattime",
-      "community": 5
+      "community": 4
+    },
+    {
+      "label": "setCollapsedState()",
+      "file_type": "code",
+      "source_file": "chatgpt-usage-tracker/options.js",
+      "source_location": "L91",
+      "id": "options_setcollapsedstate",
+      "community": 4
+    },
+    {
+      "label": "updateWorkspaceCollapse()",
+      "file_type": "code",
+      "source_file": "chatgpt-usage-tracker/options.js",
+      "source_location": "L97",
+      "id": "options_updateworkspacecollapse",
+      "community": 4
+    },
+    {
+      "label": "updateTeamCollapse()",
+      "file_type": "code",
+      "source_file": "chatgpt-usage-tracker/options.js",
+      "source_location": "L107",
+      "id": "options_updateteamcollapse",
+      "community": 4
+    },
+    {
+      "label": "renderWorkspaceState()",
+      "file_type": "code",
+      "source_file": "chatgpt-usage-tracker/options.js",
+      "source_location": "L117",
+      "id": "options_renderworkspacestate",
+      "community": 4
     },
     {
       "label": "renderAuthState()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/options.js",
-      "source_location": "L71",
+      "source_location": "L150",
       "id": "options_renderauthstate",
-      "community": 5
+      "community": 4
     },
     {
       "label": "renderTeamState()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/options.js",
-      "source_location": "L95",
+      "source_location": "L177",
       "id": "options_renderteamstate",
-      "community": 5
+      "community": 4
     },
     {
       "label": "renderSyncState()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/options.js",
-      "source_location": "L114",
+      "source_location": "L198",
       "id": "options_rendersyncstate",
-      "community": 5
+      "community": 4
     },
     {
       "label": "supabase.js",
@@ -1208,175 +1232,239 @@
       "source_file": "chatgpt-usage-tracker/supabase.js",
       "source_location": "L1",
       "id": "chatgpt_usage_tracker_supabase_js",
-      "community": 3
+      "community": 2
     },
     {
       "label": "sbStorageGet()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L19",
+      "source_location": "L16",
       "id": "supabase_sbstorageget",
-      "community": 3
+      "community": 2
     },
     {
       "label": "sbStorageSet()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L23",
+      "source_location": "L20",
       "id": "supabase_sbstorageset",
-      "community": 3
+      "community": 2
+    },
+    {
+      "label": "normalizeSupabaseUrl()",
+      "file_type": "code",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L24",
+      "id": "supabase_normalizesupabaseurl",
+      "community": 2
+    },
+    {
+      "label": "normalizeWorkspaceName()",
+      "file_type": "code",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L28",
+      "id": "supabase_normalizeworkspacename",
+      "community": 2
+    },
+    {
+      "label": "normalizeAnonKey()",
+      "file_type": "code",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L32",
+      "id": "supabase_normalizeanonkey",
+      "community": 2
+    },
+    {
+      "label": "validateWorkspaceConfig()",
+      "file_type": "code",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L36",
+      "id": "supabase_validateworkspaceconfig",
+      "community": 2
+    },
+    {
+      "label": "getWorkspaceConfig()",
+      "file_type": "code",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L57",
+      "id": "supabase_getworkspaceconfig",
+      "community": 2
+    },
+    {
+      "label": "saveWorkspaceConfig()",
+      "file_type": "code",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L76",
+      "id": "supabase_saveworkspaceconfig",
+      "community": 2
+    },
+    {
+      "label": "clearWorkspaceConfig()",
+      "file_type": "code",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L111",
+      "id": "supabase_clearworkspaceconfig",
+      "community": 2
+    },
+    {
+      "label": "requireWorkspaceConfig()",
+      "file_type": "code",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L125",
+      "id": "supabase_requireworkspaceconfig",
+      "community": 2
     },
     {
       "label": "getSession()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L29",
+      "source_location": "L135",
       "id": "supabase_getsession",
-      "community": 3
+      "community": 2
     },
     {
       "label": "saveSession()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L34",
+      "source_location": "L140",
       "id": "supabase_savesession",
-      "community": 3
+      "community": 2
     },
     {
       "label": "clearSession()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L41",
+      "source_location": "L147",
       "id": "supabase_clearsession",
-      "community": 3
+      "community": 2
     },
     {
       "label": "parseAuthResponse()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L50",
+      "source_location": "L156",
       "id": "supabase_parseauthresponse",
-      "community": 3
+      "community": 2
     },
     {
       "label": "signUp()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L65",
+      "source_location": "L171",
       "id": "supabase_signup",
-      "community": 3
+      "community": 2
     },
     {
       "label": "signIn()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L96",
+      "source_location": "L203",
       "id": "supabase_signin",
-      "community": 3
+      "community": 2
     },
     {
       "label": "signOut()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L117",
+      "source_location": "L225",
       "id": "supabase_signout",
-      "community": 3
+      "community": 2
     },
     {
       "label": "refreshSession()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L131",
+      "source_location": "L240",
       "id": "supabase_refreshsession",
-      "community": 3
+      "community": 2
     },
     {
       "label": "ensureValidSession()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L158",
+      "source_location": "L268",
       "id": "supabase_ensurevalidsession",
-      "community": 3
+      "community": 2
     },
     {
       "label": "restHeaders()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L170",
+      "source_location": "L281",
       "id": "supabase_restheaders",
-      "community": 3
+      "community": 2
     },
     {
       "label": "restGet()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L179",
+      "source_location": "L290",
       "id": "supabase_restget",
-      "community": 3
+      "community": 2
     },
     {
       "label": "restPost()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L187",
+      "source_location": "L299",
       "id": "supabase_restpost",
-      "community": 3
+      "community": 2
     },
     {
       "label": "restPatch()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L200",
+      "source_location": "L313",
       "id": "supabase_restpatch",
-      "community": 3
+      "community": 2
     },
     {
       "label": "fetchTeams()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L211",
+      "source_location": "L325",
       "id": "supabase_fetchteams",
-      "community": 3
+      "community": 2
     },
     {
       "label": "setUserTeam()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L217",
+      "source_location": "L331",
       "id": "supabase_setuserteam",
-      "community": 3
+      "community": 2
     },
     {
       "label": "getUserProfile()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L232",
+      "source_location": "L346",
       "id": "supabase_getuserprofile",
-      "community": 3
+      "community": 2
     },
     {
       "label": "appendToSyncQueue()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L244",
+      "source_location": "L358",
       "id": "supabase_appendtosyncqueue",
-      "community": 3
+      "community": 2
     },
     {
       "label": "flushSyncQueue()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L252",
+      "source_location": "L366",
       "id": "supabase_flushsyncqueue",
-      "community": 3
+      "community": 2
     },
     {
       "label": "getSyncStatus()",
       "file_type": "code",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L319",
+      "source_location": "L432",
       "id": "supabase_getsyncstatus",
-      "community": 3
+      "community": 2
     },
     {
       "label": "ChatGPT Usage Limit Tracker (Root README)",
@@ -1387,7 +1475,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 42,
+      "community": 41,
       "id": "readme_chatgpt_tracker"
     },
     {
@@ -1399,7 +1487,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 43,
+      "community": 42,
       "id": "dashboard_readme_nextjs"
     },
     {
@@ -1435,7 +1523,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "philosophy_project_philosophy"
     },
     {
@@ -1447,7 +1535,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "philosophy_privacy_first"
     },
     {
@@ -1459,7 +1547,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "philosophy_structural_signal"
     },
     {
@@ -1471,7 +1559,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "philosophy_cost_efficiency"
     },
     {
@@ -1483,7 +1571,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "philosophy_ax_transformation"
     },
     {
@@ -1495,7 +1583,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "philosophy_network_intercept_flow"
     },
     {
@@ -1507,7 +1595,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "philosophy_chrome_extension"
     },
     {
@@ -1519,7 +1607,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "philosophy_dashboard_component"
     },
     {
@@ -1531,7 +1619,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "payload_analysis_guide"
     },
     {
@@ -1543,7 +1631,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "payload_conversation_request"
     },
     {
@@ -1555,7 +1643,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "payload_classification_priority"
     },
     {
@@ -1567,7 +1655,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "payload_plain_chat"
     },
     {
@@ -1579,7 +1667,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "payload_connector_app"
     },
     {
@@ -1591,7 +1679,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "payload_skill_invocation"
     },
     {
@@ -1603,7 +1691,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "payload_canvas"
     },
     {
@@ -1615,7 +1703,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "payload_file_analysis"
     },
     {
@@ -1627,7 +1715,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "payload_project_context"
     },
     {
@@ -1639,7 +1727,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "payload_pro_model"
     },
     {
@@ -1651,7 +1739,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "payload_storage_strategy"
     },
     {
@@ -1663,7 +1751,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "payload_limitations"
     },
     {
@@ -1675,7 +1763,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "payload_field_system_hints"
     },
     {
@@ -1687,7 +1775,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "payload_field_conversation_mode"
     },
     {
@@ -1699,7 +1787,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "payload_field_attachments"
     },
     {
@@ -1711,7 +1799,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "payload_field_selected_hazelnuts"
     },
     {
@@ -1723,7 +1811,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "payload_field_ecosystem_mention"
     },
     {
@@ -1735,7 +1823,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "id": "payload_field_thinking_effort"
     },
     {
@@ -1831,7 +1919,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 43,
       "id": "svg_window"
     },
     {
@@ -1843,7 +1931,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 45,
+      "community": 44,
       "id": "svg_globe"
     },
     {
@@ -1867,7 +1955,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 45,
       "id": "svg_file"
     },
     {
@@ -3028,7 +3116,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/popup.js",
-      "source_location": "L22",
+      "source_location": "L35",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_popup_js",
       "_tgt": "popup_initpanel",
@@ -3484,7 +3572,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/background.js",
-      "source_location": "L747",
+      "source_location": "L748",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_background_js",
       "_tgt": "background_ensurealarmsandsession",
@@ -4072,7 +4160,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/options.js",
-      "source_location": "L46",
+      "source_location": "L65",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_options_js",
       "_tgt": "options_hidemessages",
@@ -4084,7 +4172,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/options.js",
-      "source_location": "L52",
+      "source_location": "L73",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_options_js",
       "_tgt": "options_showerror",
@@ -4096,7 +4184,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/options.js",
-      "source_location": "L57",
+      "source_location": "L78",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_options_js",
       "_tgt": "options_showsuccess",
@@ -4108,7 +4196,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/options.js",
-      "source_location": "L63",
+      "source_location": "L86",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_options_js",
       "_tgt": "options_formattime",
@@ -4120,7 +4208,55 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/options.js",
-      "source_location": "L71",
+      "source_location": "L91",
+      "weight": 1.0,
+      "_src": "chatgpt_usage_tracker_options_js",
+      "_tgt": "options_setcollapsedstate",
+      "source": "chatgpt_usage_tracker_options_js",
+      "target": "options_setcollapsedstate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/options.js",
+      "source_location": "L97",
+      "weight": 1.0,
+      "_src": "chatgpt_usage_tracker_options_js",
+      "_tgt": "options_updateworkspacecollapse",
+      "source": "chatgpt_usage_tracker_options_js",
+      "target": "options_updateworkspacecollapse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/options.js",
+      "source_location": "L107",
+      "weight": 1.0,
+      "_src": "chatgpt_usage_tracker_options_js",
+      "_tgt": "options_updateteamcollapse",
+      "source": "chatgpt_usage_tracker_options_js",
+      "target": "options_updateteamcollapse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/options.js",
+      "source_location": "L117",
+      "weight": 1.0,
+      "_src": "chatgpt_usage_tracker_options_js",
+      "_tgt": "options_renderworkspacestate",
+      "source": "chatgpt_usage_tracker_options_js",
+      "target": "options_renderworkspacestate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/options.js",
+      "source_location": "L150",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_options_js",
       "_tgt": "options_renderauthstate",
@@ -4132,7 +4268,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/options.js",
-      "source_location": "L95",
+      "source_location": "L177",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_options_js",
       "_tgt": "options_renderteamstate",
@@ -4144,7 +4280,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/options.js",
-      "source_location": "L114",
+      "source_location": "L198",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_options_js",
       "_tgt": "options_rendersyncstate",
@@ -4156,7 +4292,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/options.js",
-      "source_location": "L110",
+      "source_location": "L194",
       "weight": 1.0,
       "_src": "options_renderteamstate",
       "_tgt": "options_showerror",
@@ -4168,7 +4304,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/options.js",
-      "source_location": "L117",
+      "source_location": "L201",
       "weight": 1.0,
       "_src": "options_rendersyncstate",
       "_tgt": "options_formattime",
@@ -4180,7 +4316,67 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/options.js",
-      "source_location": "L85",
+      "source_location": "L104",
+      "weight": 1.0,
+      "_src": "options_updateworkspacecollapse",
+      "_tgt": "options_setcollapsedstate",
+      "source": "options_setcollapsedstate",
+      "target": "options_updateworkspacecollapse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/options.js",
+      "source_location": "L114",
+      "weight": 1.0,
+      "_src": "options_updateteamcollapse",
+      "_tgt": "options_setcollapsedstate",
+      "source": "options_setcollapsedstate",
+      "target": "options_updateteamcollapse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/options.js",
+      "source_location": "L135",
+      "weight": 1.0,
+      "_src": "options_renderworkspacestate",
+      "_tgt": "options_updateworkspacecollapse",
+      "source": "options_updateworkspacecollapse",
+      "target": "options_renderworkspacestate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/options.js",
+      "source_location": "L181",
+      "weight": 1.0,
+      "_src": "options_renderteamstate",
+      "_tgt": "options_updateteamcollapse",
+      "source": "options_updateteamcollapse",
+      "target": "options_renderteamstate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/options.js",
+      "source_location": "L151",
+      "weight": 1.0,
+      "_src": "options_renderauthstate",
+      "_tgt": "options_renderworkspacestate",
+      "source": "options_renderworkspacestate",
+      "target": "options_renderauthstate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/options.js",
+      "source_location": "L166",
       "weight": 1.0,
       "_src": "options_renderauthstate",
       "_tgt": "options_renderteamstate",
@@ -4192,7 +4388,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/options.js",
-      "source_location": "L86",
+      "source_location": "L167",
       "weight": 1.0,
       "_src": "options_renderauthstate",
       "_tgt": "options_rendersyncstate",
@@ -4204,7 +4400,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L19",
+      "source_location": "L16",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_sbstorageget",
@@ -4216,7 +4412,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L23",
+      "source_location": "L20",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_sbstorageset",
@@ -4228,7 +4424,103 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L29",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_src": "chatgpt_usage_tracker_supabase_js",
+      "_tgt": "supabase_normalizesupabaseurl",
+      "source": "chatgpt_usage_tracker_supabase_js",
+      "target": "supabase_normalizesupabaseurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_src": "chatgpt_usage_tracker_supabase_js",
+      "_tgt": "supabase_normalizeworkspacename",
+      "source": "chatgpt_usage_tracker_supabase_js",
+      "target": "supabase_normalizeworkspacename",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_src": "chatgpt_usage_tracker_supabase_js",
+      "_tgt": "supabase_normalizeanonkey",
+      "source": "chatgpt_usage_tracker_supabase_js",
+      "target": "supabase_normalizeanonkey",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L36",
+      "weight": 1.0,
+      "_src": "chatgpt_usage_tracker_supabase_js",
+      "_tgt": "supabase_validateworkspaceconfig",
+      "source": "chatgpt_usage_tracker_supabase_js",
+      "target": "supabase_validateworkspaceconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L57",
+      "weight": 1.0,
+      "_src": "chatgpt_usage_tracker_supabase_js",
+      "_tgt": "supabase_getworkspaceconfig",
+      "source": "chatgpt_usage_tracker_supabase_js",
+      "target": "supabase_getworkspaceconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L76",
+      "weight": 1.0,
+      "_src": "chatgpt_usage_tracker_supabase_js",
+      "_tgt": "supabase_saveworkspaceconfig",
+      "source": "chatgpt_usage_tracker_supabase_js",
+      "target": "supabase_saveworkspaceconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L111",
+      "weight": 1.0,
+      "_src": "chatgpt_usage_tracker_supabase_js",
+      "_tgt": "supabase_clearworkspaceconfig",
+      "source": "chatgpt_usage_tracker_supabase_js",
+      "target": "supabase_clearworkspaceconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L125",
+      "weight": 1.0,
+      "_src": "chatgpt_usage_tracker_supabase_js",
+      "_tgt": "supabase_requireworkspaceconfig",
+      "source": "chatgpt_usage_tracker_supabase_js",
+      "target": "supabase_requireworkspaceconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L135",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_getsession",
@@ -4240,7 +4532,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L34",
+      "source_location": "L140",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_savesession",
@@ -4252,7 +4544,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L41",
+      "source_location": "L147",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_clearsession",
@@ -4264,7 +4556,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L50",
+      "source_location": "L156",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_parseauthresponse",
@@ -4276,7 +4568,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L65",
+      "source_location": "L171",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_signup",
@@ -4288,7 +4580,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L96",
+      "source_location": "L203",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_signin",
@@ -4300,7 +4592,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L117",
+      "source_location": "L225",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_signout",
@@ -4312,7 +4604,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L131",
+      "source_location": "L240",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_refreshsession",
@@ -4324,7 +4616,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L158",
+      "source_location": "L268",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_ensurevalidsession",
@@ -4336,7 +4628,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L170",
+      "source_location": "L281",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_restheaders",
@@ -4348,7 +4640,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L179",
+      "source_location": "L290",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_restget",
@@ -4360,7 +4652,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L187",
+      "source_location": "L299",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_restpost",
@@ -4372,7 +4664,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L200",
+      "source_location": "L313",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_restpatch",
@@ -4384,7 +4676,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L211",
+      "source_location": "L325",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_fetchteams",
@@ -4396,7 +4688,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L217",
+      "source_location": "L331",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_setuserteam",
@@ -4408,7 +4700,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L232",
+      "source_location": "L346",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_getuserprofile",
@@ -4420,7 +4712,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L244",
+      "source_location": "L358",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_appendtosyncqueue",
@@ -4432,7 +4724,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L252",
+      "source_location": "L366",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_flushsyncqueue",
@@ -4444,7 +4736,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L319",
+      "source_location": "L432",
       "weight": 1.0,
       "_src": "chatgpt_usage_tracker_supabase_js",
       "_tgt": "supabase_getsyncstatus",
@@ -4456,7 +4748,19 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L30",
+      "source_location": "L58",
+      "weight": 1.0,
+      "_src": "supabase_getworkspaceconfig",
+      "_tgt": "supabase_sbstorageget",
+      "source": "supabase_sbstorageget",
+      "target": "supabase_getworkspaceconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L136",
       "weight": 1.0,
       "_src": "supabase_getsession",
       "_tgt": "supabase_sbstorageget",
@@ -4468,7 +4772,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L245",
+      "source_location": "L359",
       "weight": 1.0,
       "_src": "supabase_appendtosyncqueue",
       "_tgt": "supabase_sbstorageget",
@@ -4480,7 +4784,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L253",
+      "source_location": "L367",
       "weight": 1.0,
       "_src": "supabase_flushsyncqueue",
       "_tgt": "supabase_sbstorageget",
@@ -4492,7 +4796,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L321",
+      "source_location": "L435",
       "weight": 1.0,
       "_src": "supabase_getsyncstatus",
       "_tgt": "supabase_sbstorageget",
@@ -4504,7 +4808,31 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L35",
+      "source_location": "L106",
+      "weight": 1.0,
+      "_src": "supabase_saveworkspaceconfig",
+      "_tgt": "supabase_sbstorageset",
+      "source": "supabase_sbstorageset",
+      "target": "supabase_saveworkspaceconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L112",
+      "weight": 1.0,
+      "_src": "supabase_clearworkspaceconfig",
+      "_tgt": "supabase_sbstorageset",
+      "source": "supabase_sbstorageset",
+      "target": "supabase_clearworkspaceconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L141",
       "weight": 1.0,
       "_src": "supabase_savesession",
       "_tgt": "supabase_sbstorageset",
@@ -4516,7 +4844,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L42",
+      "source_location": "L148",
       "weight": 1.0,
       "_src": "supabase_clearsession",
       "_tgt": "supabase_sbstorageset",
@@ -4528,7 +4856,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L229",
+      "source_location": "L343",
       "weight": 1.0,
       "_src": "supabase_setuserteam",
       "_tgt": "supabase_sbstorageset",
@@ -4540,7 +4868,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L249",
+      "source_location": "L363",
       "weight": 1.0,
       "_src": "supabase_appendtosyncqueue",
       "_tgt": "supabase_sbstorageset",
@@ -4552,7 +4880,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L313",
+      "source_location": "L426",
       "weight": 1.0,
       "_src": "supabase_flushsyncqueue",
       "_tgt": "supabase_sbstorageset",
@@ -4564,7 +4892,223 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L118",
+      "source_location": "L59",
+      "weight": 1.0,
+      "_src": "supabase_getworkspaceconfig",
+      "_tgt": "supabase_normalizesupabaseurl",
+      "source": "supabase_normalizesupabaseurl",
+      "target": "supabase_getworkspaceconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L79",
+      "weight": 1.0,
+      "_src": "supabase_saveworkspaceconfig",
+      "_tgt": "supabase_normalizesupabaseurl",
+      "source": "supabase_normalizesupabaseurl",
+      "target": "supabase_saveworkspaceconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L61",
+      "weight": 1.0,
+      "_src": "supabase_getworkspaceconfig",
+      "_tgt": "supabase_normalizeworkspacename",
+      "source": "supabase_normalizeworkspacename",
+      "target": "supabase_getworkspaceconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L81",
+      "weight": 1.0,
+      "_src": "supabase_saveworkspaceconfig",
+      "_tgt": "supabase_normalizeworkspacename",
+      "source": "supabase_normalizeworkspacename",
+      "target": "supabase_saveworkspaceconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L60",
+      "weight": 1.0,
+      "_src": "supabase_getworkspaceconfig",
+      "_tgt": "supabase_normalizeanonkey",
+      "source": "supabase_normalizeanonkey",
+      "target": "supabase_getworkspaceconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L80",
+      "weight": 1.0,
+      "_src": "supabase_saveworkspaceconfig",
+      "_tgt": "supabase_normalizeanonkey",
+      "source": "supabase_normalizeanonkey",
+      "target": "supabase_saveworkspaceconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L84",
+      "weight": 1.0,
+      "_src": "supabase_saveworkspaceconfig",
+      "_tgt": "supabase_validateworkspaceconfig",
+      "source": "supabase_validateworkspaceconfig",
+      "target": "supabase_saveworkspaceconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L77",
+      "weight": 1.0,
+      "_src": "supabase_saveworkspaceconfig",
+      "_tgt": "supabase_getworkspaceconfig",
+      "source": "supabase_getworkspaceconfig",
+      "target": "supabase_saveworkspaceconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L126",
+      "weight": 1.0,
+      "_src": "supabase_requireworkspaceconfig",
+      "_tgt": "supabase_getworkspaceconfig",
+      "source": "supabase_getworkspaceconfig",
+      "target": "supabase_requireworkspaceconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L226",
+      "weight": 1.0,
+      "_src": "supabase_signout",
+      "_tgt": "supabase_getworkspaceconfig",
+      "source": "supabase_getworkspaceconfig",
+      "target": "supabase_signout",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L241",
+      "weight": 1.0,
+      "_src": "supabase_refreshsession",
+      "_tgt": "supabase_getworkspaceconfig",
+      "source": "supabase_getworkspaceconfig",
+      "target": "supabase_refreshsession",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L269",
+      "weight": 1.0,
+      "_src": "supabase_ensurevalidsession",
+      "_tgt": "supabase_getworkspaceconfig",
+      "source": "supabase_getworkspaceconfig",
+      "target": "supabase_ensurevalidsession",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L433",
+      "weight": 1.0,
+      "_src": "supabase_getsyncstatus",
+      "_tgt": "supabase_getworkspaceconfig",
+      "source": "supabase_getworkspaceconfig",
+      "target": "supabase_getsyncstatus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L172",
+      "weight": 1.0,
+      "_src": "supabase_signup",
+      "_tgt": "supabase_requireworkspaceconfig",
+      "source": "supabase_requireworkspaceconfig",
+      "target": "supabase_signup",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L204",
+      "weight": 1.0,
+      "_src": "supabase_signin",
+      "_tgt": "supabase_requireworkspaceconfig",
+      "source": "supabase_requireworkspaceconfig",
+      "target": "supabase_signin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L291",
+      "weight": 1.0,
+      "_src": "supabase_restget",
+      "_tgt": "supabase_requireworkspaceconfig",
+      "source": "supabase_requireworkspaceconfig",
+      "target": "supabase_restget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L300",
+      "weight": 1.0,
+      "_src": "supabase_restpost",
+      "_tgt": "supabase_requireworkspaceconfig",
+      "source": "supabase_requireworkspaceconfig",
+      "target": "supabase_restpost",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L314",
+      "weight": 1.0,
+      "_src": "supabase_restpatch",
+      "_tgt": "supabase_requireworkspaceconfig",
+      "source": "supabase_requireworkspaceconfig",
+      "target": "supabase_restpatch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "chatgpt-usage-tracker/supabase.js",
+      "source_location": "L227",
       "weight": 1.0,
       "_src": "supabase_signout",
       "_tgt": "supabase_getsession",
@@ -4576,7 +5120,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L132",
+      "source_location": "L242",
       "weight": 1.0,
       "_src": "supabase_refreshsession",
       "_tgt": "supabase_getsession",
@@ -4588,7 +5132,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L159",
+      "source_location": "L270",
       "weight": 1.0,
       "_src": "supabase_ensurevalidsession",
       "_tgt": "supabase_getsession",
@@ -4600,7 +5144,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L92",
+      "source_location": "L199",
       "weight": 1.0,
       "_src": "supabase_signup",
       "_tgt": "supabase_savesession",
@@ -4612,7 +5156,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L113",
+      "source_location": "L221",
       "weight": 1.0,
       "_src": "supabase_signin",
       "_tgt": "supabase_savesession",
@@ -4624,7 +5168,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L154",
+      "source_location": "L264",
       "weight": 1.0,
       "_src": "supabase_refreshsession",
       "_tgt": "supabase_savesession",
@@ -4636,7 +5180,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L128",
+      "source_location": "L237",
       "weight": 1.0,
       "_src": "supabase_signout",
       "_tgt": "supabase_clearsession",
@@ -4648,7 +5192,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L134",
+      "source_location": "L244",
       "weight": 1.0,
       "_src": "supabase_refreshsession",
       "_tgt": "supabase_clearsession",
@@ -4660,7 +5204,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L91",
+      "source_location": "L198",
       "weight": 1.0,
       "_src": "supabase_signup",
       "_tgt": "supabase_parseauthresponse",
@@ -4672,7 +5216,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L112",
+      "source_location": "L220",
       "weight": 1.0,
       "_src": "supabase_signin",
       "_tgt": "supabase_parseauthresponse",
@@ -4684,7 +5228,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L153",
+      "source_location": "L263",
       "weight": 1.0,
       "_src": "supabase_refreshsession",
       "_tgt": "supabase_parseauthresponse",
@@ -4696,7 +5240,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L163",
+      "source_location": "L274",
       "weight": 1.0,
       "_src": "supabase_ensurevalidsession",
       "_tgt": "supabase_refreshsession",
@@ -4708,7 +5252,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L212",
+      "source_location": "L326",
       "weight": 1.0,
       "_src": "supabase_fetchteams",
       "_tgt": "supabase_ensurevalidsession",
@@ -4720,7 +5264,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L218",
+      "source_location": "L332",
       "weight": 1.0,
       "_src": "supabase_setuserteam",
       "_tgt": "supabase_ensurevalidsession",
@@ -4732,7 +5276,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L233",
+      "source_location": "L347",
       "weight": 1.0,
       "_src": "supabase_getuserprofile",
       "_tgt": "supabase_ensurevalidsession",
@@ -4744,7 +5288,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L256",
+      "source_location": "L370",
       "weight": 1.0,
       "_src": "supabase_flushsyncqueue",
       "_tgt": "supabase_ensurevalidsession",
@@ -4756,7 +5300,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L181",
+      "source_location": "L293",
       "weight": 1.0,
       "_src": "supabase_restget",
       "_tgt": "supabase_restheaders",
@@ -4768,7 +5312,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L188",
+      "source_location": "L301",
       "weight": 1.0,
       "_src": "supabase_restpost",
       "_tgt": "supabase_restheaders",
@@ -4780,7 +5324,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L203",
+      "source_location": "L317",
       "weight": 1.0,
       "_src": "supabase_restpatch",
       "_tgt": "supabase_restheaders",
@@ -4792,7 +5336,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L214",
+      "source_location": "L328",
       "weight": 1.0,
       "_src": "supabase_fetchteams",
       "_tgt": "supabase_restget",
@@ -4804,7 +5348,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L235",
+      "source_location": "L349",
       "weight": 1.0,
       "_src": "supabase_getuserprofile",
       "_tgt": "supabase_restget",
@@ -4816,7 +5360,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L303",
+      "source_location": "L416",
       "weight": 1.0,
       "_src": "supabase_flushsyncqueue",
       "_tgt": "supabase_restpost",
@@ -4828,7 +5372,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L221",
+      "source_location": "L335",
       "weight": 1.0,
       "_src": "supabase_setuserteam",
       "_tgt": "supabase_restpatch",
@@ -4840,7 +5384,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L227",
+      "source_location": "L341",
       "weight": 1.0,
       "_src": "supabase_setuserteam",
       "_tgt": "supabase_fetchteams",

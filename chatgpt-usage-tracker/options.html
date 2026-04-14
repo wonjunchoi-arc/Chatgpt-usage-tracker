@@ -10,8 +10,51 @@
       <h1 class="opt-title">ChatGPT 사용량 트래커</h1>
       <p class="opt-subtitle">서버 동기화 설정</p>
 
+      <section id="opt-workspace-section" class="opt-card">
+        <div class="opt-card-head">
+          <div>
+            <h2 class="opt-card-title">회사 연결</h2>
+            <p id="opt-workspace-summary" class="opt-card-summary">회사별 Supabase 정보를 먼저 연결하세요.</p>
+          </div>
+          <button id="opt-workspace-toggle" class="opt-card-toggle" type="button" hidden>접기</button>
+        </div>
+
+        <div id="opt-workspace-body">
+          <p id="opt-workspace-hint" class="opt-note">
+            회사별 Supabase 정보를 먼저 연결해야 로그인과 동기화를 사용할 수 있습니다.
+          </p>
+
+          <div id="opt-workspace-current" hidden>
+            <div class="opt-status-row">
+              <span class="opt-status-label">워크스페이스</span>
+              <span id="opt-workspace-name" class="opt-status-value">미설정</span>
+            </div>
+            <div class="opt-status-row">
+              <span class="opt-status-label">Supabase URL</span>
+              <span id="opt-workspace-url" class="opt-status-value opt-status-value-url">-</span>
+            </div>
+          </div>
+
+          <form id="opt-workspace-form" autocomplete="off">
+            <label class="opt-label" for="opt-workspace-label">회사 이름</label>
+            <input id="opt-workspace-label" class="opt-input" type="text" placeholder="예: Acme AI Team" />
+
+            <label class="opt-label" for="opt-supabase-url">Supabase URL</label>
+            <input id="opt-supabase-url" class="opt-input" type="url" required placeholder="https://your-project.supabase.co" />
+
+            <label class="opt-label" for="opt-supabase-key">Supabase Anon Key</label>
+            <textarea id="opt-supabase-key" class="opt-input opt-textarea" required placeholder="sb_publishable_..." rows="4"></textarea>
+
+            <button id="opt-workspace-save-btn" class="opt-btn opt-btn-primary" type="submit">연결 저장</button>
+            <button id="opt-workspace-clear-btn" class="opt-btn opt-btn-danger" type="button" hidden>연결 해제</button>
+            <div id="opt-workspace-error" class="opt-error" hidden></div>
+            <div id="opt-workspace-success" class="opt-success" hidden></div>
+          </form>
+        </div>
+      </section>
+
       <!-- Auth Section -->
-      <section id="opt-auth-section" class="opt-card">
+      <section id="opt-auth-section" class="opt-card" hidden>
         <div id="opt-logged-out">
           <div class="opt-tabs">
             <button class="opt-tab is-active" data-tab="signin">로그인</button>
@@ -54,18 +97,28 @@
 
       <!-- Team Section -->
       <section id="opt-team-section" class="opt-card" hidden>
-        <h2 class="opt-card-title">팀 선택</h2>
+        <div class="opt-card-head">
+          <div>
+            <h2 class="opt-card-title">팀 선택</h2>
+            <p id="opt-team-summary" class="opt-card-summary">팀을 선택하면 대시보드 집계와 연결됩니다.</p>
+          </div>
+          <button id="opt-team-toggle" class="opt-card-toggle" type="button" hidden>접기</button>
+        </div>
+
         <div class="opt-status-row">
           <span class="opt-status-label">현재 팀</span>
           <span id="opt-current-team" class="opt-status-value">미설정</span>
         </div>
-        <label class="opt-label" for="opt-team-select">팀 변경</label>
-        <select id="opt-team-select" class="opt-input">
-          <option value="">-- 팀을 선택하세요 --</option>
-        </select>
-        <button id="opt-team-btn" class="opt-btn opt-btn-primary">팀 저장</button>
-        <div id="opt-team-error" class="opt-error" hidden></div>
-        <div id="opt-team-success" class="opt-success" hidden></div>
+
+        <div id="opt-team-body">
+          <label class="opt-label" for="opt-team-select">팀 변경</label>
+          <select id="opt-team-select" class="opt-input">
+            <option value="">-- 팀을 선택하세요 --</option>
+          </select>
+          <button id="opt-team-btn" class="opt-btn opt-btn-primary">팀 저장</button>
+          <div id="opt-team-error" class="opt-error" hidden></div>
+          <div id="opt-team-success" class="opt-success" hidden></div>
+        </div>
       </section>
 
       <!-- Sync Status Section -->
@@ -87,7 +140,6 @@
       </section>
     </div>
 
-    <script src="config.js"></script>
     <script src="supabase.js"></script>
     <script src="options.js"></script>
   </body>

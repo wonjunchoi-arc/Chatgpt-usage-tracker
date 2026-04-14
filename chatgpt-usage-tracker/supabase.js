@@ -1,20 +1,17 @@
 // ============================================================
-// Supabase REST helpers (no SDK dependency)
+// Supabase REST helpers backed by extension-local workspace config
 // ============================================================
-
-const runtimeConfig = globalThis.__SUPABASE_CONFIG__ || {};
-const SUPABASE_URL = runtimeConfig.supabaseUrl || 'https://your-project.supabase.co';
-const SUPABASE_ANON_KEY = runtimeConfig.supabaseAnonKey || 'your-anon-key';
-
-const AUTH_URL = `${SUPABASE_URL}/auth/v1`;
-const REST_URL = `${SUPABASE_URL}/rest/v1`;
 
 const SYNC_QUEUE_MAX = 500;
 const SYNC_BATCH_SIZE = 50;
 const MAX_RETRY_COUNT = 5;
 const TOKEN_REFRESH_MARGIN_MS = 5 * 60 * 1000;
 
-// ---- Storage helpers ----
+const WORKSPACE_CONFIG_KEYS = [
+  'workspaceSupabaseUrl',
+  'workspaceSupabaseAnonKey',
+  'workspaceName',
+];
 
 function sbStorageGet(keys) {
   return new Promise(resolve => chrome.storage.local.get(keys, resolve));
@@ -22,6 +19,115 @@ function sbStorageGet(keys) {
 
 function sbStorageSet(data) {
   return new Promise(resolve => chrome.storage.local.set(data, resolve));
+}
+
+function normalizeSupabaseUrl(value) {
+  return String(value || '').trim().replace(/\/+$/, '');
+}
+
+function normalizeWorkspaceName(value) {
+  return String(value || '').trim();
+}
+
+function normalizeAnonKey(value) {
+  return String(value || '').trim();
+}
+
+function validateWorkspaceConfig({ supabaseUrl, supabaseAnonKey }) {
+  if (!supabaseUrl) {
+    throw new Error('Supabase URL을 입력하세요.');
+  }
+
+  let parsed;
+  try {
+    parsed = new URL(supabaseUrl);
+  } catch {
+    throw new Error('Supabase URL 형식이 올바르지 않습니다.');
+  }
+
+  if (parsed.protocol !== 'https:') {
+    throw new Error('Supabase URL은 https:// 로 시작해야 합니다.');
+  }
+
+  if (!supabaseAnonKey) {
+    throw new Error('Supabase anon key를 입력하세요.');
+  }
+}
+
+async function getWorkspaceConfig() {
+  const items = await sbStorageGet(WORKSPACE_CONFIG_KEYS);
+  const supabaseUrl = normalizeSupabaseUrl(items.workspaceSupabaseUrl);
+  const supabaseAnonKey = normalizeAnonKey(items.workspaceSupabaseAnonKey);
+  const workspaceName = normalizeWorkspaceName(items.workspaceName);
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return null;
+  }
+
+  return {
+    supabaseUrl,
+    supabaseAnonKey,
+    workspaceName,
+    authUrl: `${supabaseUrl}/auth/v1`,
+    restUrl: `${supabaseUrl}/rest/v1`,
+  };
+}
+
+async function saveWorkspaceConfig({ supabaseUrl, supabaseAnonKey, workspaceName }) {
+  const previousConfig = await getWorkspaceConfig();
+  const nextConfig = {
+    supabaseUrl: normalizeSupabaseUrl(supabaseUrl),
+    supabaseAnonKey: normalizeAnonKey(supabaseAnonKey),
+    workspaceName: normalizeWorkspaceName(workspaceName),
+  };
+
+  validateWorkspaceConfig(nextConfig);
+
+  const shouldResetConnectionState =
+    !previousConfig ||
+    previousConfig.supabaseUrl !== nextConfig.supabaseUrl ||
+    previousConfig.supabaseAnonKey !== nextConfig.supabaseAnonKey;
+
+  const payload = {
+    workspaceSupabaseUrl: nextConfig.supabaseUrl,
+    workspaceSupabaseAnonKey: nextConfig.supabaseAnonKey,
+    workspaceName: nextConfig.workspaceName || null,
+  };
+
+  if (shouldResetConnectionState) {
+    payload.supabaseSession = null;
+    payload.syncEnabled = false;
+    payload.teamId = null;
+    payload.teamName = null;
+    payload.lastSyncTimestamp = null;
+    payload.syncQueue = [];
+  }
+
+  await sbStorageSet(payload);
+
+  return getWorkspaceConfig();
+}
+
+async function clearWorkspaceConfig() {
+  await sbStorageSet({
+    workspaceSupabaseUrl: null,
+    workspaceSupabaseAnonKey: null,
+    workspaceName: null,
+    supabaseSession: null,
+    syncEnabled: false,
+    teamId: null,
+    teamName: null,
+    lastSyncTimestamp: null,
+    syncQueue: [],
+  });
+}
+
+async function requireWorkspaceConfig() {
+  const config = await getWorkspaceConfig();
+  if (!config) {
+    throw new Error('먼저 회사 연결 정보를 설정하세요.');
+  }
+  return config;
 }
 
 // ---- Session management ----
@@ -34,7 +140,7 @@ async function getSession() {
 async function saveSession(session) {
   await sbStorageSet({
     supabaseSession: session,
-    syncEnabled: !!session
+    syncEnabled: !!session,
   });
 }
 
@@ -43,7 +149,7 @@ async function clearSession() {
     supabaseSession: null,
     syncEnabled: false,
     teamId: null,
-    teamName: null
+    teamName: null,
   });
 }
 
@@ -55,31 +161,32 @@ function parseAuthResponse(data) {
     expires_at: Date.now() + (data.expires_in || 3600) * 1000,
     user: {
       id: data.user.id,
-      email: data.user.email
-    }
+      email: data.user.email,
+    },
   };
 }
 
 // ---- Auth ----
 
 async function signUp(email, password, displayName = '') {
-  const resp = await fetch(`${AUTH_URL}/signup`, {
+  const config = await requireWorkspaceConfig();
+  const resp = await fetch(`${config.authUrl}/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'apikey': SUPABASE_ANON_KEY
+      'apikey': config.supabaseAnonKey,
     },
     body: JSON.stringify({
       email,
       password,
       options: {
-        emailRedirectTo: `${SUPABASE_URL}/auth/v1/callback`,
+        emailRedirectTo: `${config.authUrl}/callback`,
         data: {
           display_name: displayName.trim() || null,
-          signup_source: 'extension'
-        }
-      }
-    })
+          signup_source: 'extension',
+        },
+      },
+    }),
   });
 
   if (!resp.ok) {
@@ -94,13 +201,14 @@ async function signUp(email, password, displayName = '') {
 }
 
 async function signIn(email, password) {
-  const resp = await fetch(`${AUTH_URL}/token?grant_type=password`, {
+  const config = await requireWorkspaceConfig();
+  const resp = await fetch(`${config.authUrl}/token?grant_type=password`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'apikey': SUPABASE_ANON_KEY
+      'apikey': config.supabaseAnonKey,
     },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ email, password }),
   });
 
   if (!resp.ok) {
@@ -115,33 +223,35 @@ async function signIn(email, password) {
 }
 
 async function signOut() {
+  const config = await getWorkspaceConfig();
   const session = await getSession();
-  if (session) {
-    await fetch(`${AUTH_URL}/logout`, {
+  if (config && session) {
+    await fetch(`${config.authUrl}/logout`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${session.access_token}`,
-        'apikey': SUPABASE_ANON_KEY
-      }
+        'apikey': config.supabaseAnonKey,
+      },
     }).catch(() => {});
   }
   await clearSession();
 }
 
 async function refreshSession() {
+  const config = await getWorkspaceConfig();
   const session = await getSession();
-  if (!session || !session.refresh_token) {
+  if (!config || !session || !session.refresh_token) {
     await clearSession();
     return null;
   }
 
-  const resp = await fetch(`${AUTH_URL}/token?grant_type=refresh_token`, {
+  const resp = await fetch(`${config.authUrl}/token?grant_type=refresh_token`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'apikey': SUPABASE_ANON_KEY
+      'apikey': config.supabaseAnonKey,
     },
-    body: JSON.stringify({ refresh_token: session.refresh_token })
+    body: JSON.stringify({ refresh_token: session.refresh_token }),
   });
 
   if (!resp.ok) {
@@ -156,8 +266,9 @@ async function refreshSession() {
 }
 
 async function ensureValidSession() {
+  const config = await getWorkspaceConfig();
   let session = await getSession();
-  if (!session) return null;
+  if (!config || !session) return null;
 
   if (Date.now() >= session.expires_at - TOKEN_REFRESH_MARGIN_MS) {
     session = await refreshSession();
@@ -167,30 +278,32 @@ async function ensureValidSession() {
 
 // ---- REST helpers ----
 
-function restHeaders(accessToken) {
+function restHeaders(accessToken, apikey) {
   return {
     'Content-Type': 'application/json',
-    'apikey': SUPABASE_ANON_KEY,
+    'apikey': apikey,
     'Authorization': `Bearer ${accessToken}`,
-    'Prefer': 'return=minimal'
+    'Prefer': 'return=minimal',
   };
 }
 
 async function restGet(path, accessToken) {
-  const resp = await fetch(`${REST_URL}${path}`, {
-    headers: restHeaders(accessToken)
+  const config = await requireWorkspaceConfig();
+  const resp = await fetch(`${config.restUrl}${path}`, {
+    headers: restHeaders(accessToken, config.supabaseAnonKey),
   });
   if (!resp.ok) throw new Error(`GET ${path} failed (${resp.status})`);
   return resp.json();
 }
 
 async function restPost(path, body, accessToken) {
-  const headers = restHeaders(accessToken);
-  headers['Prefer'] = 'resolution=ignore-duplicates, return=minimal';
-  const resp = await fetch(`${REST_URL}${path}`, {
+  const config = await requireWorkspaceConfig();
+  const headers = restHeaders(accessToken, config.supabaseAnonKey);
+  headers.Prefer = 'resolution=ignore-duplicates, return=minimal';
+  const resp = await fetch(`${config.restUrl}${path}`, {
     method: 'POST',
     headers,
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   });
   if (!resp.ok && resp.status !== 409) {
     throw new Error(`POST ${path} failed (${resp.status})`);
@@ -198,10 +311,11 @@ async function restPost(path, body, accessToken) {
 }
 
 async function restPatch(path, body, accessToken) {
-  const resp = await fetch(`${REST_URL}${path}`, {
+  const config = await requireWorkspaceConfig();
+  const resp = await fetch(`${config.restUrl}${path}`, {
     method: 'PATCH',
-    headers: restHeaders(accessToken),
-    body: JSON.stringify(body)
+    headers: restHeaders(accessToken, config.supabaseAnonKey),
+    body: JSON.stringify(body),
   });
   if (!resp.ok) throw new Error(`PATCH ${path} failed (${resp.status})`);
 }
@@ -225,7 +339,7 @@ async function setUserTeam(teamId) {
   );
 
   const teams = await fetchTeams();
-  const team = teams.find(t => t.id === teamId);
+  const team = teams.find(item => item.id === teamId);
   await sbStorageSet({ teamId, teamName: team ? team.name : '' });
 }
 
@@ -266,9 +380,8 @@ async function flushSyncQueue() {
     if (item.type === 'event') events.push(item);
   }
 
-  // Send events in batches
-  for (let i = 0; i < events.length; i += SYNC_BATCH_SIZE) {
-    const batch = events.slice(i, i + SYNC_BATCH_SIZE);
+  for (let index = 0; index < events.length; index += SYNC_BATCH_SIZE) {
+    const batch = events.slice(index, index + SYNC_BATCH_SIZE);
     const rows = batch.map(item => ({
       user_id: session.user.id,
       ts: item.data.ts,
@@ -296,7 +409,7 @@ async function flushSyncQueue() {
       gizmo_id: item.data.gizmoId || null,
       thinking_effort: item.data.thinkingEffort || null,
       model_tier: item.data.modelTier || 'standard',
-      path: item.data.path || null
+      path: item.data.path || null,
     }));
 
     try {
@@ -312,19 +425,24 @@ async function flushSyncQueue() {
 
   await sbStorageSet({
     syncQueue: failed,
-    lastSyncTimestamp: Date.now()
+    lastSyncTimestamp: Date.now(),
   });
 }
 
 async function getSyncStatus() {
+  const config = await getWorkspaceConfig();
   const { syncEnabled, lastSyncTimestamp, syncQueue = [], supabaseSession, teamName } =
     await sbStorageGet(['syncEnabled', 'lastSyncTimestamp', 'syncQueue', 'supabaseSession', 'teamName']);
+
   return {
+    configured: !!config,
+    workspaceName: config ? config.workspaceName || null : null,
+    workspaceSupabaseUrl: config ? config.supabaseUrl : null,
     loggedIn: !!(supabaseSession && supabaseSession.access_token),
     email: supabaseSession ? supabaseSession.user.email : null,
     syncEnabled: !!syncEnabled,
     lastSyncTimestamp: lastSyncTimestamp || null,
     queueSize: syncQueue.length,
-    teamName: teamName || null
+    teamName: teamName || null,
   };
 }

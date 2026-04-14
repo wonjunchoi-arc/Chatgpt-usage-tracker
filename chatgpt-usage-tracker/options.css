@@ -50,10 +50,52 @@ body {
   margin-bottom: 16px;
 }
 
+.opt-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .opt-card-title {
   margin: 0 0 14px;
   font-size: 16px;
   font-weight: 700;
+}
+
+.opt-card-summary {
+  margin: -8px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--opt-muted);
+}
+
+.opt-card-toggle {
+  flex-shrink: 0;
+  appearance: none;
+  border: 1px solid var(--opt-border);
+  border-radius: 999px;
+  background: var(--opt-surface);
+  color: var(--opt-text);
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.opt-card-toggle:hover {
+  background: var(--opt-border);
+}
+
+.opt-card-body-collapsed {
+  display: none;
+}
+
+.opt-note {
+  margin: 0 0 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--opt-muted);
 }
 
 .opt-tabs {
@@ -103,6 +145,12 @@ body {
   margin-bottom: 14px;
   outline: none;
   transition: border-color 0.15s;
+}
+
+.opt-textarea {
+  min-height: 88px;
+  resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 }
 
 .opt-input:focus {
@@ -177,6 +225,12 @@ select.opt-input {
 
 .opt-status-value {
   font-weight: 700;
+}
+
+.opt-status-value-url {
+  max-width: 240px;
+  text-align: right;
+  word-break: break-all;
 }
 
 .opt-error {
