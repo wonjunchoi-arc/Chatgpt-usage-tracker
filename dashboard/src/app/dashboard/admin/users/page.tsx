@@ -112,10 +112,10 @@ export default function UsersManagementPage() {
     }
 
     try {
-      await deleteProfileByAdmin(supabase, profile.id);
+      await deleteProfileByAdmin(profile.id);
       await loadData();
     } catch (err) {
-      setError(err instanceof Error ? err.message : '사용자 삭제에 실패했습니다.');
+      setError((err as { message?: string })?.message ?? '사용자 삭제에 실패했습니다.');
     }
   }
 

@@ -1,6 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import type { Profile, Team, ActivityEvent, TeamStats, ProfileWithUsage, ProfileWithTeam, MonthKey } from './types';
-import { ACTIVITY_KEYS } from './types';
+import type { Profile, Team, ActivityEvent, TeamStats, ProfileWithUsage, ProfileWithTeam, MonthKey } from './types.ts';
+import { ACTIVITY_KEYS } from './types.ts';
 
 interface MonthlyUsageSummaryRow {
   user_id: string;
@@ -675,13 +675,13 @@ export async function updateProfileByAdmin(
   if (error) throw error;
 }
 
-export async function deleteProfileByAdmin(supabase: SupabaseClient, id: string): Promise<void> {
-  const { error } = await supabase
-    .from('profiles')
-    .delete()
-    .eq('id', id);
+export async function deleteProfileByAdmin(id: string): Promise<void> {
+  const response = await fetch(`/api/admin/users/${id}`, { method: 'DELETE' });
 
-  if (error) throw error;
+  if (!response.ok) {
+    const body = await response.json().catch(() => null) as { error?: string } | null;
+    throw new Error(body?.error || '사용자 삭제에 실패했습니다.');
+  }
 }
 
 export async function updateTeam(supabase: SupabaseClient, id: string, name: string): Promise<void> {

@@ -332,9 +332,9 @@ async function setUserTeam(teamId) {
   const session = await ensureValidSession();
   if (!session) throw new Error('Not authenticated');
 
-  await restPatch(
-    `/profiles?id=eq.${session.user.id}`,
-    { team_id: teamId },
+  await restPost(
+    '/rpc/set_own_team',
+    { p_team_id: teamId },
     session.access_token
   );
 

@@ -489,6 +489,14 @@ RETURNS boolean AS $$
   );
 $$ LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public;
 
+-- 본인 team_id만 변경 허용 (role 등 다른 컬럼 변경 불가)
+CREATE OR REPLACE FUNCTION set_own_team(p_team_id uuid)
+RETURNS void AS $$
+  UPDATE profiles SET team_id = p_team_id WHERE id = auth.uid();
+$$ LANGUAGE sql SECURITY DEFINER SET search_path = public;
+
+GRANT EXECUTE ON FUNCTION set_own_team(uuid) TO authenticated;
+
 CREATE POLICY "Authenticated users see all teams" ON teams
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
@@ -498,6 +506,10 @@ CREATE POLICY "Admins manage teams" ON teams
 
 CREATE POLICY "Authenticated users see all profiles" ON profiles
   FOR SELECT USING (auth.uid() IS NOT NULL);
+
+CREATE POLICY "Users update own profile" ON profiles
+  FOR UPDATE USING (auth.uid() = id)
+  WITH CHECK (auth.uid() = id);
 
 CREATE POLICY "Admins manage profiles" ON profiles
   FOR UPDATE USING (is_admin())

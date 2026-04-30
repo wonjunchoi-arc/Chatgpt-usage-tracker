@@ -75,12 +75,28 @@
   },
   "nodes": [
     {
+      "label": "test_claude_api.py",
+      "file_type": "code",
+      "source_file": "scripts/test_claude_api.py",
+      "source_location": "L1",
+      "id": "scripts_test_claude_api_py",
+      "community": 10
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "scripts/test_claude_api.py",
+      "source_location": "L21",
+      "id": "test_claude_api_main",
+      "community": 10
+    },
+    {
       "label": "next.config.ts",
       "file_type": "code",
       "source_file": "dashboard/next.config.ts",
       "source_location": "L1",
       "id": "dashboard_next_config_ts",
-      "community": 10
+      "community": 11
     },
     {
       "label": "readSharedEnv()",
@@ -88,7 +104,7 @@
       "source_file": "dashboard/next.config.ts",
       "source_location": "L7",
       "id": "next_config_readsharedenv",
-      "community": 10
+      "community": 11
     },
     {
       "label": "next-env.d.ts",
@@ -96,7 +112,7 @@
       "source_file": "dashboard/next-env.d.ts",
       "source_location": "L1",
       "id": "dashboard_next_env_d_ts",
-      "community": 30
+      "community": 33
     },
     {
       "label": "middleware.ts",
@@ -104,7 +120,7 @@
       "source_file": "dashboard/src/middleware.ts",
       "source_location": "L1",
       "id": "dashboard_src_middleware_ts",
-      "community": 11
+      "community": 12
     },
     {
       "label": "middleware()",
@@ -112,7 +128,7 @@
       "source_file": "dashboard/src/middleware.ts",
       "source_location": "L4",
       "id": "middleware_middleware",
-      "community": 11
+      "community": 12
     },
     {
       "label": "UsageSummaryCards.tsx",
@@ -120,7 +136,7 @@
       "source_file": "dashboard/src/components/dashboard/UsageSummaryCards.tsx",
       "source_location": "L1",
       "id": "dashboard_src_components_dashboard_usagesummarycards_tsx",
-      "community": 12
+      "community": 13
     },
     {
       "label": "UsageSummaryCards()",
@@ -128,7 +144,7 @@
       "source_file": "dashboard/src/components/dashboard/UsageSummaryCards.tsx",
       "source_location": "L14",
       "id": "usagesummarycards_usagesummarycards",
-      "community": 12
+      "community": 13
     },
     {
       "label": "TeamsCompareChart.tsx",
@@ -136,7 +152,7 @@
       "source_file": "dashboard/src/components/dashboard/TeamsCompareChart.tsx",
       "source_location": "L1",
       "id": "dashboard_src_components_dashboard_teamscomparechart_tsx",
-      "community": 13
+      "community": 14
     },
     {
       "label": "getActivityLabel()",
@@ -144,7 +160,7 @@
       "source_file": "dashboard/src/components/dashboard/TeamsCompareChart.tsx",
       "source_location": "L18",
       "id": "teamscomparechart_getactivitylabel",
-      "community": 13
+      "community": 14
     },
     {
       "label": "ActivityBreakdownChart.tsx",
@@ -152,7 +168,7 @@
       "source_file": "dashboard/src/components/dashboard/ActivityBreakdownChart.tsx",
       "source_location": "L1",
       "id": "dashboard_src_components_dashboard_activitybreakdownchart_tsx",
-      "community": 31
+      "community": 34
     },
     {
       "label": "ActivityCountCards.tsx",
@@ -160,7 +176,7 @@
       "source_file": "dashboard/src/components/dashboard/ActivityCountCards.tsx",
       "source_location": "L1",
       "id": "dashboard_src_components_dashboard_activitycountcards_tsx",
-      "community": 14
+      "community": 15
     },
     {
       "label": "ActivityCountCards()",
@@ -168,7 +184,7 @@
       "source_file": "dashboard/src/components/dashboard/ActivityCountCards.tsx",
       "source_location": "L8",
       "id": "activitycountcards_activitycountcards",
-      "community": 14
+      "community": 15
     },
     {
       "label": "ActivityTimeline.tsx",
@@ -176,7 +192,7 @@
       "source_file": "dashboard/src/components/dashboard/ActivityTimeline.tsx",
       "source_location": "L1",
       "id": "dashboard_src_components_dashboard_activitytimeline_tsx",
-      "community": 15
+      "community": 16
     },
     {
       "label": "ActivityTimeline()",
@@ -184,7 +200,7 @@
       "source_file": "dashboard/src/components/dashboard/ActivityTimeline.tsx",
       "source_location": "L9",
       "id": "activitytimeline_activitytimeline",
-      "community": 15
+      "community": 16
     },
     {
       "label": "TimeRangeFilter.tsx",
@@ -192,7 +208,7 @@
       "source_file": "dashboard/src/components/dashboard/TimeRangeFilter.tsx",
       "source_location": "L1",
       "id": "dashboard_src_components_dashboard_timerangefilter_tsx",
-      "community": 7
+      "community": 8
     },
     {
       "label": "getMonthOptions()",
@@ -200,7 +216,7 @@
       "source_file": "dashboard/src/components/dashboard/TimeRangeFilter.tsx",
       "source_location": "L6",
       "id": "timerangefilter_getmonthoptions",
-      "community": 7
+      "community": 8
     },
     {
       "label": "TimeRangeFilter()",
@@ -208,7 +224,7 @@
       "source_file": "dashboard/src/components/dashboard/TimeRangeFilter.tsx",
       "source_location": "L20",
       "id": "timerangefilter_timerangefilter",
-      "community": 7
+      "community": 8
     },
     {
       "label": "LowUsageMembersCard.tsx",
@@ -216,7 +232,7 @@
       "source_file": "dashboard/src/components/dashboard/LowUsageMembersCard.tsx",
       "source_location": "L1",
       "id": "dashboard_src_components_dashboard_lowusagememberscard_tsx",
-      "community": 32
+      "community": 35
     },
     {
       "label": "AppTypeChart.tsx",
@@ -224,7 +240,7 @@
       "source_file": "dashboard/src/components/dashboard/AppTypeChart.tsx",
       "source_location": "L1",
       "id": "dashboard_src_components_dashboard_apptypechart_tsx",
-      "community": 33
+      "community": 36
     },
     {
       "label": "UserTable.tsx",
@@ -232,7 +248,7 @@
       "source_file": "dashboard/src/components/dashboard/UserTable.tsx",
       "source_location": "L1",
       "id": "dashboard_src_components_dashboard_usertable_tsx",
-      "community": 34
+      "community": 37
     },
     {
       "label": "TeamSelector.tsx",
@@ -240,7 +256,7 @@
       "source_file": "dashboard/src/components/dashboard/TeamSelector.tsx",
       "source_location": "L1",
       "id": "dashboard_src_components_dashboard_teamselector_tsx",
-      "community": 16
+      "community": 17
     },
     {
       "label": "TeamSelector()",
@@ -248,7 +264,7 @@
       "source_file": "dashboard/src/components/dashboard/TeamSelector.tsx",
       "source_location": "L11",
       "id": "teamselector_teamselector",
-      "community": 16
+      "community": 17
     },
     {
       "label": "FeatureUsageChart.tsx",
@@ -256,7 +272,7 @@
       "source_file": "dashboard/src/components/dashboard/FeatureUsageChart.tsx",
       "source_location": "L1",
       "id": "dashboard_src_components_dashboard_featureusagechart_tsx",
-      "community": 35
+      "community": 38
     },
     {
       "label": "ModelDistributionChart.tsx",
@@ -264,7 +280,7 @@
       "source_file": "dashboard/src/components/dashboard/ModelDistributionChart.tsx",
       "source_location": "L1",
       "id": "dashboard_src_components_dashboard_modeldistributionchart_tsx",
-      "community": 36
+      "community": 39
     },
     {
       "label": "ActivitySummaryBarChart.tsx",
@@ -272,7 +288,7 @@
       "source_file": "dashboard/src/components/dashboard/ActivitySummaryBarChart.tsx",
       "source_location": "L1",
       "id": "dashboard_src_components_dashboard_activitysummarybarchart_tsx",
-      "community": 37
+      "community": 40
     },
     {
       "label": "Sidebar.tsx",
@@ -280,7 +296,7 @@
       "source_file": "dashboard/src/components/dashboard/Sidebar.tsx",
       "source_location": "L1",
       "id": "dashboard_src_components_dashboard_sidebar_tsx",
-      "community": 17
+      "community": 18
     },
     {
       "label": "handleSignOut()",
@@ -288,7 +304,7 @@
       "source_file": "dashboard/src/components/dashboard/Sidebar.tsx",
       "source_location": "L29",
       "id": "sidebar_handlesignout",
-      "community": 17
+      "community": 18
     },
     {
       "label": "layout.tsx",
@@ -296,7 +312,7 @@
       "source_file": "dashboard/src/app/layout.tsx",
       "source_location": "L1",
       "id": "dashboard_src_app_layout_tsx",
-      "community": 18
+      "community": 19
     },
     {
       "label": "RootLayout()",
@@ -304,7 +320,7 @@
       "source_file": "dashboard/src/app/layout.tsx",
       "source_location": "L9",
       "id": "layout_rootlayout",
-      "community": 18
+      "community": 19
     },
     {
       "label": "page.tsx",
@@ -312,7 +328,7 @@
       "source_file": "dashboard/src/app/page.tsx",
       "source_location": "L1",
       "id": "dashboard_src_app_page_tsx",
-      "community": 19
+      "community": 20
     },
     {
       "label": "Home()",
@@ -320,7 +336,7 @@
       "source_file": "dashboard/src/app/page.tsx",
       "source_location": "L3",
       "id": "page_home",
-      "community": 19
+      "community": 20
     },
     {
       "label": "page.tsx",
@@ -328,7 +344,7 @@
       "source_file": "dashboard/src/app/login/page.tsx",
       "source_location": "L1",
       "id": "dashboard_src_app_login_page_tsx",
-      "community": 20
+      "community": 21
     },
     {
       "label": "handleSubmit()",
@@ -336,7 +352,7 @@
       "source_file": "dashboard/src/app/login/page.tsx",
       "source_location": "L17",
       "id": "page_handlesubmit",
-      "community": 20
+      "community": 21
     },
     {
       "label": "layout.tsx",
@@ -344,7 +360,7 @@
       "source_file": "dashboard/src/app/dashboard/layout.tsx",
       "source_location": "L1",
       "id": "dashboard_src_app_dashboard_layout_tsx",
-      "community": 21
+      "community": 22
     },
     {
       "label": "DashboardLayout()",
@@ -352,7 +368,7 @@
       "source_file": "dashboard/src/app/dashboard/layout.tsx",
       "source_location": "L7",
       "id": "layout_dashboardlayout",
-      "community": 21
+      "community": 22
     },
     {
       "label": "page.tsx",
@@ -360,7 +376,7 @@
       "source_file": "dashboard/src/app/dashboard/page.tsx",
       "source_location": "L1",
       "id": "dashboard_src_app_dashboard_page_tsx",
-      "community": 22
+      "community": 23
     },
     {
       "label": "DashboardPage()",
@@ -368,7 +384,7 @@
       "source_file": "dashboard/src/app/dashboard/page.tsx",
       "source_location": "L3",
       "id": "page_dashboardpage",
-      "community": 22
+      "community": 23
     },
     {
       "label": "page.tsx",
@@ -376,7 +392,7 @@
       "source_file": "dashboard/src/app/dashboard/admin/page.tsx",
       "source_location": "L1",
       "id": "dashboard_src_app_dashboard_admin_page_tsx",
-      "community": 38
+      "community": 41
     },
     {
       "label": "page.tsx",
@@ -456,7 +472,7 @@
       "source_file": "dashboard/src/app/dashboard/user/[userId]/page.tsx",
       "source_location": "L1",
       "id": "dashboard_src_app_dashboard_user_userid_page_tsx",
-      "community": 39
+      "community": 42
     },
     {
       "label": "page.tsx",
@@ -464,7 +480,7 @@
       "source_file": "dashboard/src/app/dashboard/team/page.tsx",
       "source_location": "L1",
       "id": "dashboard_src_app_dashboard_team_page_tsx",
-      "community": 23
+      "community": 24
     },
     {
       "label": "TeamPage()",
@@ -472,7 +488,7 @@
       "source_file": "dashboard/src/app/dashboard/team/page.tsx",
       "source_location": "L23",
       "id": "page_teampage",
-      "community": 23
+      "community": 24
     },
     {
       "label": "page.tsx",
@@ -480,7 +496,7 @@
       "source_file": "dashboard/src/app/dashboard/compare/page.tsx",
       "source_location": "L1",
       "id": "dashboard_src_app_dashboard_compare_page_tsx",
-      "community": 24
+      "community": 25
     },
     {
       "label": "ComparePage()",
@@ -488,7 +504,23 @@
       "source_file": "dashboard/src/app/dashboard/compare/page.tsx",
       "source_location": "L13",
       "id": "page_comparepage",
-      "community": 24
+      "community": 25
+    },
+    {
+      "label": "route.ts",
+      "file_type": "code",
+      "source_file": "dashboard/src/app/api/admin/users/[userId]/route.ts",
+      "source_location": "L1",
+      "id": "dashboard_src_app_api_admin_users_userid_route_ts",
+      "community": 26
+    },
+    {
+      "label": "DELETE()",
+      "file_type": "code",
+      "source_file": "dashboard/src/app/api/admin/users/[userId]/route.ts",
+      "source_location": "L5",
+      "id": "route_delete",
+      "community": 26
     },
     {
       "label": "queries.ts",
@@ -739,12 +771,36 @@
       "community": 1
     },
     {
+      "label": "adminUserDeletion.ts",
+      "file_type": "code",
+      "source_file": "dashboard/src/lib/adminUserDeletion.ts",
+      "source_location": "L1",
+      "id": "dashboard_src_lib_adminuserdeletion_ts",
+      "community": 6
+    },
+    {
+      "label": "deleteAuthUserForAdmin()",
+      "file_type": "code",
+      "source_file": "dashboard/src/lib/adminUserDeletion.ts",
+      "source_location": "L15",
+      "id": "adminuserdeletion_deleteauthuserforadmin",
+      "community": 6
+    },
+    {
+      "label": "queries.test.ts",
+      "file_type": "code",
+      "source_file": "dashboard/src/lib/queries.test.ts",
+      "source_location": "L1",
+      "id": "dashboard_src_lib_queries_test_ts",
+      "community": 1
+    },
+    {
       "label": "types.ts",
       "file_type": "code",
       "source_file": "dashboard/src/lib/types.ts",
       "source_location": "L1",
       "id": "dashboard_src_lib_types_ts",
-      "community": 8
+      "community": 1
     },
     {
       "label": "getCurrentMonthKey()",
@@ -752,7 +808,7 @@
       "source_file": "dashboard/src/lib/types.ts",
       "source_location": "L82",
       "id": "types_getcurrentmonthkey",
-      "community": 8
+      "community": 1
     },
     {
       "label": "getProfileDisplayName()",
@@ -760,7 +816,47 @@
       "source_file": "dashboard/src/lib/types.ts",
       "source_location": "L93",
       "id": "types_getprofiledisplayname",
-      "community": 8
+      "community": 1
+    },
+    {
+      "label": "adminUserDeletion.test.ts",
+      "file_type": "code",
+      "source_file": "dashboard/src/lib/adminUserDeletion.test.ts",
+      "source_location": "L1",
+      "id": "dashboard_src_lib_adminuserdeletion_test_ts",
+      "community": 6
+    },
+    {
+      "label": "createUserClient()",
+      "file_type": "code",
+      "source_file": "dashboard/src/lib/adminUserDeletion.test.ts",
+      "source_location": "L5",
+      "id": "adminuserdeletion_test_createuserclient",
+      "community": 6
+    },
+    {
+      "label": "createAdminClient()",
+      "file_type": "code",
+      "source_file": "dashboard/src/lib/adminUserDeletion.test.ts",
+      "source_location": "L32",
+      "id": "adminuserdeletion_test_createadminclient",
+      "community": 6
+    },
+    {
+      "label": "admin.ts",
+      "file_type": "code",
+      "source_file": "dashboard/src/lib/supabase/admin.ts",
+      "source_location": "L1",
+      "id": "dashboard_src_lib_supabase_admin_ts",
+      "community": 27
+    },
+    {
+      "label": "createAdminClient()",
+      "file_type": "code",
+      "source_file": "dashboard/src/lib/supabase/admin.ts",
+      "source_location": "L3",
+      "id": "admin_createadminclient",
+      "community": 27
     },
     {
       "label": "server.ts",
@@ -768,7 +864,7 @@
       "source_file": "dashboard/src/lib/supabase/server.ts",
       "source_location": "L1",
       "id": "dashboard_src_lib_supabase_server_ts",
-      "community": 25
+      "community": 28
     },
     {
       "label": "createClient()",
@@ -776,7 +872,7 @@
       "source_file": "dashboard/src/lib/supabase/server.ts",
       "source_location": "L4",
       "id": "server_createclient",
-      "community": 25
+      "community": 28
     },
     {
       "label": "client.ts",
@@ -784,7 +880,7 @@
       "source_file": "dashboard/src/lib/supabase/client.ts",
       "source_location": "L1",
       "id": "dashboard_src_lib_supabase_client_ts",
-      "community": 26
+      "community": 29
     },
     {
       "label": "createClient()",
@@ -792,7 +888,7 @@
       "source_file": "dashboard/src/lib/supabase/client.ts",
       "source_location": "L3",
       "id": "client_createclient",
-      "community": 26
+      "community": 29
     },
     {
       "label": "popup.js",
@@ -800,7 +896,7 @@
       "source_file": "chatgpt-usage-tracker/popup.js",
       "source_location": "L1",
       "id": "chatgpt_usage_tracker_popup_js",
-      "community": 27
+      "community": 30
     },
     {
       "label": "initPanel()",
@@ -808,7 +904,7 @@
       "source_file": "chatgpt-usage-tracker/popup.js",
       "source_location": "L35",
       "id": "popup_initpanel",
-      "community": 27
+      "community": 30
     },
     {
       "label": "background.js",
@@ -1128,7 +1224,7 @@
       "source_file": "chatgpt-usage-tracker/config.js",
       "source_location": "L1",
       "id": "chatgpt_usage_tracker_config_js",
-      "community": 40
+      "community": 43
     },
     {
       "label": "options.js",
@@ -1475,7 +1571,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 41,
+      "community": 44,
       "id": "readme_chatgpt_tracker"
     },
     {
@@ -1487,7 +1583,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 42,
+      "community": 45,
       "id": "dashboard_readme_nextjs"
     },
     {
@@ -1499,7 +1595,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 28,
+      "community": 31,
       "id": "dashboard_agents_nextjs_rules"
     },
     {
@@ -1511,7 +1607,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 28,
+      "community": 31,
       "id": "dashboard_claude_md"
     },
     {
@@ -1871,7 +1967,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 6,
+      "community": 7,
       "id": "icon16_extension_icon"
     },
     {
@@ -1883,7 +1979,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 6,
+      "community": 7,
       "id": "icon48_extension_icon"
     },
     {
@@ -1895,7 +1991,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 6,
+      "community": 7,
       "id": "icon128_extension_icon"
     },
     {
@@ -1907,7 +2003,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 6,
+      "community": 7,
       "id": "hourglass_visual_motif"
     },
     {
@@ -1919,7 +2015,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 43,
+      "community": 46,
       "id": "svg_window"
     },
     {
@@ -1931,7 +2027,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 47,
       "id": "svg_globe"
     },
     {
@@ -1943,7 +2039,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 29,
+      "community": 32,
       "id": "svg_next"
     },
     {
@@ -1955,7 +2051,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 45,
+      "community": 48,
       "id": "svg_file"
     },
     {
@@ -1967,11 +2063,23 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 29,
+      "community": 32,
       "id": "svg_vercel"
     }
   ],
   "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/test_claude_api.py",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_src": "scripts_test_claude_api_py",
+      "_tgt": "test_claude_api_main",
+      "source": "scripts_test_claude_api_py",
+      "target": "test_claude_api_main",
+      "confidence_score": 1.0
+    },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
@@ -2282,6 +2390,30 @@
       "_tgt": "page_comparepage",
       "source": "dashboard_src_app_dashboard_compare_page_tsx",
       "target": "page_comparepage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "dashboard/src/app/api/admin/users/[userId]/route.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_src": "dashboard_src_app_api_admin_users_userid_route_ts",
+      "_tgt": "route_delete",
+      "source": "dashboard_src_app_api_admin_users_userid_route_ts",
+      "target": "route_delete",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "dashboard/src/lib/queries.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "dashboard_src_lib_queries_ts",
+      "_tgt": "dashboard_src_lib_types_ts",
+      "source": "dashboard_src_lib_queries_ts",
+      "target": "dashboard_src_lib_types_ts",
       "confidence_score": 1.0
     },
     {
@@ -2642,6 +2774,18 @@
       "_tgt": "queries_deleteteam",
       "source": "dashboard_src_lib_queries_ts",
       "target": "queries_deleteteam",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "dashboard/src/lib/queries.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "dashboard_src_lib_queries_test_ts",
+      "_tgt": "dashboard_src_lib_queries_ts",
+      "source": "dashboard_src_lib_queries_ts",
+      "target": "dashboard_src_lib_queries_test_ts",
       "confidence_score": 1.0
     },
     {
@@ -3067,6 +3211,30 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "dashboard/src/lib/adminUserDeletion.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_src": "dashboard_src_lib_adminuserdeletion_ts",
+      "_tgt": "adminuserdeletion_deleteauthuserforadmin",
+      "source": "dashboard_src_lib_adminuserdeletion_ts",
+      "target": "adminuserdeletion_deleteauthuserforadmin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "dashboard/src/lib/adminUserDeletion.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "dashboard_src_lib_adminuserdeletion_test_ts",
+      "_tgt": "dashboard_src_lib_adminuserdeletion_ts",
+      "source": "dashboard_src_lib_adminuserdeletion_ts",
+      "target": "dashboard_src_lib_adminuserdeletion_test_ts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "dashboard/src/lib/types.ts",
       "source_location": "L82",
       "weight": 1.0,
@@ -3086,6 +3254,42 @@
       "_tgt": "types_getprofiledisplayname",
       "source": "dashboard_src_lib_types_ts",
       "target": "types_getprofiledisplayname",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "dashboard/src/lib/adminUserDeletion.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_src": "dashboard_src_lib_adminuserdeletion_test_ts",
+      "_tgt": "adminuserdeletion_test_createuserclient",
+      "source": "dashboard_src_lib_adminuserdeletion_test_ts",
+      "target": "adminuserdeletion_test_createuserclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "dashboard/src/lib/adminUserDeletion.test.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_src": "dashboard_src_lib_adminuserdeletion_test_ts",
+      "_tgt": "adminuserdeletion_test_createadminclient",
+      "source": "dashboard_src_lib_adminuserdeletion_test_ts",
+      "target": "adminuserdeletion_test_createadminclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "dashboard/src/lib/supabase/admin.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_src": "dashboard_src_lib_supabase_admin_ts",
+      "_tgt": "admin_createadminclient",
+      "source": "dashboard_src_lib_supabase_admin_ts",
+      "target": "admin_createadminclient",
       "confidence_score": 1.0
     },
     {
@@ -5360,24 +5564,24 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L416",
+      "source_location": "L335",
       "weight": 1.0,
-      "_src": "supabase_flushsyncqueue",
+      "_src": "supabase_setuserteam",
       "_tgt": "supabase_restpost",
       "source": "supabase_restpost",
-      "target": "supabase_flushsyncqueue",
+      "target": "supabase_setuserteam",
       "confidence_score": 1.0
     },
     {
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "chatgpt-usage-tracker/supabase.js",
-      "source_location": "L335",
+      "source_location": "L416",
       "weight": 1.0,
-      "_src": "supabase_setuserteam",
-      "_tgt": "supabase_restpatch",
-      "source": "supabase_restpatch",
-      "target": "supabase_setuserteam",
+      "_src": "supabase_flushsyncqueue",
+      "_tgt": "supabase_restpost",
+      "source": "supabase_restpost",
+      "target": "supabase_flushsyncqueue",
       "confidence_score": 1.0
     },
     {
