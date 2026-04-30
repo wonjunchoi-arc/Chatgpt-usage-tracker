@@ -208,7 +208,7 @@ BEGIN
     WHERE user_id = NEW.user_id AND month_key = NEW.month_key
   );
 
-  v_date := date(NEW.server_ts);
+  v_date := ((to_timestamp(NEW.ts / 1000.0) AT TIME ZONE 'Asia/Seoul')::date);
 
   -- 유저 레벨 집계
   INSERT INTO monthly_usage_summary (month_key, user_id, model_id, usage_count, updated_at)
@@ -352,7 +352,7 @@ DO UPDATE
 -- 일별 활동 유형 백필
 INSERT INTO daily_activity_breakdown (date, month_key, user_id, activity, usage_count, updated_at)
 SELECT
-  date(server_ts) AS date,
+  ((to_timestamp(ts / 1000.0) AT TIME ZONE 'Asia/Seoul')::date) AS date,
   month_key,
   user_id,
   'chat' AS activity,
@@ -360,7 +360,7 @@ SELECT
   now()
 FROM activity_events
 WHERE app = 'chat'
-GROUP BY date(server_ts), month_key, user_id
+GROUP BY ((to_timestamp(ts / 1000.0) AT TIME ZONE 'Asia/Seoul')::date), month_key, user_id
 ON CONFLICT (date, user_id, activity)
 DO UPDATE
   SET usage_count = EXCLUDED.usage_count,
@@ -368,7 +368,7 @@ DO UPDATE
 
 INSERT INTO daily_activity_breakdown (date, month_key, user_id, activity, usage_count, updated_at)
 SELECT
-  date(ae.server_ts) AS date,
+  ((to_timestamp(ae.ts / 1000.0) AT TIME ZONE 'Asia/Seoul')::date) AS date,
   ae.month_key,
   ae.user_id,
   feature AS activity,
@@ -377,7 +377,7 @@ SELECT
 FROM activity_events ae
 CROSS JOIN LATERAL unnest(ae.features) AS feature
 WHERE feature = ANY(ARRAY['file-analysis','connector-app','skill-invocation','project-context','image-generation','search','pro-model'])
-GROUP BY date(ae.server_ts), ae.month_key, ae.user_id, feature
+GROUP BY ((to_timestamp(ae.ts / 1000.0) AT TIME ZONE 'Asia/Seoul')::date), ae.month_key, ae.user_id, feature
 ON CONFLICT (date, user_id, activity)
 DO UPDATE
   SET usage_count = EXCLUDED.usage_count,
@@ -507,10 +507,6 @@ CREATE POLICY "Admins manage teams" ON teams
 CREATE POLICY "Authenticated users see all profiles" ON profiles
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Users update own profile" ON profiles
-  FOR UPDATE USING (auth.uid() = id)
-  WITH CHECK (auth.uid() = id);
-
 CREATE POLICY "Admins manage profiles" ON profiles
   FOR UPDATE USING (is_admin())
   WITH CHECK (is_admin());
@@ -522,7 +518,7 @@ CREATE POLICY "Authenticated users see all events" ON activity_events
   FOR SELECT USING (auth.uid() IS NOT NULL);
 
 CREATE POLICY "Authenticated users insert activity_events" ON activity_events
-  FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 CREATE POLICY "Admins manage activity_events" ON activity_events
   FOR UPDATE USING (is_admin())

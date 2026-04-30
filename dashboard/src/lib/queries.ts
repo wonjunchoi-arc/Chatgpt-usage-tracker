@@ -20,6 +20,13 @@ interface MonthlyFeatureSummaryRow {
   usage_count: number;
 }
 
+const KST_DATE_FORMATTER = new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'Asia/Seoul',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
+
 export interface DashboardSummary {
   totalEvents: number;
   modelCounts: Record<string, number>;
@@ -115,6 +122,12 @@ export async function getUserEvents(
 
 function createEmptyActivityCounts() {
   return Object.fromEntries(ACTIVITY_KEYS.map(({ key }) => [key, 0])) as Record<string, number>;
+}
+
+function getKstDateKey(timestamp: number): string {
+  const parts = KST_DATE_FORMATTER.formatToParts(new Date(timestamp));
+  const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
 }
 
 function buildActivityCounts(
@@ -417,7 +430,7 @@ export function aggregateStats(events: ActivityEvent[]): TeamStats {
       featureCounts[feature] = (featureCounts[feature] || 0) + 1;
     }
 
-    const day = event.server_ts.slice(0, 10);
+    const day = getKstDateKey(event.ts);
     dailyMap[day] = (dailyMap[day] || 0) + 1;
 
     if (!dailyActivityMap[day]) dailyActivityMap[day] = {};

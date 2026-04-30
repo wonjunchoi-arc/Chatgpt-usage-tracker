@@ -1,11 +1,11 @@
 # Graph Report - .  (2026-04-30)
 
 ## Corpus Check
-- 43 files · ~27,308 words
+- 42 files · ~27,309 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 228 nodes · 337 edges · 49 communities detected
+- 227 nodes · 338 edges · 48 communities detected
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 10 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
@@ -58,7 +58,6 @@
 - [[_COMMUNITY_Community 45|Community 45]]
 - [[_COMMUNITY_Community 46|Community 46]]
 - [[_COMMUNITY_Community 47|Community 47]]
-- [[_COMMUNITY_Community 48|Community 48]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `ChatGPT Web Payload Analysis Guide` - 13 edges
@@ -98,8 +97,8 @@ Cohesion: 0.12
 Nodes (35): appendActivityEvent(), applyFeatureSignal(), asArray(), buildActivityDashboard(), buildDashboardData(), cleanupOldTimestamps(), collectAttachments(), collectConnectorIds() (+27 more)
 
 ### Community 1 - "Community 1"
-Cohesion: 0.12
-Nodes (23): aggregateStats(), buildActivityCounts(), buildDailyBreakdown(), buildDashboardSummary(), createEmptyActivityCounts(), getAllProfilesWithTeams(), getAllTeams(), getAllTeamsWithAdminStats() (+15 more)
+Cohesion: 0.11
+Nodes (24): aggregateStats(), buildActivityCounts(), buildDailyBreakdown(), buildDashboardSummary(), createEmptyActivityCounts(), getAllProfilesWithTeams(), getAllTeams(), getAllTeamsWithAdminStats() (+16 more)
 
 ### Community 2 - "Community 2"
 Cohesion: 0.19
@@ -215,15 +214,15 @@ Nodes (0):
 
 ### Community 30 - "Community 30"
 Cohesion: 1.0
-Nodes (0): 
+Nodes (2): Dashboard AGENTS.md - Next.js Agent Rules, Dashboard CLAUDE.md
 
 ### Community 31 - "Community 31"
 Cohesion: 1.0
-Nodes (2): Dashboard AGENTS.md - Next.js Agent Rules, Dashboard CLAUDE.md
+Nodes (2): Next.js Wordmark SVG, Vercel Triangle Logo SVG
 
 ### Community 32 - "Community 32"
 Cohesion: 1.0
-Nodes (2): Next.js Wordmark SVG, Vercel Triangle Logo SVG
+Nodes (0): 
 
 ### Community 33 - "Community 33"
 Cohesion: 1.0
@@ -267,108 +266,102 @@ Nodes (0):
 
 ### Community 43 - "Community 43"
 Cohesion: 1.0
-Nodes (0): 
+Nodes (1): ChatGPT Usage Limit Tracker (Root README)
 
 ### Community 44 - "Community 44"
 Cohesion: 1.0
-Nodes (1): ChatGPT Usage Limit Tracker (Root README)
+Nodes (1): Dashboard Next.js Project README
 
 ### Community 45 - "Community 45"
 Cohesion: 1.0
-Nodes (1): Dashboard Next.js Project README
+Nodes (1): Window SVG Icon
 
 ### Community 46 - "Community 46"
 Cohesion: 1.0
-Nodes (1): Window SVG Icon
-
-### Community 47 - "Community 47"
-Cohesion: 1.0
 Nodes (1): Globe SVG Icon
 
-### Community 48 - "Community 48"
+### Community 47 - "Community 47"
 Cohesion: 1.0
 Nodes (1): File / Document SVG Icon
 
 ## Knowledge Gaps
 - **20 isolated node(s):** `ChatGPT Usage Limit Tracker (Root README)`, `Dashboard Next.js Project README`, `Dashboard AGENTS.md - Next.js Agent Rules`, `Dashboard CLAUDE.md`, `Network Intercept Data Flow (background.js → Supabase → Dashboard)` (+15 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **Thin community `Community 10`** (2 nodes): `test_claude_api.py`, `main()`
+- **Thin community `Community 10`** (2 nodes): `next.config.ts`, `readSharedEnv()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 11`** (2 nodes): `next.config.ts`, `readSharedEnv()`
+- **Thin community `Community 11`** (2 nodes): `middleware.ts`, `middleware()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 12`** (2 nodes): `middleware.ts`, `middleware()`
+- **Thin community `Community 12`** (2 nodes): `UsageSummaryCards.tsx`, `UsageSummaryCards()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 13`** (2 nodes): `UsageSummaryCards.tsx`, `UsageSummaryCards()`
+- **Thin community `Community 13`** (2 nodes): `TeamsCompareChart.tsx`, `getActivityLabel()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 14`** (2 nodes): `TeamsCompareChart.tsx`, `getActivityLabel()`
+- **Thin community `Community 14`** (2 nodes): `ActivityCountCards()`, `ActivityCountCards.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 15`** (2 nodes): `ActivityCountCards()`, `ActivityCountCards.tsx`
+- **Thin community `Community 15`** (2 nodes): `ActivityTimeline()`, `ActivityTimeline.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 16`** (2 nodes): `ActivityTimeline()`, `ActivityTimeline.tsx`
+- **Thin community `Community 16`** (2 nodes): `TeamSelector.tsx`, `TeamSelector()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 17`** (2 nodes): `TeamSelector.tsx`, `TeamSelector()`
+- **Thin community `Community 17`** (2 nodes): `Sidebar.tsx`, `handleSignOut()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 18`** (2 nodes): `Sidebar.tsx`, `handleSignOut()`
+- **Thin community `Community 18`** (2 nodes): `layout.tsx`, `RootLayout()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 19`** (2 nodes): `layout.tsx`, `RootLayout()`
+- **Thin community `Community 19`** (2 nodes): `page.tsx`, `Home()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 20`** (2 nodes): `page.tsx`, `Home()`
+- **Thin community `Community 20`** (2 nodes): `page.tsx`, `handleSubmit()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 21`** (2 nodes): `page.tsx`, `handleSubmit()`
+- **Thin community `Community 21`** (2 nodes): `layout.tsx`, `DashboardLayout()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 22`** (2 nodes): `layout.tsx`, `DashboardLayout()`
+- **Thin community `Community 22`** (2 nodes): `page.tsx`, `DashboardPage()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 23`** (2 nodes): `page.tsx`, `DashboardPage()`
+- **Thin community `Community 23`** (2 nodes): `page.tsx`, `TeamPage()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 24`** (2 nodes): `page.tsx`, `TeamPage()`
+- **Thin community `Community 24`** (2 nodes): `page.tsx`, `ComparePage()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 25`** (2 nodes): `page.tsx`, `ComparePage()`
+- **Thin community `Community 25`** (2 nodes): `route.ts`, `DELETE()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 26`** (2 nodes): `route.ts`, `DELETE()`
+- **Thin community `Community 26`** (2 nodes): `createAdminClient()`, `admin.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 27`** (2 nodes): `createAdminClient()`, `admin.ts`
+- **Thin community `Community 27`** (2 nodes): `server.ts`, `createClient()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 28`** (2 nodes): `server.ts`, `createClient()`
+- **Thin community `Community 28`** (2 nodes): `createClient()`, `client.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 29`** (2 nodes): `createClient()`, `client.ts`
+- **Thin community `Community 29`** (2 nodes): `popup.js`, `initPanel()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 30`** (2 nodes): `popup.js`, `initPanel()`
+- **Thin community `Community 30`** (2 nodes): `Dashboard AGENTS.md - Next.js Agent Rules`, `Dashboard CLAUDE.md`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 31`** (2 nodes): `Dashboard AGENTS.md - Next.js Agent Rules`, `Dashboard CLAUDE.md`
+- **Thin community `Community 31`** (2 nodes): `Next.js Wordmark SVG`, `Vercel Triangle Logo SVG`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 32`** (2 nodes): `Next.js Wordmark SVG`, `Vercel Triangle Logo SVG`
+- **Thin community `Community 32`** (1 nodes): `next-env.d.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 33`** (1 nodes): `next-env.d.ts`
+- **Thin community `Community 33`** (1 nodes): `ActivityBreakdownChart.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 34`** (1 nodes): `ActivityBreakdownChart.tsx`
+- **Thin community `Community 34`** (1 nodes): `LowUsageMembersCard.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 35`** (1 nodes): `LowUsageMembersCard.tsx`
+- **Thin community `Community 35`** (1 nodes): `AppTypeChart.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 36`** (1 nodes): `AppTypeChart.tsx`
+- **Thin community `Community 36`** (1 nodes): `UserTable.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 37`** (1 nodes): `UserTable.tsx`
+- **Thin community `Community 37`** (1 nodes): `FeatureUsageChart.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 38`** (1 nodes): `FeatureUsageChart.tsx`
+- **Thin community `Community 38`** (1 nodes): `ModelDistributionChart.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 39`** (1 nodes): `ModelDistributionChart.tsx`
+- **Thin community `Community 39`** (1 nodes): `ActivitySummaryBarChart.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 40`** (1 nodes): `ActivitySummaryBarChart.tsx`
+- **Thin community `Community 40`** (1 nodes): `page.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 - **Thin community `Community 41`** (1 nodes): `page.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 42`** (1 nodes): `page.tsx`
+- **Thin community `Community 42`** (1 nodes): `config.js`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 43`** (1 nodes): `config.js`
+- **Thin community `Community 43`** (1 nodes): `ChatGPT Usage Limit Tracker (Root README)`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 44`** (1 nodes): `ChatGPT Usage Limit Tracker (Root README)`
+- **Thin community `Community 44`** (1 nodes): `Dashboard Next.js Project README`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 45`** (1 nodes): `Dashboard Next.js Project README`
+- **Thin community `Community 45`** (1 nodes): `Window SVG Icon`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 46`** (1 nodes): `Window SVG Icon`
+- **Thin community `Community 46`** (1 nodes): `Globe SVG Icon`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 47`** (1 nodes): `Globe SVG Icon`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 48`** (1 nodes): `File / Document SVG Icon`
+- **Thin community `Community 47`** (1 nodes): `File / Document SVG Icon`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
@@ -381,6 +374,6 @@ _Questions this graph is uniquely positioned to answer:_
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.12 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
-  _Cohesion score 0.12 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.11 - nodes in this community are weakly interconnected._
 - **Should `Community 3` be split into smaller, more focused modules?**
   _Cohesion score 0.11 - nodes in this community are weakly interconnected._
