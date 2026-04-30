@@ -179,12 +179,9 @@ async function signUp(email, password, displayName = '') {
     body: JSON.stringify({
       email,
       password,
-      options: {
-        emailRedirectTo: `${config.authUrl}/callback`,
-        data: {
-          display_name: displayName.trim() || null,
-          signup_source: 'extension',
-        },
+      data: {
+        display_name: displayName.trim() || null,
+        signup_source: 'extension',
       },
     }),
   });
