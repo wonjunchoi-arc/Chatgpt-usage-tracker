@@ -9,7 +9,7 @@ Supabase에 수집된 ChatGPT 사용 데이터를 팀별·개인별로 시각화
 - **팀원 상세 보기** — 팀원 사용량 표에서 "자세히 보기" 버튼으로 채팅·파일첨부·검색 등 활동 유형별 수치 확장 표시
 - **개인별 현황** — 사용자별 상세 활동 내역 및 기간별 추이
 - **팀 비교** — 팀 간 사용량·활동 유형 비교
-- **사용자 관리** — 관리자가 팀원 팀 배정·역할 변경·계정 삭제 (Admin 전용)
+- **사용자 관리** — 관리자가 팀원 팀 배정·역할 변경·계정 삭제 (Admin 전용, Supabase Auth 계정까지 삭제)
 - **팀 관리** — 관리자가 팀 생성·수정·삭제 (Admin 전용)
 
 ## 데이터 아키텍처
@@ -67,7 +67,10 @@ npm install
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 ```
+
+`SUPABASE_SERVICE_ROLE_KEY`는 사용자 삭제 API에서 Supabase Auth 계정을 삭제하기 위한 서버 전용 키입니다. Supabase Dashboard의 **Project Settings → API Keys**에서 확인하고, 실제 값은 `.env.local`이나 Vercel 환경 변수에만 저장합니다.
 
 ### 3. 개발 서버 실행
 
@@ -80,6 +83,7 @@ npm run dev
 ## 인증 및 권한
 
 Supabase Auth를 사용하며, 미들웨어(`middleware.ts`)가 인증되지 않은 접근을 `/login`으로 리디렉션합니다.
+Admin 사용자가 `/dashboard/admin/users`에서 사용자를 삭제하면 서버 API가 `SUPABASE_SERVICE_ROLE_KEY`로 Supabase Auth 계정을 삭제하고, `profiles` 및 연결된 활동 데이터는 FK cascade로 함께 정리됩니다.
 
 | 역할 | 접근 가능 페이지 |
 |------|----------------|
@@ -132,4 +136,5 @@ npm run build   # 프로덕션 빌드
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 ```
